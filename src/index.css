@@ -83,15 +83,15 @@
 
 /* Glassmorphism utilities */
 .glass-nav {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.90);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .glass-capsule {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .glass-card {
@@ -100,23 +100,32 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* Topographic elevation lines texture (Quebrada / Jujuy inspiration) */
+/* 🏔️ Topographic elevation lines texture (Quebrada / Jujuy inspiration - VISIBLE & DEFINED) */
 .bg-topo-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20c30-15 60 15 90 0s40-25 70-10M0 60c40-20 70 25 110 5s30-20 50-5M0 100c35-15 75 20 120 5s25-15 40 0M0 140c25-20 70 15 105-5s35-15 55 0M25 40c20 20 50-10 75 10M40 85c20-20 45 15 70-5M60 125c15-15 35 10 55-5' stroke='%238c6d58' stroke-width='0.85' stroke-opacity='0.09' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='240' height='240' viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30c45-20 90 20 135 0s60-35 105-15M0 75c55-25 105 30 165 5s45-25 75-10M0 120c45-20 100 25 160 5s40-20 80 0M0 165c35-25 95 20 150-5s55-20 90 0M0 210c50-20 110 25 170 5s45-25 70-10M30 50c30 25 75-15 110 15M60 110c30-25 65 20 100-5M80 170c25-20 50 15 80-5' stroke='%23b45309' stroke-width='1.2' stroke-opacity='0.18' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
-/* Warm organic mesh gradient backgrounds */
+/* 🌅 Warm organic mesh gradient backgrounds (Warm Sandstone + Terracotta Glow) */
 .mesh-gradient-warm {
+  background-color: #faf7f2;
   background-image:
-    radial-gradient(at 5% 10%, rgba(225, 29, 72, 0.07) 0px, transparent 55%),
-    radial-gradient(at 95% 15%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
-    radial-gradient(at 80% 85%, rgba(217, 119, 6, 0.06) 0px, transparent 50%),
-    radial-gradient(at 10% 90%, rgba(244, 63, 94, 0.05) 0px, transparent 55%);
+    radial-gradient(at 5% 10%, rgba(225, 29, 72, 0.12) 0px, transparent 50%),
+    radial-gradient(at 95% 15%, rgba(245, 158, 11, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 85%, rgba(217, 119, 6, 0.10) 0px, transparent 50%),
+    radial-gradient(at 10% 90%, rgba(244, 63, 94, 0.09) 0px, transparent 55%);
 }
 
 .mesh-gradient-dark {
   background-image:
-    radial-gradient(at 10% 15%, rgba(225, 29, 72, 0.22) 0px, transparent 50%),
-    radial-gradient(at 90% 25%, rgba(245, 158, 11, 0.18) 0px, transparent 50%),
-    radial-gradient(at 50% 90%, rgba(180, 83, 9, 0.15) 0px, transparent 55%);
+    radial-gradient(at 10% 15%, rgba(225, 29, 72, 0.28) 0px, transparent 50%),
+    radial-gradient(at 90% 25%, rgba(245, 158, 11, 0.24) 0px, transparent 50%),
+    radial-gradient(at 50% 90%, rgba(180, 83, 9, 0.20) 0px, transparent 55%);
+}
+
+/* Parallax section effect */
+.bg-parallax-banner {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

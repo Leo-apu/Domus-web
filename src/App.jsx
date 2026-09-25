@@ -14,6 +14,8 @@ import FloatingWhatsApp from './components/FloatingWhatsApp';
 import MobileBookingBar from './components/MobileBookingBar';
 import BookingModal from './components/BookingModal';
 
+import ParallaxBanner from './components/ParallaxBanner';
+
 export default function App() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
@@ -56,6 +58,9 @@ export default function App() {
 
         {/* Room-by-Room Walkthrough & Breakdown with Topo Pattern */}
         <RoomExplorer onSelectRoomImage={() => setIsLightboxOpen(true)} />
+
+        {/* 🏔️ Parallax Experience Banner */}
+        <ParallaxBanner onOpenBookingModal={handleOpenBookingModal} />
 
         {/* All Amenities and Included Services with Warm Glow */}
         <FeaturesAndAmenities />
