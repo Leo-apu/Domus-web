@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, Maximize2, Tag } from 'lucide-react';
+import { useEffect } from "react";
+import { X, ChevronLeft, ChevronRight, Maximize2, Tag } from "lucide-react";
 
 export default function PhotoLightbox({
   isOpen,
@@ -12,17 +12,19 @@ export default function PhotoLightbox({
     if (!isOpen) return;
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowRight') onSelectIndex((currentIndex + 1) % images.length);
-      if (e.key === 'ArrowLeft') onSelectIndex((currentIndex - 1 + images.length) % images.length);
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight")
+        onSelectIndex((currentIndex + 1) % images.length);
+      if (e.key === "ArrowLeft")
+        onSelectIndex((currentIndex - 1 + images.length) % images.length);
     };
 
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = 'unset';
-      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, currentIndex, images.length, onClose, onSelectIndex]);
 
@@ -31,7 +33,8 @@ export default function PhotoLightbox({
   const currentImage = images[currentIndex];
 
   const handleNext = () => onSelectIndex((currentIndex + 1) % images.length);
-  const handlePrev = () => onSelectIndex((currentIndex - 1 + images.length) % images.length);
+  const handlePrev = () =>
+    onSelectIndex((currentIndex - 1 + images.length) % images.length);
 
   return (
     <div
@@ -39,7 +42,6 @@ export default function PhotoLightbox({
       aria-modal="true"
       className="fixed inset-0 z-50 flex flex-col bg-stone-950/95 backdrop-blur-xl text-white animate-in fade-in duration-200"
     >
-      {/* Top Header */}
       <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-stone-800 shrink-0">
         <div className="flex items-center gap-3">
           <span className="text-xs sm:text-sm font-semibold text-stone-300">
@@ -64,9 +66,7 @@ export default function PhotoLightbox({
         </div>
       </div>
 
-      {/* Main Lightbox Body */}
       <div className="relative flex-1 flex items-center justify-center p-2 sm:p-6 overflow-hidden">
-        {/* Navigation Arrows */}
         <button
           onClick={handlePrev}
           className="absolute left-2 sm:left-6 z-20 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-stone-900/80 hover:bg-stone-800 text-white flex items-center justify-center backdrop-blur-md border border-stone-700 shadow-xl transition-transform hover:scale-105 active:scale-95"
@@ -83,7 +83,6 @@ export default function PhotoLightbox({
           <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
         </button>
 
-        {/* Current Active Image with Caption */}
         <div className="flex flex-col items-center justify-center max-w-5xl max-h-full px-2">
           <img
             src={currentImage.src}
@@ -104,7 +103,6 @@ export default function PhotoLightbox({
         </div>
       </div>
 
-      {/* Bottom Thumbnails Strip */}
       <div className="px-4 py-3 border-t border-stone-800 bg-stone-950/80 shrink-0 overflow-x-auto">
         <div className="flex items-center justify-center gap-2 max-w-5xl mx-auto">
           {images.map((img, idx) => (
@@ -113,8 +111,8 @@ export default function PhotoLightbox({
               onClick={() => onSelectIndex(idx)}
               className={`relative rounded-lg overflow-hidden shrink-0 transition-all ${
                 idx === currentIndex
-                  ? 'ring-2 ring-rose-500 scale-105 opacity-100'
-                  : 'opacity-50 hover:opacity-80 scale-95'
+                  ? "ring-2 ring-rose-500 scale-105 opacity-100"
+                  : "opacity-50 hover:opacity-80 scale-95"
               }`}
             >
               <img

@@ -1,12 +1,14 @@
-import { Star, Quote, CheckCircle2, Award, HeartHandshake } from 'lucide-react';
-import { TESTIMONIALS, APARTMENT_INFO } from '../data/apartmentData';
+import { Star, Quote, CheckCircle2, Award, HeartHandshake } from "lucide-react";
+import { TESTIMONIALS, APARTMENT_INFO } from "../data/apartmentData";
 
 export default function Testimonials() {
   return (
-    <section id="opiniones" className="py-20 bg-stone-100/70 border-b border-stone-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header with Rating Summary */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+    <section
+      id="opiniones"
+      className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-14 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <Award className="w-3.5 h-3.5" />
             Experiencia de Nuestros Huéspedes
@@ -15,10 +17,13 @@ export default function Testimonials() {
             Opiniones Reales y Calificaciones
           </h2>
 
-          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-4 bg-white px-6 py-3 rounded-2xl shadow-sm border border-stone-200">
+          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-4 bg-white px-6 py-3 rounded-2xl shadow-sm border border-stone-200/90">
             <div className="flex items-center gap-1 text-amber-500">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+                <Star
+                  key={i}
+                  className="w-5 h-5 fill-amber-400 text-amber-400"
+                />
               ))}
             </div>
             <span className="font-extrabold text-stone-900 text-xl font-serif-title">
@@ -31,32 +36,36 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* Rating Category Breakdown (Airbnb Style) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12">
-          <div className="bg-white p-4 rounded-2xl border border-stone-200 text-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12 reveal-init reveal-up delay-100">
+          <div className="bg-white p-4 rounded-2xl border border-stone-200/90 shadow-sm text-center">
             <span className="text-xs text-stone-500 font-medium">Limpieza</span>
             <p className="text-xl font-bold text-stone-900 mt-0.5">5.0 ★</p>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-stone-200 text-center">
-            <span className="text-xs text-stone-500 font-medium">Ubicación</span>
+          <div className="bg-white p-4 rounded-2xl border border-stone-200/90 shadow-sm text-center">
+            <span className="text-xs text-stone-500 font-medium">
+              Ubicación
+            </span>
             <p className="text-xl font-bold text-stone-900 mt-0.5">5.0 ★</p>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-stone-200 text-center">
-            <span className="text-xs text-stone-500 font-medium">Atención Anfitrión</span>
+          <div className="bg-white p-4 rounded-2xl border border-stone-200/90 shadow-sm text-center">
+            <span className="text-xs text-stone-500 font-medium">
+              Atención Anfitrión
+            </span>
             <p className="text-xl font-bold text-stone-900 mt-0.5">4.9 ★</p>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-stone-200 text-center">
-            <span className="text-xs text-stone-500 font-medium">Calidad / Precio</span>
+          <div className="bg-white p-4 rounded-2xl border border-stone-200/90 shadow-sm text-center">
+            <span className="text-xs text-stone-500 font-medium">
+              Calidad / Precio
+            </span>
             <p className="text-xl font-bold text-stone-900 mt-0.5">4.9 ★</p>
           </div>
         </div>
 
-        {/* Reviews Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+              className={`bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-init reveal-up delay-${(idx + 1) * 100}`}
             >
               <div>
                 <div className="flex items-center justify-between mb-4">

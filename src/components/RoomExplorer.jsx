@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Bed,
   Bath,
@@ -8,24 +8,25 @@ import {
   Maximize,
   Users,
   Compass,
-} from 'lucide-react';
-import { ROOMS_DETAILS } from '../data/apartmentData';
+} from "lucide-react";
+import { ROOMS_DETAILS } from "../data/apartmentData";
 
 export default function RoomExplorer({ onSelectRoomImage }) {
   const [activeRoomId, setActiveRoomId] = useState(ROOMS_DETAILS[0].id);
 
-  const activeRoom = ROOMS_DETAILS.find((r) => r.id === activeRoomId) || ROOMS_DETAILS[0];
+  const activeRoom =
+    ROOMS_DETAILS.find((r) => r.id === activeRoomId) || ROOMS_DETAILS[0];
 
   const getRoomIcon = (id) => {
     switch (id) {
-      case 'living-comedor':
+      case "living-comedor":
         return <Tv className="w-4 h-4" />;
-      case 'cocina':
+      case "cocina":
         return <UtensilsCrossed className="w-4 h-4" />;
-      case 'dormitorio-1':
-      case 'dormitorio-2':
+      case "dormitorio-1":
+      case "dormitorio-2":
         return <Bed className="w-4 h-4" />;
-      case 'baños':
+      case "baños":
         return <Bath className="w-4 h-4" />;
       default:
         return <Compass className="w-4 h-4" />;
@@ -33,10 +34,12 @@ export default function RoomExplorer({ onSelectRoomImage }) {
   };
 
   return (
-    <section id="espacios" className="py-20 bg-stone-50 border-b border-stone-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+    <section
+      id="espacios"
+      className="py-20 bg-stone-100/60 bg-topo-pattern border-b border-stone-200 relative overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-12 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <Compass className="w-3.5 h-3.5" />
             Distribución & Ambientes
@@ -45,20 +48,20 @@ export default function RoomExplorer({ onSelectRoomImage }) {
             Recorrido por Espacios
           </h2>
           <p className="mt-3 text-base sm:text-lg text-stone-600 font-light">
-            Departamento de 3 ambientes de 66 m² diseñado para garantizar confort, luminosidad y privacidad total.
+            Departamento de 3 ambientes de 66 m² diseñado para garantizar
+            confort, luminosidad y privacidad total.
           </p>
         </div>
 
-        {/* Room Selector Pills */}
-        <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar">
+        <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar reveal-init reveal-up delay-100">
           {ROOMS_DETAILS.map((room) => (
             <button
               key={room.id}
               onClick={() => setActiveRoomId(room.id)}
               className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-semibold transition-all shrink-0 ${
                 activeRoomId === room.id
-                  ? 'bg-stone-900 text-white shadow-xl scale-102 ring-2 ring-stone-900/10'
-                  : 'bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-stone-200'
+                  ? "bg-stone-900 text-white shadow-xl scale-102 ring-2 ring-stone-900/10"
+                  : "bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-stone-200"
               }`}
             >
               {getRoomIcon(room.id)}
@@ -67,16 +70,14 @@ export default function RoomExplorer({ onSelectRoomImage }) {
           ))}
         </div>
 
-        {/* Active Room Detail Showcase */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-200/90 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left Column: Image with badges */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-200/90 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center reveal-init reveal-scale delay-200">
           <div className="lg:col-span-7 relative group rounded-2xl overflow-hidden shadow-lg bg-stone-100 aspect-[16/10]">
             <img
               src={activeRoom.image}
               alt={activeRoom.name}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-t from-stone-950/70 via-transparent to-transparent pointer-events-none" />
 
             <div className="absolute top-4 left-4 flex flex-wrap gap-2">
               <span className="bg-rose-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
@@ -89,14 +90,15 @@ export default function RoomExplorer({ onSelectRoomImage }) {
             </div>
 
             <div className="absolute bottom-4 left-4 right-4 text-white">
-              <p className="text-xs text-stone-300 font-medium">Ubicación y Confort</p>
+              <p className="text-xs text-stone-300 font-medium">
+                Ubicación y Confort
+              </p>
               <h3 className="text-xl sm:text-2xl font-bold font-serif-title drop-shadow">
                 {activeRoom.name}
               </h3>
             </div>
           </div>
 
-          {/* Right Column: Specifications & Checklist */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-3 mb-4">
@@ -119,10 +121,10 @@ export default function RoomExplorer({ onSelectRoomImage }) {
               </div>
 
               <p className="text-sm text-stone-600 leading-relaxed mb-6">
-                Espacio preparado con detalles de categoría para brindar una experiencia de estadía superior.
+                Espacio preparado con detalles de categoría para brindar una
+                experiencia de estadía superior.
               </p>
 
-              {/* Feature Checklist */}
               <div className="space-y-3 mb-8">
                 {activeRoom.features.map((feature, idx) => (
                   <div key={idx} className="flex items-start gap-3">
@@ -137,7 +139,6 @@ export default function RoomExplorer({ onSelectRoomImage }) {
               </div>
             </div>
 
-            {/* Quick Action */}
             <div className="pt-6 border-t border-stone-100 flex items-center justify-between">
               <a
                 href="#calculadora"

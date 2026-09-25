@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Camera,
   Maximize2,
@@ -6,46 +6,49 @@ import {
   Eye,
   CheckCircle2,
   ChevronRight,
-} from 'lucide-react';
-import { GALLERY_IMAGES } from '../data/apartmentData';
-import PhotoLightbox from './PhotoLightbox';
+} from "lucide-react";
+import { GALLERY_IMAGES } from "../data/apartmentData";
+import PhotoLightbox from "./PhotoLightbox";
 
 export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
-  const [selectedCategory, setSelectedCategory] = useState('todas');
+  const [selectedCategory, setSelectedCategory] = useState("todas");
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const categories = [
-    { id: 'todas', name: 'Todas las fotos', count: GALLERY_IMAGES.length },
+    { id: "todas", name: "Todas las fotos", count: GALLERY_IMAGES.length },
     {
-      id: 'living',
-      name: 'Living y Comedor',
-      count: GALLERY_IMAGES.filter((img) => img.category === 'living').length,
+      id: "living",
+      name: "Living y Comedor",
+      count: GALLERY_IMAGES.filter((img) => img.category === "living").length,
     },
     {
-      id: 'dormitorios',
-      name: 'Dormitorios',
-      count: GALLERY_IMAGES.filter((img) => img.category === 'dormitorios').length,
+      id: "dormitorios",
+      name: "Dormitorios",
+      count: GALLERY_IMAGES.filter((img) => img.category === "dormitorios")
+        .length,
     },
     {
-      id: 'cocina',
-      name: 'Cocina',
-      count: GALLERY_IMAGES.filter((img) => img.category === 'cocina').length,
+      id: "cocina",
+      name: "Cocina",
+      count: GALLERY_IMAGES.filter((img) => img.category === "cocina").length,
     },
     {
-      id: 'baños',
-      name: 'Baños en Suite',
-      count: GALLERY_IMAGES.filter((img) => img.category === 'baños').length,
+      id: "baños",
+      name: "Baños en Suite",
+      count: GALLERY_IMAGES.filter((img) => img.category === "baños").length,
     },
   ];
 
   const filteredImages =
-    selectedCategory === 'todas'
+    selectedCategory === "todas"
       ? GALLERY_IMAGES
       : GALLERY_IMAGES.filter((img) => img.category === selectedCategory);
 
   const openLightboxAt = (indexInFiltered) => {
     const targetImage = filteredImages[indexInFiltered];
-    const globalIndex = GALLERY_IMAGES.findIndex((img) => img.id === targetImage.id);
+    const globalIndex = GALLERY_IMAGES.findIndex(
+      (img) => img.id === targetImage.id,
+    );
     setLightboxIndex(globalIndex !== -1 ? globalIndex : 0);
     setIsLightboxOpen(true);
   };
@@ -56,10 +59,12 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
   };
 
   return (
-    <section id="galeria" className="py-20 sm:py-24 bg-stone-100/70 border-b border-stone-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
+    <section
+      id="galeria"
+      className="pt-24 sm:pt-28 pb-20 sm:pb-24 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-10 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <Camera className="w-3.5 h-3.5" />
             Galería Fotográfica
@@ -68,14 +73,13 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
             Descubrí Cada Rincón del Departamento
           </h2>
           <p className="mt-4 text-base sm:text-lg text-stone-600 font-light">
-            Ambientes luminosos, confortables y completamente amoblados para que tu estadía en Jujuy sea inolvidable.
+            Ambientes luminosos, confortables y completamente amoblados para que
+            tu estadía en Jujuy sea inolvidable.
           </p>
         </div>
 
-        {/* 1. Airbnb-Style Mosaic Grid (High Visibility Showcase) */}
-        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl mb-12 bg-stone-900">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl mb-12 bg-stone-900 reveal-init reveal-scale delay-100">
           <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-2 sm:gap-2.5 h-[420px] sm:h-[500px] lg:h-[560px]">
-            {/* Featured Left Photo (Living & Comedor) */}
             <div
               onClick={() => openLightboxWithGlobalIndex(0)}
               className="relative md:col-span-2 md:row-span-2 overflow-hidden cursor-pointer group"
@@ -85,7 +89,7 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
                 alt={GALLERY_IMAGES[0].alt}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-black/20 opacity-80 group-hover:opacity-60 transition-opacity" />
+              <div className="absolute inset-0 bg-linear-to-t from-stone-950/80 via-transparent to-black/20 opacity-80 group-hover:opacity-60 transition-opacity" />
               <div className="absolute bottom-5 left-5 right-5 text-white">
                 <span className="bg-rose-600 text-white text-[11px] font-semibold uppercase px-2.5 py-1 rounded-md tracking-wider">
                   Foto Principal
@@ -102,7 +106,6 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
               </div>
             </div>
 
-            {/* Top Right 1 (Living/Sillón) */}
             <div
               onClick={() => openLightboxWithGlobalIndex(1)}
               className="hidden md:block relative overflow-hidden cursor-pointer group"
@@ -114,11 +117,12 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
               />
               <div className="absolute inset-0 bg-stone-950/20 group-hover:bg-stone-950/0 transition-colors" />
               <div className="absolute bottom-3 left-3 text-white">
-                <p className="text-sm font-semibold drop-shadow">{GALLERY_IMAGES[1].title}</p>
+                <p className="text-sm font-semibold drop-shadow">
+                  {GALLERY_IMAGES[1].title}
+                </p>
               </div>
             </div>
 
-            {/* Top Right 2 (Cocina) */}
             <div
               onClick={() => openLightboxWithGlobalIndex(2)}
               className="hidden md:block relative overflow-hidden cursor-pointer group"
@@ -130,11 +134,12 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
               />
               <div className="absolute inset-0 bg-stone-950/20 group-hover:bg-stone-950/0 transition-colors" />
               <div className="absolute bottom-3 left-3 text-white">
-                <p className="text-sm font-semibold drop-shadow">{GALLERY_IMAGES[2].title}</p>
+                <p className="text-sm font-semibold drop-shadow">
+                  {GALLERY_IMAGES[2].title}
+                </p>
               </div>
             </div>
 
-            {/* Bottom Right 1 (Dormitorio Matrimonial) */}
             <div
               onClick={() => openLightboxWithGlobalIndex(3)}
               className="hidden md:block relative overflow-hidden cursor-pointer group"
@@ -146,11 +151,12 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
               />
               <div className="absolute inset-0 bg-stone-950/20 group-hover:bg-stone-950/0 transition-colors" />
               <div className="absolute bottom-3 left-3 text-white">
-                <p className="text-sm font-semibold drop-shadow">{GALLERY_IMAGES[3].title}</p>
+                <p className="text-sm font-semibold drop-shadow">
+                  {GALLERY_IMAGES[3].title}
+                </p>
               </div>
             </div>
 
-            {/* Bottom Right 2 (Dormitorio 2) */}
             <div
               onClick={() => openLightboxWithGlobalIndex(4)}
               className="hidden md:block relative overflow-hidden cursor-pointer group"
@@ -162,12 +168,13 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
               />
               <div className="absolute inset-0 bg-stone-950/20 group-hover:bg-stone-950/0 transition-colors" />
               <div className="absolute bottom-3 left-3 text-white">
-                <p className="text-sm font-semibold drop-shadow">{GALLERY_IMAGES[4].title}</p>
+                <p className="text-sm font-semibold drop-shadow">
+                  {GALLERY_IMAGES[4].title}
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Floating 'Ver todas las fotos' button (Airbnb Style) */}
           <button
             onClick={() => openLightboxWithGlobalIndex(0)}
             className="absolute bottom-4 right-4 z-20 inline-flex items-center gap-2 bg-stone-950/85 hover:bg-stone-950 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl border border-white/20 backdrop-blur-md shadow-xl transition-all hover:scale-105 active:scale-95"
@@ -177,7 +184,6 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
           </button>
         </div>
 
-        {/* 2. Interactive Category Filter Tabs */}
         <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
           {categories.map((cat) => (
             <button
@@ -185,16 +191,16 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 flex items-center gap-2 ${
                 selectedCategory === cat.id
-                  ? 'bg-rose-600 text-white shadow-md shadow-rose-600/20 scale-102'
-                  : 'bg-white text-stone-700 hover:bg-stone-200/80 border border-stone-200/70'
+                  ? "bg-rose-600 text-white shadow-md shadow-rose-600/20 scale-102"
+                  : "bg-white text-stone-700 hover:bg-stone-200/80 border border-stone-200/70"
               }`}
             >
               <span>{cat.name}</span>
               <span
                 className={`text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
                   selectedCategory === cat.id
-                    ? 'bg-white/20 text-white'
-                    : 'bg-stone-100 text-stone-500'
+                    ? "bg-white/20 text-white"
+                    : "bg-stone-100 text-stone-500"
                 }`}
               >
                 {cat.count}
@@ -203,7 +209,6 @@ export default function ModernGallery({ isLightboxOpen, setIsLightboxOpen }) {
           ))}
         </div>
 
-        {/* 3. Filtered Photos Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredImages.map((image, index) => (
             <div

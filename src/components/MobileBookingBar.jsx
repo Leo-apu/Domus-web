@@ -1,7 +1,7 @@
 import { CalendarCheck, MessageCircle, Star } from 'lucide-react';
 import { APARTMENT_INFO } from '../data/apartmentData';
 
-export default function MobileBookingBar() {
+export default function MobileBookingBar({ onOpenBookingModal }) {
   return (
     <aside aria-label="Reserva rápida para móviles" className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-stone-200 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] flex items-center justify-between gap-3">
       <div>
@@ -15,13 +15,14 @@ export default function MobileBookingBar() {
       </div>
 
       <div className="flex items-center gap-2">
-        <a
-          href="#calculadora"
-          className="inline-flex items-center gap-1.5 bg-stone-900 text-white text-xs font-semibold px-3 py-2.5 rounded-xl shadow-sm"
+        <button
+          type="button"
+          onClick={() => onOpenBookingModal && onOpenBookingModal()}
+          className="inline-flex items-center gap-1.5 bg-stone-900 text-white text-xs font-semibold px-3 py-2.5 rounded-xl shadow-sm cursor-pointer"
         >
           <CalendarCheck className="w-3.5 h-3.5 text-rose-400" />
           <span>Cotizar</span>
-        </a>
+        </button>
 
         <a
           href={APARTMENT_INFO.whatsappLink}
