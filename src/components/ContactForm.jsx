@@ -89,11 +89,11 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contacto" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contacto" className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Contact Information */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6 reveal-init reveal-left">
             <div>
               <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
                 <Mail className="w-3.5 h-3.5" />
@@ -108,7 +108,7 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-4 pt-2">
-              <div className="flex items-start gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-200/80">
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-200/90 shadow-sm">
                 <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                   <Phone className="w-5 h-5" />
                 </div>
@@ -126,7 +126,7 @@ export default function ContactForm() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-200/80">
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-200/90 shadow-sm">
                 <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
                   <Clock className="w-5 h-5" />
                 </div>
@@ -138,7 +138,7 @@ export default function ContactForm() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-200/80">
+              <div className="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-200/90 shadow-sm">
                 <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
                   <MapPin className="w-5 h-5" />
                 </div>
@@ -169,7 +169,7 @@ export default function ContactForm() {
           </div>
 
           {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7 bg-stone-50 rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-200 shadow-xl">
+          <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-200/90 shadow-xl reveal-init reveal-right">
             <h3 className="font-serif-title text-2xl font-bold text-stone-900 mb-2">
               Envianos un Mensaje
             </h3>

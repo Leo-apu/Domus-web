@@ -6,7 +6,7 @@ export default function LocationSection() {
     <section id="ubicacion" className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-12 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <MapPin className="w-3.5 h-3.5" />
             Ubicación Estratégica
@@ -22,7 +22,7 @@ export default function LocationSection() {
         {/* Location Grid: Map + Points of Interest */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* Points of interest list */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-4 reveal-init reveal-left">
             <div className="space-y-3">
               <h3 className="font-serif-title text-xl font-bold text-stone-900 mb-4 flex items-center gap-2">
                 <Compass className="w-5 h-5 text-rose-600" />
@@ -73,7 +73,7 @@ export default function LocationSection() {
           </div>
 
           {/* Map Embed Card */}
-          <div className="lg:col-span-7 bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-xl flex flex-col min-h-[380px] lg:min-h-[480px]">
+          <div className="lg:col-span-7 bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-xl flex flex-col min-h-[380px] lg:min-h-[480px] reveal-init reveal-right">
             <div className="bg-stone-900 text-white px-5 py-3.5 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-rose-500 animate-pulse" />

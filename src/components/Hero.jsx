@@ -7,12 +7,9 @@ import {
   Users,
   Calendar,
   Sparkles,
-  ShieldCheck,
   Camera,
   Search,
   Check,
-  Compass,
-  ArrowRight,
 } from 'lucide-react';
 import { APARTMENT_INFO } from '../data/apartmentData';
 
@@ -20,19 +17,19 @@ const HERO_SLIDES = [
   {
     image: '/images/landing-2.webp',
     title: 'Tu Refugio Céntrico y Exclusivo en Jujuy',
-    subtitle: 'Departamento 3 ambientes de 66 m² a 2 cuadras de Plaza Belgrano. Comodidad, calidez y la mejor ubicación para tus vacaciones o estadías de trabajo.',
+    subtitle: 'Departamento 3 ambientes a 2 cuadras de Plaza Belgrano. Comodidad, calidez y la mejor ubicación.',
     badge: 'Ubicación Inmejorable',
   },
   {
     image: '/images/landing-3.webp',
     title: 'Privacidad Total: 2 Baños en Suite',
-    subtitle: 'Cada habitación con su propio baño privado completo. Ideal para familias o amigos que buscan máxima independencia.',
+    subtitle: 'Cada habitación con su propio baño privado. Ideal para familias o amigos que buscan independencia.',
     badge: '2 Baños en Suite',
   },
   {
     image: '/images/landing-1.webp',
     title: 'Equipamiento Completo para 4 Huéspedes',
-    subtitle: 'Cocina integral equipada, Smart TV, WiFi de 300MB y balcón con vista abierta a los cerros y la ciudad.',
+    subtitle: 'Cocina integral, Smart TV, WiFi de 300MB y balcón con vista abierta a los cerros jujeños.',
     badge: 'Todo Incluido',
   },
 ];
@@ -77,8 +74,8 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
   };
 
   return (
-    <section id="inicio" className="relative bg-stone-950 text-white pt-24 sm:pt-28 pb-14 sm:pb-18">
-      {/* Background Slides with Ken Burns (ONLY this inner layer has overflow-hidden so the search bar never gets cut off) */}
+    <section id="inicio" className="relative min-h-[85vh] sm:min-h-[88vh] lg:min-h-[92vh] flex flex-col justify-center items-center bg-stone-950 text-white pt-24 sm:pt-28 pb-16 sm:pb-20">
+      {/* Background Slides with Ken Burns Effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {HERO_SLIDES.map((slide, index) => (
           <div
@@ -101,10 +98,10 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
         ))}
       </div>
 
-      {/* Floating Trust Badges in Corners (Desktop only) */}
-      <div className="hidden xl:flex absolute top-32 left-8 z-20 items-center gap-2.5 bg-stone-900/80 border border-white/20 px-4 py-2.5 rounded-2xl backdrop-blur-md text-white shadow-xl animate-float-slow">
-        <div className="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
-          <MapPin className="w-4 h-4" />
+      {/* Floating Trust Badges in Corners (Desktop only, positioned comfortably) */}
+      <div className="hidden xl:flex absolute top-28 left-8 z-20 items-center gap-2.5 bg-stone-900/80 border border-white/20 px-3.5 py-2 rounded-2xl backdrop-blur-md text-white shadow-xl animate-float-slow">
+        <div className="w-7 h-7 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+          <MapPin className="w-3.5 h-3.5" />
         </div>
         <div className="text-left">
           <p className="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Ubicación</p>
@@ -112,9 +109,9 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
         </div>
       </div>
 
-      <div className="hidden xl:flex absolute top-32 right-8 z-20 items-center gap-2.5 bg-stone-900/80 border border-white/20 px-4 py-2.5 rounded-2xl backdrop-blur-md text-white shadow-xl animate-float-slow" style={{ animationDelay: '1.5s' }}>
-        <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-          <Star className="w-4 h-4 fill-amber-400" />
+      <div className="hidden xl:flex absolute top-28 right-8 z-20 items-center gap-2.5 bg-stone-900/80 border border-white/20 px-3.5 py-2 rounded-2xl backdrop-blur-md text-white shadow-xl animate-float-slow" style={{ animationDelay: '1.5s' }}>
+        <div className="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+          <Star className="w-3.5 h-3.5 fill-amber-400" />
         </div>
         <div className="text-left">
           <p className="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Superanfitrión</p>
@@ -123,9 +120,9 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
       </div>
 
       {/* Main Hero Center Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center w-full">
         {/* Rating and Spec Pill */}
-        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold mb-6 text-stone-200 shadow-xl">
+        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-xs font-semibold mb-4 text-stone-200 shadow-xl reveal-init reveal-up">
           <span className="flex items-center text-amber-400 gap-1 font-bold">
             <Star className="w-3.5 h-3.5 fill-amber-400" />
             {APARTMENT_INFO.rating}
@@ -138,37 +135,98 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
           </span>
         </div>
 
-        {/* Hero Title */}
-        <h1 className="font-serif-title text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight mb-4 drop-shadow-md">
+        {/* Hero Title (Clean, elegant, perfectly proportioned) */}
+        <h1 className="font-serif-title text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight mb-3 drop-shadow-md max-w-3xl reveal-init reveal-up delay-100">
           {HERO_SLIDES[currentSlide].title}
         </h1>
 
         {/* Hero Subtitle */}
-        <p className="text-sm sm:text-lg text-stone-200 max-w-2xl font-light leading-relaxed mb-6 drop-shadow">
+        <p className="text-xs sm:text-base text-stone-200 max-w-xl font-light leading-relaxed mb-8 drop-shadow reveal-init reveal-up delay-200">
           {HERO_SLIDES[currentSlide].subtitle}
         </p>
 
-        {/* Quick action buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
-          <button
-            onClick={onOpenGallery}
-            className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg text-xs sm:text-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+        {/* 🚀 THE AIRBNB-STYLE FLOATING SEARCH CAPSULE (CLEAN, ELEVATED, WITH AMPLE SPACE BELOW) */}
+        <div className="w-full max-w-3xl mx-auto reveal-init reveal-scale delay-300">
+          <form
+            onSubmit={handleCapsuleSubmit}
+            className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-full p-2.5 sm:p-3 shadow-[0_15px_40px_rgba(0,0,0,0.35)] border border-stone-200/90 grid grid-cols-1 sm:grid-cols-12 gap-2 items-center text-stone-900"
           >
-            <Camera className="w-4 h-4 text-amber-300" />
-            <span>Ver Fotos ({8})</span>
-          </button>
+            {/* Check-in Pill */}
+            <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-100/80 transition-colors cursor-pointer group text-left">
+              <label htmlFor={checkInId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
+                Llegada
+              </label>
+              <input
+                id={checkInId}
+                type="date"
+                required
+                min={getTodayString(0)}
+                value={checkIn}
+                onChange={(e) => {
+                  setCheckIn(e.target.value);
+                  if (new Date(e.target.value) >= new Date(checkOut)) {
+                    const next = new Date(e.target.value);
+                    next.setDate(next.getDate() + 1);
+                    setCheckOut(next.toISOString().split('T')[0]);
+                  }
+                }}
+                className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
+              />
+            </div>
 
-          <a
-            href="#espacios"
-            className="inline-flex items-center gap-2 bg-stone-900/60 hover:bg-stone-900/90 backdrop-blur-md border border-white/15 text-stone-300 hover:text-white font-semibold px-4 py-2.5 rounded-xl text-xs sm:text-sm transition-colors"
-          >
-            <Compass className="w-4 h-4 text-rose-400" />
-            <span>Recorrido por Ambientes</span>
-          </a>
+            <div className="hidden sm:block w-px h-8 bg-stone-200" />
+
+            {/* Check-out Pill */}
+            <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-100/80 transition-colors cursor-pointer group text-left">
+              <label htmlFor={checkOutId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
+                Salida
+              </label>
+              <input
+                id={checkOutId}
+                type="date"
+                required
+                min={checkIn || getTodayString(1)}
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+                className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
+              />
+            </div>
+
+            <div className="hidden sm:block w-px h-8 bg-stone-200" />
+
+            {/* Guests Pill */}
+            <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-100/80 transition-colors cursor-pointer group text-left">
+              <label htmlFor={guestsId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
+                Huéspedes
+              </label>
+              <select
+                id={guestsId}
+                value={guests}
+                onChange={(e) => setGuests(Number(e.target.value))}
+                className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
+              >
+                <option value={1}>1 Huésped</option>
+                <option value={2}>2 Huéspedes</option>
+                <option value={3}>3 Huéspedes</option>
+                <option value={4}>4 Huéspedes (Máx)</option>
+              </select>
+            </div>
+
+            {/* Action Button */}
+            <div className="sm:col-span-3">
+              <button
+                type="submit"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-3.5 px-4 rounded-xl sm:rounded-full shadow-lg shadow-rose-900/30 text-xs sm:text-sm transition-all hover:scale-102 active:scale-98 cursor-pointer"
+              >
+                <Search className="w-4 h-4 shrink-0" />
+                <span>Solicitar Reserva</span>
+              </button>
+            </div>
+          </form>
         </div>
 
         {/* Slide Indicators */}
-        <div className="flex items-center gap-2 mb-10">
+        <div className="flex items-center gap-2 mt-8">
           {HERO_SLIDES.map((_, i) => (
             <button
               key={i}
@@ -182,107 +240,32 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
         </div>
       </div>
 
+      {/* Floating 'Ver Fotos (8)' button in bottom-left corner (Airbnb Style, completely non-intrusive) */}
+      <div className="absolute bottom-6 left-6 z-20 hidden sm:block">
+        <button
+          onClick={onOpenGallery}
+          className="inline-flex items-center gap-2 bg-black/50 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white font-semibold px-4 py-2 rounded-xl text-xs shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
+        >
+          <Camera className="w-3.5 h-3.5 text-amber-300" />
+          <span>Ver todas las fotos (8)</span>
+        </button>
+      </div>
+
       {/* Manual Slide Arrows */}
       <button
         onClick={prevSlide}
-        className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center backdrop-blur-sm border border-white/15 transition-colors"
+        className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center backdrop-blur-sm border border-white/15 transition-colors"
         aria-label="Slide anterior"
       >
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={nextSlide}
-        className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center backdrop-blur-sm border border-white/15 transition-colors"
+        className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center backdrop-blur-sm border border-white/15 transition-colors"
         aria-label="Slide siguiente"
       >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-5 h-5" />
       </button>
-
-      {/* 🚀 THE AIRBNB-STYLE FLOATING SEARCH CAPSULE (100% VISIBLE, NO CLIPPING) */}
-      <div className="relative z-30 max-w-4xl mx-auto px-4 sm:px-6 w-full">
-        <div className="text-center mb-2.5">
-          <span className="text-[11px] font-bold text-amber-300/90 uppercase tracking-widest inline-flex items-center gap-1.5">
-            <Sparkles className="w-3 h-3" /> Consultar Fechas Directamente con el Anfitrión
-          </span>
-        </div>
-
-        <form
-          onSubmit={handleCapsuleSubmit}
-          className="bg-white rounded-2xl sm:rounded-full p-2.5 sm:p-3 shadow-2xl border-2 border-stone-200 grid grid-cols-1 sm:grid-cols-12 gap-2 items-center text-stone-900"
-        >
-          {/* Check-in Pill */}
-          <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-50 transition-colors cursor-pointer group text-left">
-            <label htmlFor={checkInId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
-              Llegada
-            </label>
-            <input
-              id={checkInId}
-              type="date"
-              required
-              min={getTodayString(0)}
-              value={checkIn}
-              onChange={(e) => {
-                setCheckIn(e.target.value);
-                if (new Date(e.target.value) >= new Date(checkOut)) {
-                  const next = new Date(e.target.value);
-                  next.setDate(next.getDate() + 1);
-                  setCheckOut(next.toISOString().split('T')[0]);
-                }
-              }}
-              className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
-            />
-          </div>
-
-          <div className="hidden sm:block w-px h-8 bg-stone-200" />
-
-          {/* Check-out Pill */}
-          <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-50 transition-colors cursor-pointer group text-left">
-            <label htmlFor={checkOutId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
-              Salida
-            </label>
-            <input
-              id={checkOutId}
-              type="date"
-              required
-              min={checkIn || getTodayString(1)}
-              value={checkOut}
-              onChange={(e) => setCheckOut(e.target.value)}
-              className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
-            />
-          </div>
-
-          <div className="hidden sm:block w-px h-8 bg-stone-200" />
-
-          {/* Guests Pill */}
-          <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-50 transition-colors cursor-pointer group text-left">
-            <label htmlFor={guestsId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
-              Huéspedes
-            </label>
-            <select
-              id={guestsId}
-              value={guests}
-              onChange={(e) => setGuests(Number(e.target.value))}
-              className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
-            >
-              <option value={1}>1 Huésped</option>
-              <option value={2}>2 Huéspedes</option>
-              <option value={3}>3 Huéspedes</option>
-              <option value={4}>4 Huéspedes (Máx)</option>
-            </select>
-          </div>
-
-          {/* Action Button */}
-          <div className="sm:col-span-3">
-            <button
-              type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-3.5 px-4 rounded-xl sm:rounded-full shadow-lg shadow-rose-900/30 text-xs sm:text-sm transition-all hover:scale-102 active:scale-98 cursor-pointer"
-            >
-              <Search className="w-4 h-4 shrink-0" />
-              <span>Solicitar Reserva</span>
-            </button>
-          </div>
-        </form>
-      </div>
     </section>
   );
 }

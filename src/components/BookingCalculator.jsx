@@ -71,7 +71,7 @@ export default function BookingCalculator({ onOpenBookingModal }) {
   return (
     <section id="calculadora" className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-white rounded-3xl shadow-xl border border-stone-200/90 overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-xl border border-stone-200/90 overflow-hidden reveal-init reveal-up">
           {/* Top Banner */}
           <div className="bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 text-white p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>

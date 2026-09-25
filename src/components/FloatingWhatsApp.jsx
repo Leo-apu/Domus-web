@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { APARTMENT_INFO } from '../data/apartmentData';
 
 export default function FloatingWhatsApp() {
@@ -7,9 +7,8 @@ export default function FloatingWhatsApp() {
   const [showBubble, setShowBubble] = useState(false);
 
   useEffect(() => {
-    // Show after scrolling 200px or after 3 seconds
     const handleScroll = () => {
-      if (window.scrollY > 200) {
+      if (window.scrollY > 300) {
         setVisible(true);
       }
     };
@@ -19,7 +18,7 @@ export default function FloatingWhatsApp() {
     const timer = setTimeout(() => {
       setVisible(true);
       setShowBubble(true);
-    }, 3500);
+    }, 4000);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -30,14 +29,14 @@ export default function FloatingWhatsApp() {
   if (!visible) return null;
 
   return (
-    <aside aria-label="Contacto por WhatsApp" className="fixed bottom-20 sm:bottom-6 right-5 z-40 flex items-end gap-3 pointer-events-auto">
-      {/* Speech Bubble Tooltip */}
+    <aside aria-label="Contacto por WhatsApp" className="fixed bottom-20 sm:bottom-6 right-5 z-40 flex flex-col items-end gap-2 pointer-events-auto">
+      {/* Speech Bubble Tooltip positioned cleanly ABOVE the button, NOT overlapping the center */}
       {showBubble && (
-        <div className="hidden sm:flex items-center gap-2 bg-white text-stone-800 text-xs font-semibold px-4 py-2.5 rounded-2xl shadow-xl border border-stone-200 animate-in fade-in slide-in-from-right-4 duration-300">
-          <span>👋 ¡Hola! ¿Consultas sobre el departamento en Jujuy?</span>
+        <div className="hidden sm:flex items-center gap-2 bg-stone-900 text-white text-xs font-semibold px-3.5 py-2 rounded-2xl shadow-2xl border border-stone-700 animate-in fade-in slide-in-from-bottom-2 duration-300 max-w-xs">
+          <span>👋 ¡Hola! Consultanos disponibilidad en Jujuy</span>
           <button
             onClick={() => setShowBubble(false)}
-            className="text-stone-400 hover:text-stone-600 p-0.5 ml-1"
+            className="text-stone-400 hover:text-white p-0.5 ml-1 transition-colors"
             aria-label="Cerrar sugerencia"
           >
             <X className="w-3.5 h-3.5" />
@@ -51,10 +50,10 @@ export default function FloatingWhatsApp() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Contactar por WhatsApp"
-        className="w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-2xl transition-all hover:scale-110 active:scale-95 animate-pulse-whatsapp group relative"
+        className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-2xl transition-all hover:scale-110 active:scale-95 animate-pulse-whatsapp group relative"
       >
         <svg
-          className="w-8 h-8 fill-white"
+          className="w-7 h-7 sm:w-8 sm:h-8 fill-white"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -62,9 +61,9 @@ export default function FloatingWhatsApp() {
         </svg>
 
         {/* Ping ring */}
-        <span className="absolute -top-1 -right-1 flex h-4 w-4">
+        <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white" />
+          <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-white" />
         </span>
       </a>
     </aside>

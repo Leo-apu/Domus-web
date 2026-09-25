@@ -15,8 +15,13 @@ import MobileBookingBar from './components/MobileBookingBar';
 import BookingModal from './components/BookingModal';
 
 import ParallaxBanner from './components/ParallaxBanner';
+import ParallaxStory from './components/ParallaxStory';
+import { useScrollReveal } from './hooks/useScrollReveal';
 
 export default function App() {
+  // Activate scroll reveal animations across all sections
+  useScrollReveal();
+
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [bookingData, setBookingData] = useState({
@@ -24,6 +29,7 @@ export default function App() {
     checkOut: '',
     guests: 2,
   });
+
 
   const handleOpenGallery = () => {
     setIsLightboxOpen(true);
@@ -70,6 +76,9 @@ export default function App() {
 
         {/* Location in San Salvador de Jujuy, Maps & Nearby Attractions */}
         <LocationSection />
+
+        {/* 🌟 2nd Parallax Section: History, Quality & Animated Stats Counters */}
+        <ParallaxStory onOpenBookingModal={handleOpenBookingModal} />
 
         {/* Guest Reviews & 4.96 Rating Breakdown */}
         <Testimonials />

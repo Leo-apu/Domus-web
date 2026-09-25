@@ -36,7 +36,7 @@ export default function RoomExplorer({ onSelectRoomImage }) {
     <section id="espacios" className="py-20 bg-stone-100/60 bg-topo-pattern border-b border-stone-200 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-12 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <Compass className="w-3.5 h-3.5" />
             Distribución & Ambientes
@@ -50,7 +50,7 @@ export default function RoomExplorer({ onSelectRoomImage }) {
         </div>
 
         {/* Room Selector Pills */}
-        <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar">
+        <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar reveal-init reveal-up delay-100">
           {ROOMS_DETAILS.map((room) => (
             <button
               key={room.id}
@@ -68,7 +68,7 @@ export default function RoomExplorer({ onSelectRoomImage }) {
         </div>
 
         {/* Active Room Detail Showcase */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-200/90 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-200/90 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center reveal-init reveal-scale delay-200">
           {/* Left Column: Image with badges */}
           <div className="lg:col-span-7 relative group rounded-2xl overflow-hidden shadow-lg bg-stone-100 aspect-[16/10]">
             <img

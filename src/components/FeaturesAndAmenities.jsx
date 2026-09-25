@@ -56,7 +56,7 @@ export default function FeaturesAndAmenities() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-rose-500/20 text-rose-300 border border-rose-500/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             Todo Incluido
@@ -71,7 +71,7 @@ export default function FeaturesAndAmenities() {
 
         {/* Highlighted 4 Core Services (Modern replacement for the original 4 circles) */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
-          <div className="bg-white/5 border border-white/10 hover:border-amber-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md">
+          <div className="bg-white/5 border border-white/10 hover:border-amber-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md reveal-init reveal-scale delay-100">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <Zap className="w-7 h-7" />
             </div>
@@ -79,7 +79,7 @@ export default function FeaturesAndAmenities() {
             <p className="text-xs text-stone-400">Instalación eléctrica segura y sin costos extras.</p>
           </div>
 
-          <div className="bg-white/5 border border-white/10 hover:border-sky-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md">
+          <div className="bg-white/5 border border-white/10 hover:border-sky-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md reveal-init reveal-scale delay-200">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-sky-500/20 text-sky-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <Droplets className="w-7 h-7" />
             </div>
@@ -87,7 +87,7 @@ export default function FeaturesAndAmenities() {
             <p className="text-xs text-stone-400">Presión constante y termotanque de alta recuperación.</p>
           </div>
 
-          <div className="bg-white/5 border border-white/10 hover:border-emerald-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md">
+          <div className="bg-white/5 border border-white/10 hover:border-emerald-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md reveal-init reveal-scale delay-300">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <Wifi className="w-7 h-7" />
             </div>
@@ -95,7 +95,7 @@ export default function FeaturesAndAmenities() {
             <p className="text-xs text-stone-400">Alta velocidad 300MB para streaming y trabajo.</p>
           </div>
 
-          <div className="bg-white/5 border border-white/10 hover:border-rose-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md">
+          <div className="bg-white/5 border border-white/10 hover:border-rose-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md reveal-init reveal-scale delay-400">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <Tv className="w-7 h-7" />
             </div>
