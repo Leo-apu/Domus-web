@@ -29,14 +29,14 @@ export default function FloatingWhatsApp() {
   if (!visible) return null;
 
   return (
-    <aside aria-label="Contacto por WhatsApp" className="fixed bottom-20 sm:bottom-6 right-5 z-40 flex flex-col items-end gap-2 pointer-events-auto">
-      {/* Speech Bubble Tooltip positioned cleanly ABOVE the button, NOT overlapping the center */}
+    <aside aria-label="Contacto por WhatsApp" className="fixed bottom-20 sm:bottom-6 right-5 z-40 flex items-center gap-3 pointer-events-auto">
+      {/* Speech Bubble Tooltip positioned to the LEFT of the button (as the user loves) */}
       {showBubble && (
-        <div className="hidden sm:flex items-center gap-2 bg-stone-900 text-white text-xs font-semibold px-3.5 py-2 rounded-2xl shadow-2xl border border-stone-700 animate-in fade-in slide-in-from-bottom-2 duration-300 max-w-xs">
+        <div className="hidden sm:flex items-center gap-2.5 bg-stone-900/95 backdrop-blur-md text-white text-xs font-semibold pl-4 pr-3 py-2.5 rounded-full shadow-2xl border border-stone-700/80 animate-in fade-in slide-in-from-right-3 duration-300">
           <span>👋 ¡Hola! Consultanos disponibilidad en Jujuy</span>
           <button
             onClick={() => setShowBubble(false)}
-            className="text-stone-400 hover:text-white p-0.5 ml-1 transition-colors"
+            className="text-stone-400 hover:text-white p-0.5 ml-1 transition-colors rounded-full hover:bg-stone-800"
             aria-label="Cerrar sugerencia"
           >
             <X className="w-3.5 h-3.5" />

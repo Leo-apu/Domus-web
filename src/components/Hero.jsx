@@ -1,15 +1,18 @@
-import { useState, useEffect, useId } from 'react';
+import { useState, useEffect } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
   MapPin,
   Star,
   Users,
-  Calendar,
-  Sparkles,
+  Bed,
+  Bath,
+  Maximize2,
+  CalendarCheck,
   Camera,
-  Search,
-  Check,
+  Sparkles,
+  ChevronDown,
+  ShieldCheck,
 } from 'lucide-react';
 import { APARTMENT_INFO } from '../data/apartmentData';
 
@@ -17,255 +20,207 @@ const HERO_SLIDES = [
   {
     image: '/images/landing-2.webp',
     title: 'Tu Refugio Céntrico y Exclusivo en Jujuy',
-    subtitle: 'Departamento 3 ambientes a 2 cuadras de Plaza Belgrano. Comodidad, calidez y la mejor ubicación.',
+    subtitle: 'Departamento 3 ambientes a solo 2 cuadras de Plaza Belgrano. Máximo confort, privacidad y ubicación privilegiada.',
     badge: 'Ubicación Inmejorable',
   },
   {
     image: '/images/landing-3.webp',
     title: 'Privacidad Total: 2 Baños en Suite',
-    subtitle: 'Cada habitación con su propio baño privado. Ideal para familias o amigos que buscan independencia.',
+    subtitle: 'Cada habitación cuenta con su propio baño privado completo. La independencia ideal para familias y amigos.',
     badge: '2 Baños en Suite',
   },
   {
     image: '/images/landing-1.webp',
-    title: 'Equipamiento Completo para 4 Huéspedes',
-    subtitle: 'Cocina integral, Smart TV, WiFi de 300MB y balcón con vista abierta a los cerros jujeños.',
-    badge: 'Todo Incluido',
+    title: 'Equipamiento de Categoría para 4 Huéspedes',
+    subtitle: 'Cocina integral completa, Smart TV, WiFi 300MB y balcón con vista abierta a los cerros de Jujuy.',
+    badge: 'Todo Equipado',
   },
 ];
 
 export default function Hero({ onOpenGallery, onOpenBookingModal }) {
-  const checkInId = useId();
-  const checkOutId = useId();
-  const guestsId = useId();
-
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Helper dates for the search capsule
-  const getTodayString = (offsetDays = 0) => {
-    const d = new Date();
-    d.setDate(d.getDate() + offsetDays);
-    return d.toISOString().split('T')[0];
-  };
-
-  const [checkIn, setCheckIn] = useState(getTodayString(1));
-  const [checkOut, setCheckOut] = useState(getTodayString(4));
-  const [guests, setGuests] = useState(2);
-
+  // Auto-advance slides every 6.5s
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 7000);
+    }, 6500);
     return () => clearInterval(timer);
   }, []);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
 
-  const handleCapsuleSubmit = (e) => {
+  const scrollToCalculator = (e) => {
     e.preventDefault();
-    if (onOpenBookingModal) {
-      onOpenBookingModal({
-        checkIn,
-        checkOut,
-        guests,
-      });
+    const el = document.getElementById('calculadora');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <section id="inicio" className="relative min-h-[85vh] sm:min-h-[88vh] lg:min-h-[92vh] flex flex-col justify-center items-center bg-stone-950 text-white pt-24 sm:pt-28 pb-16 sm:pb-20">
-      {/* Background Slides with Ken Burns Effect */}
+    <section
+      id="inicio"
+      className="relative min-h-[95vh] lg:min-h-screen flex flex-col justify-center items-center bg-stone-950 text-white pt-24 sm:pt-28 pb-16 overflow-hidden"
+    >
+      {/* Background Slides with smooth Ken Burns animation and cinematic overlays */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {HERO_SLIDES.map((slide, index) => (
           <div
             key={slide.image}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
+              index === currentSlide ? 'opacity-100' : 'opacity-0 pointer-events-none'
             }`}
           >
             <img
               src={slide.image}
               alt={slide.title}
               className={`w-full h-full object-cover object-center ${
-                index === currentSlide ? 'animate-kenburns' : ''
+                index === currentSlide ? 'animate-kenburns scale-105' : 'scale-100'
               }`}
             />
-            {/* Cinematic dark gradients for crystal-clear readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/65 to-stone-950/45" />
-            <div className="absolute inset-0 mesh-gradient-dark opacity-70" />
+            {/* Cinematic Multilayer Gradients for Crystal Clear Text Contrast */}
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/60 to-stone-950/45" />
+            <div className="absolute inset-0 mesh-gradient-dark opacity-65" />
           </div>
         ))}
       </div>
 
-      {/* Floating Trust Badges in Corners (Desktop only, positioned comfortably) */}
-      <div className="hidden xl:flex absolute top-28 left-8 z-20 items-center gap-2.5 bg-stone-900/80 border border-white/20 px-3.5 py-2 rounded-2xl backdrop-blur-md text-white shadow-xl animate-float-slow">
-        <div className="w-7 h-7 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
-          <MapPin className="w-3.5 h-3.5" />
-        </div>
-        <div className="text-left">
-          <p className="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Ubicación</p>
-          <p className="text-xs font-bold text-white">A 2 cuadras de Plaza Belgrano</p>
-        </div>
-      </div>
-
-      <div className="hidden xl:flex absolute top-28 right-8 z-20 items-center gap-2.5 bg-stone-900/80 border border-white/20 px-3.5 py-2 rounded-2xl backdrop-blur-md text-white shadow-xl animate-float-slow" style={{ animationDelay: '1.5s' }}>
-        <div className="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-          <Star className="w-3.5 h-3.5 fill-amber-400" />
-        </div>
-        <div className="text-left">
-          <p className="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Superanfitrión</p>
-          <p className="text-xs font-bold text-white">4.96 ★ Calificación Verificada</p>
-        </div>
-      </div>
-
       {/* Main Hero Center Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center w-full">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center w-full my-auto">
         {/* Rating and Spec Pill */}
-        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-xs font-semibold mb-4 text-stone-200 shadow-xl reveal-init reveal-up">
+        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium mb-6 text-stone-200 shadow-xl reveal-init reveal-up">
           <span className="flex items-center text-amber-400 gap-1 font-bold">
-            <Star className="w-3.5 h-3.5 fill-amber-400" />
+            <Star className="w-4 h-4 fill-amber-400" />
             {APARTMENT_INFO.rating}
           </span>
           <span className="text-white/40">|</span>
-          <span className="text-stone-300">San Salvador de Jujuy</span>
-          <span className="text-white/40">|</span>
-          <span className="text-emerald-400 flex items-center gap-1 font-medium">
-            <Check className="w-3.5 h-3.5" /> Depto 3 Ambientes
+          <span className="flex items-center gap-1 text-stone-300">
+            <MapPin className="w-3.5 h-3.5 text-rose-400" />
+            Centro, San Salvador de Jujuy
+          </span>
+          <span className="hidden sm:inline text-white/40">|</span>
+          <span className="hidden sm:inline text-emerald-400 font-semibold flex items-center gap-1">
+            <ShieldCheck className="w-4 h-4" />
+            Superanfitrión Verificado
           </span>
         </div>
 
-        {/* Hero Title (Clean, elegant, perfectly proportioned) */}
-        <h1 className="font-serif-title text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight mb-3 drop-shadow-md max-w-3xl reveal-init reveal-up delay-100">
+        {/* Dynamic Title with animation */}
+        <h1 className="font-serif-title text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight sm:leading-tight mb-4 drop-shadow-xl max-w-4xl reveal-init reveal-up delay-100">
           {HERO_SLIDES[currentSlide].title}
         </h1>
 
         {/* Hero Subtitle */}
-        <p className="text-xs sm:text-base text-stone-200 max-w-xl font-light leading-relaxed mb-8 drop-shadow reveal-init reveal-up delay-200">
+        <p className="text-sm sm:text-lg lg:text-xl text-stone-200 max-w-2xl font-light leading-relaxed mb-8 drop-shadow reveal-init reveal-up delay-200">
           {HERO_SLIDES[currentSlide].subtitle}
         </p>
 
-        {/* 🚀 THE AIRBNB-STYLE FLOATING SEARCH CAPSULE (CLEAN, ELEVATED, WITH AMPLE SPACE BELOW) */}
-        <div className="w-full max-w-3xl mx-auto reveal-init reveal-scale delay-300">
-          <form
-            onSubmit={handleCapsuleSubmit}
-            className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-full p-2.5 sm:p-3 shadow-[0_15px_40px_rgba(0,0,0,0.35)] border border-stone-200/90 grid grid-cols-1 sm:grid-cols-12 gap-2 items-center text-stone-900"
+        {/* 🌟 4 Property Highlights Chips (Aesthetic, clean, non-cluttering) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 w-full max-w-3xl mb-10 reveal-init reveal-scale delay-300">
+          <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 flex items-center gap-3 text-left shadow-lg hover:border-white/30 transition-all">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <p className="text-[10px] sm:text-[11px] text-stone-400 font-medium uppercase tracking-wider">Capacidad</p>
+              <p className="text-xs sm:text-sm font-bold text-white">Hasta 4 pers.</p>
+            </div>
+          </div>
+
+          <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 flex items-center gap-3 text-left shadow-lg hover:border-white/30 transition-all">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+              <Bed className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <p className="text-[10px] sm:text-[11px] text-stone-400 font-medium uppercase tracking-wider">Dormitorios</p>
+              <p className="text-xs sm:text-sm font-bold text-white">2 Habitaciones</p>
+            </div>
+          </div>
+
+          <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 flex items-center gap-3 text-left shadow-lg hover:border-white/30 transition-all">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
+              <Bath className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <p className="text-[10px] sm:text-[11px] text-stone-400 font-medium uppercase tracking-wider">Baños Privados</p>
+              <p className="text-xs sm:text-sm font-bold text-white">2 en Suite</p>
+            </div>
+          </div>
+
+          <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 flex items-center gap-3 text-left shadow-lg hover:border-white/30 transition-all">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+              <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div>
+              <p className="text-[10px] sm:text-[11px] text-stone-400 font-medium uppercase tracking-wider">Superficie</p>
+              <p className="text-xs sm:text-sm font-bold text-white">66 m² + Balcón</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 🚀 Dual Luxury CTA Buttons */}
+        <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto reveal-init reveal-up delay-400">
+          <a
+            href="#calculadora"
+            onClick={scrollToCalculator}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-rose-600 via-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold px-8 py-4 rounded-full shadow-2xl shadow-rose-950/50 transition-all hover:scale-105 active:scale-95 text-sm sm:text-base cursor-pointer"
           >
-            {/* Check-in Pill */}
-            <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-100/80 transition-colors cursor-pointer group text-left">
-              <label htmlFor={checkInId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
-                Llegada
-              </label>
-              <input
-                id={checkInId}
-                type="date"
-                required
-                min={getTodayString(0)}
-                value={checkIn}
-                onChange={(e) => {
-                  setCheckIn(e.target.value);
-                  if (new Date(e.target.value) >= new Date(checkOut)) {
-                    const next = new Date(e.target.value);
-                    next.setDate(next.getDate() + 1);
-                    setCheckOut(next.toISOString().split('T')[0]);
-                  }
-                }}
-                className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
-              />
-            </div>
+            <CalendarCheck className="w-5 h-5 text-amber-200" />
+            <span>Consultar Disponibilidad</span>
+          </a>
 
-            <div className="hidden sm:block w-px h-8 bg-stone-200" />
-
-            {/* Check-out Pill */}
-            <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-100/80 transition-colors cursor-pointer group text-left">
-              <label htmlFor={checkOutId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
-                Salida
-              </label>
-              <input
-                id={checkOutId}
-                type="date"
-                required
-                min={checkIn || getTodayString(1)}
-                value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
-                className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
-              />
-            </div>
-
-            <div className="hidden sm:block w-px h-8 bg-stone-200" />
-
-            {/* Guests Pill */}
-            <div className="sm:col-span-3 px-4 py-2 rounded-xl sm:rounded-full hover:bg-stone-100/80 transition-colors cursor-pointer group text-left">
-              <label htmlFor={guestsId} className="block text-[10px] font-extrabold uppercase tracking-wider text-stone-500 group-hover:text-rose-600 transition-colors cursor-pointer">
-                Huéspedes
-              </label>
-              <select
-                id={guestsId}
-                value={guests}
-                onChange={(e) => setGuests(Number(e.target.value))}
-                className="w-full bg-transparent text-xs sm:text-sm font-bold text-stone-900 focus:outline-none cursor-pointer"
-              >
-                <option value={1}>1 Huésped</option>
-                <option value={2}>2 Huéspedes</option>
-                <option value={3}>3 Huéspedes</option>
-                <option value={4}>4 Huéspedes (Máx)</option>
-              </select>
-            </div>
-
-            {/* Action Button */}
-            <div className="sm:col-span-3">
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-3.5 px-4 rounded-xl sm:rounded-full shadow-lg shadow-rose-900/30 text-xs sm:text-sm transition-all hover:scale-102 active:scale-98 cursor-pointer"
-              >
-                <Search className="w-4 h-4 shrink-0" />
-                <span>Solicitar Reserva</span>
-              </button>
-            </div>
-          </form>
+          <button
+            onClick={onOpenGallery}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/25 text-white font-semibold px-7 py-4 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 text-sm sm:text-base cursor-pointer"
+          >
+            <Camera className="w-5 h-5 text-amber-300" />
+            <span>Ver Fotos del Depto</span>
+          </button>
         </div>
 
         {/* Slide Indicators */}
-        <div className="flex items-center gap-2 mt-8">
+        <div className="flex items-center gap-2.5 mt-10">
           {HERO_SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentSlide(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                 i === currentSlide ? 'w-8 bg-rose-500' : 'w-2 bg-white/30 hover:bg-white/50'
               }`}
-              aria-label={`Slide ${i + 1}`}
+              aria-label={`Ir al slide ${i + 1}`}
             />
           ))}
         </div>
       </div>
 
-      {/* Floating 'Ver Fotos (8)' button in bottom-left corner (Airbnb Style, completely non-intrusive) */}
-      <div className="absolute bottom-6 left-6 z-20 hidden sm:block">
-        <button
-          onClick={onOpenGallery}
-          className="inline-flex items-center gap-2 bg-black/50 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white font-semibold px-4 py-2 rounded-xl text-xs shadow-lg transition-all hover:scale-105 active:scale-95 cursor-pointer"
-        >
-          <Camera className="w-3.5 h-3.5 text-amber-300" />
-          <span>Ver todas las fotos (8)</span>
-        </button>
-      </div>
-
-      {/* Manual Slide Arrows */}
+      {/* Manual Slide Controls for Desktop */}
       <button
         onClick={prevSlide}
-        className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center backdrop-blur-sm border border-white/15 transition-colors"
+        className="hidden md:flex absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-stone-900/40 hover:bg-stone-900/80 text-white items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-110 cursor-pointer"
         aria-label="Slide anterior"
       >
-        <ChevronLeft className="w-5 h-5" />
+        <ChevronLeft className="w-6 h-6" />
       </button>
       <button
         onClick={nextSlide}
-        className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center backdrop-blur-sm border border-white/15 transition-colors"
+        className="hidden md:flex absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-stone-900/40 hover:bg-stone-900/80 text-white items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-110 cursor-pointer"
         aria-label="Slide siguiente"
       >
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="w-6 h-6" />
       </button>
+
+      {/* Scroll Down Hint at the bottom */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center pointer-events-none opacity-70 hover:opacity-100 transition-opacity">
+        <span className="text-[10px] uppercase font-bold tracking-widest text-stone-400 mb-1">
+          Descubrí el departamento
+        </span>
+        <ChevronDown className="w-4 h-4 text-stone-400 animate-bounce" />
+      </div>
+
+      {/* Subtle bottom gradient transition into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-stone-50 to-transparent pointer-events-none" />
     </section>
   );
 }
