@@ -31,9 +31,9 @@ export const APARTMENT_INFO = {
     stairs: true,
   },
   emailJsConfig: {
-    serviceId: "default_service",
-    templateId: "template_s13u0hv",
-    publicKey: "wBE_TFcOxUUeWO_NG",
+    serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || "default_service",
+    templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_s13u0hv",
+    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "wBE_TFcOxUUeWO_NG",
   },
 };
 

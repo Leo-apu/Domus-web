@@ -118,8 +118,21 @@ Todos los textos, número de WhatsApp, fotos y servicios están centralizados en
 Para modificar:
 - **Número de WhatsApp**: Modificá `whatsappLink` y `whatsappPhone`.
 - **Precios o capacidad**: Modificá el objeto `capacity`.
-- **Credenciales EmailJS**: Editá `emailJsConfig` (serviceId, templateId, publicKey).
 - **Fotografías**: Agregá o reemplazá archivos en `public/images/` y actualizá el array `GALLERY_IMAGES`.
+
+### 🔐 Variables de Entorno (`.env`)
+Las claves de **EmailJS** ahora están protegidas en variables de entorno (no expuestas en el repositorio):
+1. Copiá el archivo `.env.example` y renombralo como `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Configurá tus claves de EmailJS:
+   ```env
+   VITE_EMAILJS_SERVICE_ID=tu_service_id
+   VITE_EMAILJS_TEMPLATE_ID=tu_template_id
+   VITE_EMAILJS_PUBLIC_KEY=tu_public_key
+   ```
+   *(En plataformas como Vercel o Netlify, podés agregarlas directamente en la sección "Environment Variables" del panel).*
 
 ---
 
