@@ -13,7 +13,7 @@ import {
 import confetti from 'canvas-confetti';
 import { APARTMENT_INFO } from '../data/apartmentData';
 
-export default function BookingCalculator() {
+export default function BookingCalculator({ onOpenBookingModal }) {
   const checkInId = useId();
   const checkOutId = useId();
   const guestsId = useId();
@@ -65,14 +65,12 @@ export default function BookingCalculator() {
 
     const encodedMessage = encodeURIComponent(message);
     const url = `https://wa.me/5493880000000?text=${encodedMessage}`;
-    
-    // Also support user's wa.link if configured, else standard wa.me
     window.open(url, '_blank');
   };
 
   return (
-    <section id="calculadora" className="py-20 bg-gradient-to-b from-stone-100 to-stone-50 border-b border-stone-200">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="calculadora" className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="bg-white rounded-3xl shadow-xl border border-stone-200/90 overflow-hidden">
           {/* Top Banner */}
           <div className="bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 text-white p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -194,22 +192,28 @@ export default function BookingCalculator() {
             </div>
 
             {/* Main Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3">
               <button
-                onClick={handleWhatsAppBooking}
-                className="w-full sm:flex-1 flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-emerald-700/20 text-base transition-all hover:scale-102 active:scale-98"
+                type="button"
+                onClick={() => {
+                  if (onOpenBookingModal) {
+                    onOpenBookingModal({ checkIn, checkOut, guests });
+                  }
+                }}
+                className="w-full sm:flex-1 flex items-center justify-center gap-2.5 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-rose-900/20 text-sm sm:text-base transition-all hover:scale-102 active:scale-98 cursor-pointer"
               >
-                <MessageCircle className="w-5 h-5 fill-white" />
-                <span>Consultar por WhatsApp con estos datos</span>
+                <Sparkles className="w-5 h-5 text-amber-300" />
+                <span>Solicitar Reserva (Registrar en Planilla)</span>
               </button>
 
-              <a
-                href="#contacto"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold py-4 px-6 rounded-2xl text-sm transition-all"
+              <button
+                type="button"
+                onClick={handleWhatsAppBooking}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 px-6 rounded-2xl text-sm transition-all shadow-md"
               >
-                <Send className="w-4 h-4 text-stone-500" />
-                <span>O enviar consulta por Email</span>
-              </a>
+                <MessageCircle className="w-4 h-4 fill-white" />
+                <span>WhatsApp Directo</span>
+              </button>
             </div>
           </div>
         </div>

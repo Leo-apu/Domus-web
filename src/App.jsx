@@ -12,38 +12,56 @@ import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import MobileBookingBar from './components/MobileBookingBar';
+import BookingModal from './components/BookingModal';
 
 export default function App() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingData, setBookingData] = useState({
+    checkIn: '',
+    checkOut: '',
+    guests: 2,
+  });
 
   const handleOpenGallery = () => {
     setIsLightboxOpen(true);
   };
 
+  const handleOpenBookingModal = (dates = {}) => {
+    setBookingData((prev) => ({
+      ...prev,
+      ...dates,
+    }));
+    setIsBookingModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-stone-50 text-stone-800 flex flex-col font-sans selection:bg-rose-500 selection:text-white pb-16 sm:pb-0">
       {/* Top Fixed Header */}
-      <Navbar />
+      <Navbar onOpenBookingModal={handleOpenBookingModal} />
 
       {/* Main Page Content */}
       <main className="flex-1">
-        {/* Hero Section with Slider & Quick Stats */}
-        <Hero onOpenGallery={handleOpenGallery} />
+        {/* Hero Section with Slider, Quick Stats & Airbnb-style Floating Capsule */}
+        <Hero
+          onOpenGallery={handleOpenGallery}
+          onOpenBookingModal={handleOpenBookingModal}
+        />
 
-        {/* Modern Airbnb-style Image Gallery with Fullscreen Lightbox */}
+        {/* Modern Airbnb-style Image Gallery with Fullscreen Lightbox & Topo Background */}
         <ModernGallery
           isLightboxOpen={isLightboxOpen}
           setIsLightboxOpen={setIsLightboxOpen}
         />
 
-        {/* Room-by-Room Walkthrough & Breakdown */}
+        {/* Room-by-Room Walkthrough & Breakdown with Topo Pattern */}
         <RoomExplorer onSelectRoomImage={() => setIsLightboxOpen(true)} />
 
-        {/* All Amenities and Included Services */}
+        {/* All Amenities and Included Services with Warm Glow */}
         <FeaturesAndAmenities />
 
-        {/* Stay & Price Calculator with WhatsApp Direct Booking */}
-        <BookingCalculator />
+        {/* Stay & Price Calculator with WhatsApp Direct Booking & Google Sheets Action */}
+        <BookingCalculator onOpenBookingModal={handleOpenBookingModal} />
 
         {/* Location in San Salvador de Jujuy, Maps & Nearby Attractions */}
         <LocationSection />
@@ -63,7 +81,16 @@ export default function App() {
 
       {/* Floating Elements for Mobile & Desktop UX */}
       <FloatingWhatsApp />
-      <MobileBookingBar />
+      <MobileBookingBar onOpenBookingModal={handleOpenBookingModal} />
+
+      {/* Google Sheets Booking Request Modal */}
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        initialCheckIn={bookingData.checkIn}
+        initialCheckOut={bookingData.checkOut}
+        initialGuests={bookingData.guests}
+      />
     </div>
   );
 }

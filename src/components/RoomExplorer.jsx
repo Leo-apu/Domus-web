@@ -33,8 +33,8 @@ export default function RoomExplorer({ onSelectRoomImage }) {
   };
 
   return (
-    <section id="espacios" className="py-20 bg-stone-50 border-b border-stone-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="espacios" className="py-20 bg-stone-100/60 bg-topo-pattern border-b border-stone-200 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">

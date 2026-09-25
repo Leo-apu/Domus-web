@@ -35,6 +35,7 @@ export const APARTMENT_INFO = {
     templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_s13u0hv",
     publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "wBE_TFcOxUUeWO_NG",
   },
+  googleSheetsWebhookUrl: import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL || "",
 };
 
 // Galería fotográfica completa del departamento

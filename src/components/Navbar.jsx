@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Phone, CalendarCheck, MapPin, Sparkles } from 'lucide-react';
 import { APARTMENT_INFO } from '../data/apartmentData';
 
-export default function Navbar() {
+export default function Navbar({ onOpenBookingModal }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -93,9 +93,10 @@ export default function Navbar() {
 
           {/* Actions & WhatsApp CTA */}
           <div className="hidden sm:flex items-center gap-3">
-            <a
-              href="#calculadora"
-              className={`hidden md:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg transition-colors ${
+            <button
+              type="button"
+              onClick={() => onOpenBookingModal && onOpenBookingModal()}
+              className={`hidden md:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg transition-colors cursor-pointer ${
                 isScrolled
                   ? 'text-stone-700 hover:bg-stone-100'
                   : 'text-stone-200 hover:bg-white/10'
@@ -103,7 +104,7 @@ export default function Navbar() {
             >
               <CalendarCheck className="w-4 h-4 text-rose-500" />
               <span>Cotizar Estadía</span>
-            </a>
+            </button>
 
             <a
               href={APARTMENT_INFO.whatsappLink}
