@@ -1,5 +1,5 @@
-import { Heart, Sparkles, CheckCircle, ShieldCheck } from 'lucide-react';
-import { APARTMENT_INFO } from '../data/apartmentData';
+import { Heart, Sparkles, CheckCircle, ShieldCheck } from "lucide-react";
+import { APARTMENT_INFO } from "../data/apartmentData";
 
 export default function ParallaxStory({ onOpenBookingModal }) {
   return (
@@ -9,12 +9,10 @@ export default function ParallaxStory({ onOpenBookingModal }) {
         backgroundImage: "url('/images/landing-1.webp')",
       }}
     >
-      {/* Dark overlay with warm gradient */}
       <div className="absolute inset-0 bg-stone-950/80 backdrop-blur-[2px]" />
       <div className="absolute inset-0 mesh-gradient-dark opacity-75" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Badge */}
         <div className="inline-flex items-center gap-2 bg-rose-500/20 border border-rose-400/40 text-rose-300 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6 reveal-init reveal-up">
           <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400" />
           Nuestra Historia & Compromiso
@@ -25,10 +23,12 @@ export default function ParallaxStory({ onOpenBookingModal }) {
         </h2>
 
         <p className="text-sm sm:text-lg text-stone-200 max-w-3xl mx-auto font-light leading-relaxed mb-12 drop-shadow reveal-init reveal-up delay-200">
-          En Domus nos dedicamos a ofrecer soluciones de alojamiento que combinan ubicación estratégica, independencia y un servicio cercano. Cuidamos cada detalle de limpieza, equipamiento y atención para que te sientas como en tu propia casa.
+          En Domus nos dedicamos a ofrecer soluciones de alojamiento que
+          combinan ubicación estratégica, independencia y un servicio cercano.
+          Cuidamos cada detalle de limpieza, equipamiento y atención para que te
+          sientas como en tu propia casa.
         </p>
 
-        {/* 4 Stats Grid (Reemplazo dinámico de los contadores originales) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
           <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-6 text-center reveal-init reveal-scale delay-100">
             <span className="font-serif-title text-3xl sm:text-4xl font-extrabold text-amber-400 block mb-1">
@@ -37,7 +37,9 @@ export default function ParallaxStory({ onOpenBookingModal }) {
             <span className="text-xs sm:text-sm font-semibold text-white block">
               Calificación Media
             </span>
-            <span className="text-[11px] text-stone-300">Basada en más de 50 estadías</span>
+            <span className="text-[11px] text-stone-300">
+              Basada en más de 50 estadías
+            </span>
           </div>
 
           <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-6 text-center reveal-init reveal-scale delay-200">
@@ -47,7 +49,9 @@ export default function ParallaxStory({ onOpenBookingModal }) {
             <span className="text-xs sm:text-sm font-semibold text-white block">
               Espacio Exclusivo
             </span>
-            <span className="text-[11px] text-stone-300">3 ambientes + Balcón</span>
+            <span className="text-[11px] text-stone-300">
+              3 ambientes + Balcón
+            </span>
           </div>
 
           <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-6 text-center reveal-init reveal-scale delay-300">
@@ -57,7 +61,9 @@ export default function ParallaxStory({ onOpenBookingModal }) {
             <span className="text-xs sm:text-sm font-semibold text-white block">
               Servicios Incluidos
             </span>
-            <span className="text-[11px] text-stone-300">Luz, agua, gas y WiFi 300MB</span>
+            <span className="text-[11px] text-stone-300">
+              Luz, agua, gas y WiFi 300MB
+            </span>
           </div>
 
           <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-6 text-center reveal-init reveal-scale delay-400">
@@ -67,11 +73,12 @@ export default function ParallaxStory({ onOpenBookingModal }) {
             <span className="text-xs sm:text-sm font-semibold text-white block">
               Asistencia al Huésped
             </span>
-            <span className="text-[11px] text-stone-300">Contacto directo con el dueño</span>
+            <span className="text-[11px] text-stone-300">
+              Contacto directo con el dueño
+            </span>
           </div>
         </div>
 
-        {/* Action Button */}
         <div className="reveal-init reveal-up delay-400">
           <button
             onClick={() => onOpenBookingModal && onOpenBookingModal()}

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { HelpCircle, ChevronDown } from 'lucide-react';
-import { FAQS } from '../data/apartmentData';
+import { useState } from "react";
+import { HelpCircle, ChevronDown } from "lucide-react";
+import { FAQS } from "../data/apartmentData";
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(0);
@@ -10,9 +10,11 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden">
+    <section
+      id="faq"
+      className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden"
+    >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
         <div className="text-center mb-12 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <HelpCircle className="w-3.5 h-3.5" />
@@ -22,11 +24,11 @@ export default function FAQ() {
             Todo lo que Necesitás Saber
           </h2>
           <p className="mt-3 text-sm sm:text-base text-stone-600 font-light">
-            Respuestas claras a las dudas más comunes sobre la reserva y estadía en Domus.
+            Respuestas claras a las dudas más comunes sobre la reserva y estadía
+            en Domus.
           </p>
         </div>
 
-        {/* Accordion */}
         <div className="space-y-3.5 reveal-init reveal-up delay-100">
           {FAQS.map((faq, index) => {
             const isOpen = openIndex === index;
@@ -46,8 +48,8 @@ export default function FAQ() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ${
                       isOpen
-                        ? 'bg-rose-100 text-rose-600 rotate-180'
-                        : 'bg-stone-100 text-stone-500'
+                        ? "bg-rose-100 text-rose-600 rotate-180"
+                        : "bg-stone-100 text-stone-500"
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />

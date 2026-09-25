@@ -1,11 +1,21 @@
-import { MapPin, Navigation, Compass, ExternalLink, Clock, Car, Footprints } from 'lucide-react';
-import { NEARBY_PLACES, APARTMENT_INFO } from '../data/apartmentData';
+import {
+  MapPin,
+  Navigation,
+  Compass,
+  ExternalLink,
+  Clock,
+  Car,
+  Footprints,
+} from "lucide-react";
+import { NEARBY_PLACES, APARTMENT_INFO } from "../data/apartmentData";
 
 export default function LocationSection() {
   return (
-    <section id="ubicacion" className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden">
+    <section
+      id="ubicacion"
+      className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <MapPin className="w-3.5 h-3.5" />
@@ -15,13 +25,12 @@ export default function LocationSection() {
             En Pleno Centro de San Salvador de Jujuy
           </h2>
           <p className="mt-3 text-base sm:text-lg text-stone-600 font-light">
-            {APARTMENT_INFO.address}. A solo 2 cuadras de la plaza principal y a pasos de los mejores restaurantes, bancos y atractivos turísticos.
+            {APARTMENT_INFO.address}. A solo 2 cuadras de la plaza principal y a
+            pasos de los mejores restaurantes, bancos y atractivos turísticos.
           </p>
         </div>
 
-        {/* Location Grid: Map + Points of Interest */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* Points of interest list */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-4 reveal-init reveal-left">
             <div className="space-y-3">
               <h3 className="font-serif-title text-xl font-bold text-stone-900 mb-4 flex items-center gap-2">
@@ -39,7 +48,9 @@ export default function LocationSection() {
                       <h4 className="text-sm font-bold text-stone-800 group-hover:text-rose-600 transition-colors">
                         {place.name}
                       </h4>
-                      <p className="text-xs text-stone-500 mt-0.5">{place.desc}</p>
+                      <p className="text-xs text-stone-500 mt-0.5">
+                        {place.desc}
+                      </p>
                     </div>
                     <span className="shrink-0 bg-stone-100 text-stone-700 text-[11px] font-semibold px-2.5 py-1 rounded-lg flex items-center gap-1">
                       <Footprints className="w-3 h-3 text-rose-500" />
@@ -48,7 +59,9 @@ export default function LocationSection() {
                   </div>
 
                   <div className="mt-2.5 pt-2 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-400 font-medium">
-                    <span className="text-rose-600 font-semibold">{place.type}</span>
+                    <span className="text-rose-600 font-semibold">
+                      {place.type}
+                    </span>
                     <span className="flex items-center gap-1 text-stone-500">
                       <Clock className="w-3 h-3" /> {place.time}
                     </span>
@@ -56,8 +69,6 @@ export default function LocationSection() {
                 </div>
               ))}
             </div>
-
-            {/* Google Maps External Button */}
             <div className="pt-2">
               <a
                 href={APARTMENT_INFO.googleMapsUrl}
@@ -72,7 +83,6 @@ export default function LocationSection() {
             </div>
           </div>
 
-          {/* Map Embed Card */}
           <div className="lg:col-span-7 bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-xl flex flex-col min-h-[380px] lg:min-h-[480px] reveal-init reveal-right">
             <div className="bg-stone-900 text-white px-5 py-3.5 flex items-center justify-between">
               <div className="flex items-center gap-2">

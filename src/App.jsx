@@ -1,35 +1,33 @@
-import { useState } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import ModernGallery from './components/ModernGallery';
-import RoomExplorer from './components/RoomExplorer';
-import FeaturesAndAmenities from './components/FeaturesAndAmenities';
-import BookingCalculator from './components/BookingCalculator';
-import LocationSection from './components/LocationSection';
-import Testimonials from './components/Testimonials';
-import FAQ from './components/FAQ';
-import ContactForm from './components/ContactForm';
-import Footer from './components/Footer';
-import FloatingWhatsApp from './components/FloatingWhatsApp';
-import MobileBookingBar from './components/MobileBookingBar';
-import BookingModal from './components/BookingModal';
+import { useState } from "react";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import ModernGallery from "./components/ModernGallery";
+import RoomExplorer from "./components/RoomExplorer";
+import FeaturesAndAmenities from "./components/FeaturesAndAmenities";
+import BookingCalculator from "./components/BookingCalculator";
+import LocationSection from "./components/LocationSection";
+import Testimonials from "./components/Testimonials";
+import FAQ from "./components/FAQ";
+import ContactForm from "./components/ContactForm";
+import Footer from "./components/Footer";
+import FloatingWhatsApp from "./components/FloatingWhatsApp";
+import MobileBookingBar from "./components/MobileBookingBar";
+import BookingModal from "./components/BookingModal";
 
-import ParallaxBanner from './components/ParallaxBanner';
-import ParallaxStory from './components/ParallaxStory';
-import { useScrollReveal } from './hooks/useScrollReveal';
+import ParallaxBanner from "./components/ParallaxBanner";
+import ParallaxStory from "./components/ParallaxStory";
+import { useScrollReveal } from "./hooks/useScrollReveal";
 
 export default function App() {
-  // Activate scroll reveal animations across all sections
   useScrollReveal();
 
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [bookingData, setBookingData] = useState({
-    checkIn: '',
-    checkOut: '',
+    checkIn: "",
+    checkOut: "",
     guests: 2,
   });
-
 
   const handleOpenGallery = () => {
     setIsLightboxOpen(true);

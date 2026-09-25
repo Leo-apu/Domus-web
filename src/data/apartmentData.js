@@ -1,6 +1,4 @@
 // Configuración centralizada de Domus Alquileres
-// San Salvador de Jujuy, Argentina
-
 export const APARTMENT_INFO = {
   name: "Domus Alquileres Temporarios",
   shortName: "Domus Jujuy",
@@ -8,8 +6,10 @@ export const APARTMENT_INFO = {
   rating: 4.96,
   reviewsCount: 52,
   address: "Gral. San Martín 121, San Salvador de Jujuy, Jujuy, Argentina",
-  googleMapsUrl: "https://maps.google.com/?q=Gral.+San+Mart%C3%ADn+121,+San+Salvador+de+Jujuy",
-  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3639.5950480067204!2d-65.2951006!3d-24.185930799999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x941b0f5c8f6225c1%3A0xb30976bd03fea1c0!2sGral.%20San%20Mart%C3%ADn%20121%2C%20Y4600ADC%20San%20Salvador%20de%20Jujuy%2C%20Jujuy!5e0!3m2!1ses-419!2sar!4v1712901915836!5m2!1ses-419!2sar",
+  googleMapsUrl:
+    "https://maps.google.com/?q=Gral.+San+Mart%C3%ADn+121,+San+Salvador+de+Jujuy",
+  mapEmbedUrl:
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3639.5950480067204!2d-65.2951006!3d-24.185930799999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x941b0f5c8f6225c1%3A0xb30976bd03fea1c0!2sGral.%20San%20Mart%C3%ADn%20121%2C%20Y4600ADC%20San%20Salvador%20de%20Jujuy%2C%20Jujuy!5e0!3m2!1ses-419!2sar!4v1712901915836!5m2!1ses-419!2sar",
   whatsappLink: "https://wa.link/49xxkp",
   whatsappPhone: "+54 9 388 000-0000",
   schedule: "Lunes a Lunes: 09:00 hs a 00:00 hs (Feriados inclusive)",
@@ -46,7 +46,8 @@ export const GALLERY_IMAGES = [
     alt: "Living Comedor espacioso con luz natural",
     title: "Living y Comedor Principal",
     category: "living",
-    description: "Espacio amplio y luminoso con mesa para 4 personas, Smart TV y ventanal al exterior.",
+    description:
+      "Espacio amplio y luminoso con mesa para 4 personas, Smart TV y ventanal al exterior.",
     featured: true,
   },
   {
@@ -55,7 +56,8 @@ export const GALLERY_IMAGES = [
     alt: "Living con sillón cómodo y Smart TV",
     title: "Área de Estar y Descanso",
     category: "living",
-    description: "Sillón confortable, excelente iluminación cálida y vista abierta.",
+    description:
+      "Sillón confortable, excelente iluminación cálida y vista abierta.",
     featured: true,
   },
   {
@@ -64,7 +66,8 @@ export const GALLERY_IMAGES = [
     alt: "Cocina moderna totalmente equipada",
     title: "Cocina Integral Equipada",
     category: "cocina",
-    description: "Heladera con freezer, microondas, horno a gas, pava eléctrica y vajilla completa.",
+    description:
+      "Heladera con freezer, microondas, horno a gas, pava eléctrica y vajilla completa.",
     featured: true,
   },
   {
@@ -73,7 +76,8 @@ export const GALLERY_IMAGES = [
     alt: "Dormitorio Principal con sommier matrimonial",
     title: "Dormitorio Principal (Cama Matrimonial)",
     category: "dormitorios",
-    description: "Sommier de 2 plazas, placard empotrado de gran capacidad y baño privado en suite.",
+    description:
+      "Sommier de 2 plazas, placard empotrado de gran capacidad y baño privado en suite.",
     featured: true,
   },
   {
@@ -82,7 +86,8 @@ export const GALLERY_IMAGES = [
     alt: "Segundo Dormitorio con dos camas individuales",
     title: "Dormitorio Secundario (2 Camas)",
     category: "dormitorios",
-    description: "Dos camas sommier individuales, placard, luz natural y acceso a su propio baño en suite.",
+    description:
+      "Dos camas sommier individuales, placard, luz natural y acceso a su propio baño en suite.",
     featured: true,
   },
   {
@@ -91,7 +96,8 @@ export const GALLERY_IMAGES = [
     alt: "Baño completo en suite 1",
     title: "Baño Completo 1 (En Suite)",
     category: "baños",
-    description: "Ducha con excelente caudal y agua caliente continua las 24 horas.",
+    description:
+      "Ducha con excelente caudal y agua caliente continua las 24 horas.",
     featured: false,
   },
   {
@@ -100,7 +106,8 @@ export const GALLERY_IMAGES = [
     alt: "Baño completo en suite 2",
     title: "Baño Completo 2 (En Suite)",
     category: "baños",
-    description: "Segundo baño completo en suite para máxima privacidad e independencia de los huéspedes.",
+    description:
+      "Segundo baño completo en suite para máxima privacidad e independencia de los huéspedes.",
     featured: false,
   },
   {
@@ -109,7 +116,8 @@ export const GALLERY_IMAGES = [
     alt: "Vista panorámica y entorno del departamento",
     title: "Entorno y Confort Domus",
     category: "living",
-    description: "Ambientes cálidos pensados para descansar tras recorrer los paisajes de Jujuy.",
+    description:
+      "Ambientes cálidos pensados para descansar tras recorrer los paisajes de Jujuy.",
     featured: false,
   },
 ];
@@ -198,28 +206,76 @@ export const AMENITIES = [
   {
     category: "Servicios Esenciales",
     items: [
-      { name: "WiFi Alta Velocidad", desc: "Fibra óptica ideal para streaming y trabajo remoto", icon: "Wifi" },
-      { name: "Luz y Gas incluidos", desc: "Sin costos extra ni cobros adicionales", icon: "Zap" },
-      { name: "Agua Caliente 24/7", desc: "Presión constante y termotanque de alta recuperación", icon: "Droplets" },
-      { name: "Smart TV con Streaming", desc: "Pantalla plana con aplicaciones y cable", icon: "Tv" },
+      {
+        name: "WiFi Alta Velocidad",
+        desc: "Fibra óptica ideal para streaming y trabajo remoto",
+        icon: "Wifi",
+      },
+      {
+        name: "Luz y Gas incluidos",
+        desc: "Sin costos extra ni cobros adicionales",
+        icon: "Zap",
+      },
+      {
+        name: "Agua Caliente 24/7",
+        desc: "Presión constante y termotanque de alta recuperación",
+        icon: "Droplets",
+      },
+      {
+        name: "Smart TV con Streaming",
+        desc: "Pantalla plana con aplicaciones y cable",
+        icon: "Tv",
+      },
     ],
   },
   {
     category: "Confort y Habitabilidad",
     items: [
-      { name: "2 Baños en Suite", desc: "Un baño privado dentro de cada dormitorio", icon: "Bath" },
-      { name: "Ropa Blanca Premium", desc: "Sábanas y toallones higienizados para cada huésped", icon: "Sparkles" },
-      { name: "Balcón al frente", desc: "Excelente vista de la ciudad y luz natural", icon: "Sun" },
-      { name: "Edificio con Ascensor", desc: "Acceso rápido y cómodo en edificio moderno de 10 pisos", icon: "Building2" },
+      {
+        name: "2 Baños en Suite",
+        desc: "Un baño privado dentro de cada dormitorio",
+        icon: "Bath",
+      },
+      {
+        name: "Ropa Blanca Premium",
+        desc: "Sábanas y toallones higienizados para cada huésped",
+        icon: "Sparkles",
+      },
+      {
+        name: "Balcón al frente",
+        desc: "Excelente vista de la ciudad y luz natural",
+        icon: "Sun",
+      },
+      {
+        name: "Edificio con Ascensor",
+        desc: "Acceso rápido y cómodo en edificio moderno de 10 pisos",
+        icon: "Building2",
+      },
     ],
   },
   {
     category: "Cocina y Gastronomía",
     items: [
-      { name: "Heladera con Freezer", desc: "Espaciosa para almacenar bebidas y alimentos", icon: "Refrigerator" },
-      { name: "Microondas y Pava Eléctrica", desc: "Para calentar comidas y preparar infusiones", icon: "Coffee" },
-      { name: "Cocina con Horno", desc: "Cocina completa con vajilla y utensilios", icon: "Utensils" },
-      { name: "Vajilla Completa para 4", desc: "Platos, cubiertos, vasos, tazas y copas", icon: "CheckCircle2" },
+      {
+        name: "Heladera con Freezer",
+        desc: "Espaciosa para almacenar bebidas y alimentos",
+        icon: "Refrigerator",
+      },
+      {
+        name: "Microondas y Pava Eléctrica",
+        desc: "Para calentar comidas y preparar infusiones",
+        icon: "Coffee",
+      },
+      {
+        name: "Cocina con Horno",
+        desc: "Cocina completa con vajilla y utensilios",
+        icon: "Utensils",
+      },
+      {
+        name: "Vajilla Completa para 4",
+        desc: "Platos, cubiertos, vasos, tazas y copas",
+        icon: "CheckCircle2",
+      },
     ],
   },
 ];
@@ -271,7 +327,8 @@ export const TESTIMONIALS = [
     rating: 5,
     date: "Enero 2026",
     title: "¡Excelente departamento en pleno centro!",
-    comment: "El departamento es tal cual se ve en las fotos o incluso más amplio. Que tenga dos dormitorios con baño privado cada uno fue clave para nuestra estadía con amigos. Súper limpio, agua caliente con excelente presión y a 2 pasos de la plaza.",
+    comment:
+      "El departamento es tal cual se ve en las fotos o incluso más amplio. Que tenga dos dormitorios con baño privado cada uno fue clave para nuestra estadía con amigos. Súper limpio, agua caliente con excelente presión y a 2 pasos de la plaza.",
     tag: "Estadía Vacacional",
   },
   {
@@ -280,7 +337,8 @@ export const TESTIMONIALS = [
     rating: 5,
     date: "Febrero 2026",
     title: "Muy cómodo para trabajar y pasear",
-    comment: "Viajé por trabajo y turismo. El WiFi anduvo rapidísimo para mis videollamadas y por la tarde salía caminando a cenar por el centro. Leandro siempre atento a cualquier consulta. 100% recomendable.",
+    comment:
+      "Viajé por trabajo y turismo. El WiFi anduvo rapidísimo para mis videollamadas y por la tarde salía caminando a cenar por el centro. Leandro siempre atento a cualquier consulta. 100% recomendable.",
     tag: "Viaje de Trabajo / Turismo",
   },
   {
@@ -289,7 +347,8 @@ export const TESTIMONIALS = [
     rating: 5,
     date: "Marzo 2026",
     title: "Ideal para ir con niños",
-    comment: "Todo impecable. La cocina está muy bien equipada con microondas y heladera grande. El edificio tiene ascensor lo cual facilitó subir con cochecito y valijas. Volveremos seguro en nuestras próximas vacaciones a Jujuy.",
+    comment:
+      "Todo impecable. La cocina está muy bien equipada con microondas y heladera grande. El edificio tiene ascensor lo cual facilitó subir con cochecito y valijas. Volveremos seguro en nuestras próximas vacaciones a Jujuy.",
     tag: "Familia con niños",
   },
 ];
