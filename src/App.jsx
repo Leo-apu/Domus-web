@@ -69,12 +69,14 @@ export default function App() {
           onSelectApartment={setSelectedApartmentId}
         />
 
-        {/* 🏢 Interactive Catalog / Selector of the 3 Apartments */}
-        <ApartmentSelector
-          selectedApartmentId={selectedApartmentId}
-          onSelectApartment={setSelectedApartmentId}
-          onOpenBookingModal={handleOpenBookingModal}
-        />
+        {/* 🏢 Interactive Catalog / Selector of Apartments (Solo si hay más de 1) */}
+        {APARTMENTS.length > 1 && (
+          <ApartmentSelector
+            selectedApartmentId={selectedApartmentId}
+            onSelectApartment={setSelectedApartmentId}
+            onOpenBookingModal={handleOpenBookingModal}
+          />
+        )}
 
         {/* Modern Airbnb-style Image Gallery for the active apartment */}
         <ModernGallery

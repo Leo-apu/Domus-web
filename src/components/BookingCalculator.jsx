@@ -200,8 +200,9 @@ export default function BookingCalculator({
           </div>
 
           <div className="p-6 sm:p-8 lg:p-10">
-            {/* Apartment Selector Pills */}
-            <div className="mb-8">
+            {/* Apartment Selector Pills (Solo si hay más de 1 unidad) */}
+            {APARTMENTS.length > 1 && (
+              <div className="mb-8">
               <label
                 htmlFor={apartmentSelectId}
                 className="flex items-center gap-2 text-xs font-bold text-stone-700 uppercase tracking-wider mb-2.5"
@@ -259,6 +260,7 @@ export default function BookingCalculator({
                 })}
               </div>
             </div>
+            )}
 
             {/* Date and Guests Inputs */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
