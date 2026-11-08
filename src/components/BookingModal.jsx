@@ -236,10 +236,9 @@ export default function BookingModal({
             <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
-          <div className="inline-flex items-center gap-1.5 bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[11px] font-semibold px-2.5 py-0.5 rounded-full mb-1.5">
-            <Sparkles className="w-3 h-3 text-rose-400" />
-            Reserva Directa sin Intermediarios
-          </div>
+          <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-rose-300/90 font-medium block mb-1.5">
+            RESERVA DIRECTA · MEJOR TARIFA GARANTIZADA
+          </span>
 
           <h2 className="font-serif-title text-xl sm:text-2xl font-bold text-white tracking-tight">
             Solicitud de Reserva

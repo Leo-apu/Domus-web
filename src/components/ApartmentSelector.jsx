@@ -33,9 +33,10 @@ export default function ApartmentSelector({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 reveal-init reveal-up">
-          <div className="inline-flex items-center gap-2 bg-amber-100/90 text-amber-800 border border-amber-300/50 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 shadow-xs">
-            <Building className="w-3.5 h-3.5" />
-            Nuestras 2 Opciones en Jujuy
+          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-amber-800 mb-3">
+            <span className="w-5 h-px bg-amber-600/40" />
+            <span>NUESTRAS 2 UNIDADES EXCLUSIVAS</span>
+            <span className="w-5 h-px bg-amber-600/40" />
           </div>
           <h2 className="font-serif-title text-2xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
             Elegí el espacio ideal para tu estadía en{" "}

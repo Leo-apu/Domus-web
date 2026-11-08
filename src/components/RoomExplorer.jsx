@@ -52,9 +52,10 @@ export default function RoomExplorer({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-12 reveal-init reveal-up">
-          <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-            <Compass className="w-3.5 h-3.5" />
-            Distribución & Ambientes
+          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-amber-800 mb-3">
+            <span className="w-5 h-px bg-amber-600/40" />
+            <span>DISTRIBUCIÓN & AMBIENTES</span>
+            <span className="w-5 h-px bg-amber-600/40" />
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
             Recorrido por Espacios de{" "}

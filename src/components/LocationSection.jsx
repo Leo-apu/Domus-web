@@ -27,9 +27,10 @@ export default function LocationSection({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-10 reveal-init reveal-up">
-          <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-            <MapPin className="w-3.5 h-3.5" />
-            Ubicación Estratégica
+          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-700 mb-3">
+            <span className="w-5 h-px bg-rose-500/40" />
+            <span>ENTORNO & CONECTIVIDAD</span>
+            <span className="w-5 h-px bg-rose-500/40" />
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
             Ubicación de{" "}
@@ -84,36 +85,38 @@ export default function LocationSection({
                 <span>Puntos de Interés Cercanos</span>
               </h3>
 
-              {places.map((place, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white rounded-2xl p-4 border border-stone-200/90 shadow-sm hover:shadow-md transition-all group"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h4 className="text-sm font-bold text-stone-800 group-hover:text-rose-600 transition-colors">
-                        {place.name}
-                      </h4>
-                      <p className="text-xs text-stone-500 mt-0.5">
-                        {place.desc}
-                      </p>
+              <div className="bg-white rounded-2xl border border-stone-200/90 shadow-sm divide-y divide-stone-100 overflow-hidden">
+                {places.map((place, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 sm:p-4 hover:bg-stone-50/80 transition-colors group"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h4 className="text-sm font-bold text-stone-800 group-hover:text-rose-600 transition-colors">
+                          {place.name}
+                        </h4>
+                        <p className="text-xs text-stone-500 mt-0.5">
+                          {place.desc}
+                        </p>
+                      </div>
+                      <span className="shrink-0 bg-stone-100 text-stone-700 text-[11px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 font-mono">
+                        <Footprints className="w-3 h-3 text-rose-500" />
+                        {place.distance}
+                      </span>
                     </div>
-                    <span className="shrink-0 bg-stone-100 text-stone-700 text-[11px] font-semibold px-2.5 py-1 rounded-lg flex items-center gap-1">
-                      <Footprints className="w-3 h-3 text-rose-500" />
-                      {place.distance}
-                    </span>
-                  </div>
 
-                  <div className="mt-2.5 pt-2 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-400 font-medium">
-                    <span className="text-rose-600 font-semibold">
-                      {place.type}
-                    </span>
-                    <span className="flex items-center gap-1 text-stone-500">
-                      <Clock className="w-3 h-3" /> {place.time}
-                    </span>
+                    <div className="mt-2 flex items-center justify-between text-[11px] text-stone-400 font-medium">
+                      <span className="text-rose-600 font-semibold">
+                        {place.type}
+                      </span>
+                      <span className="flex items-center gap-1 text-stone-500">
+                        <Clock className="w-3 h-3" /> {place.time}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             <div className="pt-2">

@@ -61,9 +61,10 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-init reveal-up">
-          <div className="inline-flex items-center gap-2 bg-rose-500/20 text-rose-300 border border-rose-500/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Todo Incluido · {apt.shortName}</span>
+          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-300 mb-3">
+            <span className="w-5 h-px bg-rose-400/50" />
+            <span>SERVICIOS & EQUIPAMIENTO · {apt.shortName.toUpperCase()}</span>
+            <span className="w-5 h-px bg-rose-400/50" />
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
             Servicios y Comodidades Pensadas para Vos

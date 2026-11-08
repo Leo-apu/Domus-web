@@ -87,9 +87,10 @@ export default function ModernGallery({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-10 reveal-init reveal-up">
-          <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-            <Camera className="w-3.5 h-3.5" />
-            Galería Fotográfica Oficial
+          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-700 mb-3">
+            <span className="w-5 h-px bg-rose-500/40" />
+            <span>GALERÍA FOTOGRÁFICA</span>
+            <span className="w-5 h-px bg-rose-500/40" />
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
             Descubrí Cada Rincón de{" "}

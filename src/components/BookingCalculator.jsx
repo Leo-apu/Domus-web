@@ -177,9 +177,9 @@ export default function BookingCalculator({
           {/* Header */}
           <div className="bg-linear-to-r from-stone-900 via-stone-850 to-stone-900 text-white p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold px-3 py-1 rounded-full mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                Reserva Directa Sin Comisiones de Plataformas
+              <div className="text-[11px] font-mono tracking-[0.2em] uppercase text-rose-300/90 font-medium mb-1.5 flex items-center justify-center sm:justify-start gap-2">
+                <span className="w-4 h-px bg-rose-400/60" />
+                <span>COTIZACIÓN INMEDIATA & DIRECTA</span>
               </div>
               <h2 className="font-serif-title text-2xl sm:text-3xl font-bold">
                 Cotizá tu Estadía en Vivo

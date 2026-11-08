@@ -19,9 +19,10 @@ export default function ParallaxStory({
       <div className="absolute inset-0 mesh-gradient-dark opacity-75" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="inline-flex items-center gap-2 bg-rose-500/20 border border-rose-400/40 text-rose-300 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6 reveal-init reveal-up">
-          <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400" />
-          <span>Nuestra Historia & Compromiso · {apt.shortName}</span>
+        <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-300 mb-6 reveal-init reveal-up">
+          <span className="w-5 h-px bg-rose-400/60" />
+          <span>HOSPITALIDAD & COMPROMISO</span>
+          <span className="w-5 h-px bg-rose-400/60" />
         </div>
 
         <h2 className="font-serif-title text-3xl sm:text-5xl font-bold tracking-tight text-white mb-6 leading-tight drop-shadow-lg reveal-init reveal-up delay-100">

@@ -1,20 +1,10 @@
 import { useState, useEffect } from "react";
 import {
-  ChevronLeft,
-  ChevronRight,
-  MapPin,
-  Star,
-  Users,
-  Bed,
-  Bath,
-  Maximize2,
   CalendarCheck,
   Camera,
-  Sparkles,
   ChevronDown,
-  ShieldCheck,
 } from "lucide-react";
-import { APARTMENT_INFO, APARTMENTS } from "../data/apartmentData";
+import { APARTMENTS } from "../data/apartmentData";
 
 const HERO_SLIDES = APARTMENTS[0].heroSlides;
 
@@ -31,19 +21,13 @@ export default function Hero({
     setCurrentSlide(0);
   }, [selectedApartment?.id]);
 
+  // Transición 100% automática y suave del carrusel (sin controles manuales)
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6500);
     return () => clearInterval(timer);
   }, [slides.length]);
-
-  const nextSlide = () =>
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  const prevSlide = () =>
-    setCurrentSlide(
-      (prev) => (prev - 1 + slides.length) % slides.length,
-    );
 
   const scrollToCalculator = (e) => {
     e.preventDefault();
@@ -66,6 +50,7 @@ export default function Hero({
       id="inicio"
       className="relative min-h-[90vh] sm:min-h-screen flex flex-col justify-center items-center bg-stone-950 text-white pt-20 sm:pt-24 lg:pt-24 pb-14 sm:pb-16 overflow-hidden"
     >
+      {/* Background Slides with smooth Ken Burns animation and cinematic overlays */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {slides.map((slide, index) => (
           <div
@@ -92,44 +77,38 @@ export default function Hero({
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center w-full my-auto py-1 sm:py-2">
-        {/* Top Badges & Rating */}
-        <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium mb-3 sm:mb-4 lg:mb-5 text-stone-200 shadow-xl reveal-init reveal-up">
-          <span className="flex items-center text-amber-400 gap-1 font-bold">
-            <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400" />
-            {APARTMENT_INFO.rating}
-          </span>
-          <span className="text-white/40">|</span>
-          <span className="flex items-center gap-1 text-stone-300 text-xs sm:text-sm">
-            <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-rose-400" />
-            Centro, San Salvador de Jujuy
-          </span>
-          <span className="hidden sm:inline text-white/40">|</span>
-          <span className="hidden sm:flex text-emerald-400 font-semibold items-center gap-1 text-xs sm:text-sm">
-            <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            Superanfitrión Verificado
+        {/* ✨ Editorial Overline (Reemplaza al badge genérico con cápsula) */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-light tracking-[0.2em] uppercase text-stone-300/90 mb-3 sm:mb-4 reveal-init reveal-up">
+          <span className="font-mono text-stone-400">SAN SALVADOR DE JUJUY</span>
+          <span className="w-1 h-1 rounded-full bg-amber-400/80" />
+          <span className="font-semibold text-white flex items-center gap-1">
+            <span className="text-amber-400">★ 4.96</span>
+            <span className="text-stone-300 font-light ml-0.5">CALIFICACIÓN SUPERHOST</span>
           </span>
         </div>
 
-        {/* Quick Apartment Unit Switcher Pills inside Hero */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-3 sm:mb-4 bg-stone-900/70 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 shadow-xl">
-          {APARTMENTS.map((apt) => {
-            const isSelected = apt.id === selectedApartment?.id;
-            return (
-              <button
-                key={apt.id}
-                onClick={() => onSelectApartment?.(apt.id)}
-                className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                  isSelected
-                    ? "bg-rose-500 text-white shadow-md shadow-rose-500/40 scale-105"
-                    : "text-stone-300 hover:text-white hover:bg-white/10"
-                }`}
-              >
-                <span>{apt.shortName}</span>
-                <span className="text-[10px] opacity-80">({apt.capacity}p)</span>
-              </button>
-            );
-          })}
-        </div>
+        {/* Selector de Unidades Minimalista (Solo si hay más de 1 unidad) */}
+        {APARTMENTS.length > 1 && (
+          <div className="flex items-center justify-center gap-1.5 mb-3 sm:mb-4 bg-stone-900/60 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-lg">
+            {APARTMENTS.map((apt) => {
+              const isSelected = apt.id === selectedApartment?.id;
+              return (
+                <button
+                  key={apt.id}
+                  onClick={() => onSelectApartment?.(apt.id)}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    isSelected
+                      ? "bg-white text-stone-900 shadow-sm scale-102"
+                      : "text-stone-300 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  <span>{apt.shortName}</span>
+                  <span className="text-[10px] ml-1 opacity-70 font-mono">({apt.capacity}p)</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         <div className="min-h-13 sm:min-h-18 lg:min-h-22 xl:min-h-26 flex items-center justify-center mb-2 sm:mb-3">
           <h1 className="font-serif-title text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-tight sm:leading-tight drop-shadow-xl max-w-4xl reveal-init reveal-up delay-100">
@@ -143,71 +122,48 @@ export default function Hero({
           </p>
         </div>
 
-        {/* Dynamic Apartment Specs Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 lg:gap-3.5 w-full max-w-4xl xl:max-w-5xl mb-5 sm:mb-7 lg:mb-8 reveal-init reveal-scale delay-300">
-          <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:px-3.5 sm:py-2.5 lg:px-4 lg:py-3 flex items-center gap-2.5 sm:gap-3 text-left shadow-lg hover:border-white/30 transition-all">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
-              <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[9px] sm:text-[10px] lg:text-[11px] text-stone-400 font-medium uppercase tracking-wider whitespace-nowrap">
-                Capacidad
-              </p>
-              <p className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-                Hasta {selectedApartment?.capacity || 4} pers.
-              </p>
-            </div>
+        {/* 🏛️ Barra Arquitectónica de Especificaciones (Sin cajas dentro de cajas ni colores estridentes) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10 bg-black/40 backdrop-blur-md border border-white/15 rounded-2xl max-w-3xl w-full py-2.5 sm:py-3.5 px-3 sm:px-6 mb-6 sm:mb-8 shadow-2xl reveal-init reveal-scale delay-300">
+          <div className="py-1.5 sm:py-0 px-2 sm:px-4 text-center sm:text-left">
+            <span className="text-[10px] uppercase tracking-wider text-stone-400 block font-mono font-medium">
+              Capacidad
+            </span>
+            <span className="text-xs sm:text-sm font-semibold text-white">
+              Hasta {selectedApartment?.capacity || 4} personas
+            </span>
           </div>
 
-          <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:px-3.5 sm:py-2.5 lg:px-4 lg:py-3 flex items-center gap-2.5 sm:gap-3 text-left shadow-lg hover:border-white/30 transition-all">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-              <Bed className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[9px] sm:text-[10px] lg:text-[11px] text-stone-400 font-medium uppercase tracking-wider whitespace-nowrap">
-                Dormitorios
-              </p>
-              <p className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-                {selectedApartment?.bedrooms || 2}{" "}
-                {selectedApartment?.bedrooms === 1
-                  ? "Ambiente"
-                  : "Habitaciones"}
-              </p>
-            </div>
+          <div className="py-1.5 sm:py-0 px-2 sm:px-4 text-center sm:text-left">
+            <span className="text-[10px] uppercase tracking-wider text-stone-400 block font-mono font-medium">
+              Dormitorios
+            </span>
+            <span className="text-xs sm:text-sm font-semibold text-white">
+              {selectedApartment?.bedrooms || 2}{" "}
+              {selectedApartment?.bedrooms === 1 ? "Ambiente" : "Habitaciones"}
+            </span>
           </div>
 
-          <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:px-3.5 sm:py-2.5 lg:px-4 lg:py-3 flex items-center gap-2.5 sm:gap-3 text-left shadow-lg hover:border-white/30 transition-all">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
-              <Bath className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[9px] sm:text-[10px] lg:text-[11px] text-stone-400 font-medium uppercase tracking-wider whitespace-nowrap">
-                Baños
-              </p>
-              <p className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-                {selectedApartment?.bathrooms || 2}{" "}
-                {selectedApartment?.bathrooms === 1
-                  ? "Baño Privado"
-                  : "en Suite"}
-              </p>
-            </div>
+          <div className="py-1.5 sm:py-0 px-2 sm:px-4 text-center sm:text-left">
+            <span className="text-[10px] uppercase tracking-wider text-stone-400 block font-mono font-medium">
+              Baños
+            </span>
+            <span className="text-xs sm:text-sm font-semibold text-white">
+              {selectedApartment?.bathrooms || 2}{" "}
+              {selectedApartment?.bathrooms === 1 ? "Privado" : "en Suite"}
+            </span>
           </div>
 
-          <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:px-3.5 sm:py-2.5 lg:px-4 lg:py-3 flex items-center gap-2.5 sm:gap-3 text-left shadow-lg hover:border-white/30 transition-all">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-              <Maximize2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[9px] sm:text-[10px] lg:text-[11px] text-stone-400 font-medium uppercase tracking-wider whitespace-nowrap">
-                Superficie
-              </p>
-              <p className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-                {selectedApartment?.surfaceM2 || 66} m² + Balcón
-              </p>
-            </div>
+          <div className="py-1.5 sm:py-0 px-2 sm:px-4 text-center sm:text-left">
+            <span className="text-[10px] uppercase tracking-wider text-stone-400 block font-mono font-medium">
+              Superficie
+            </span>
+            <span className="text-xs sm:text-sm font-semibold text-white">
+              {selectedApartment?.surfaceM2 || 66} m² + Balcón
+            </span>
           </div>
         </div>
 
+        {/* Botones de Acción */}
         <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3.5 w-full sm:w-auto reveal-init reveal-up delay-400">
           <a
             href="#calculadora"
@@ -226,66 +182,17 @@ export default function Hero({
             <span>Ver Fotos ({selectedApartment?.shortName || "Unidad"})</span>
           </button>
         </div>
-
-        <div className="flex sm:hidden items-center gap-2 mt-4">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentSlide(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                i === currentSlide
-                  ? "w-6 bg-rose-500 shadow-sm shadow-rose-500/50"
-                  : "w-1.5 bg-white/40"
-              }`}
-              aria-label={`Ir al slide ${i + 1}`}
-            />
-          ))}
-        </div>
       </div>
 
-      <button
-        onClick={prevSlide}
-        className="hidden md:flex absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-stone-900/40 hover:bg-stone-900/80 text-white items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-110 cursor-pointer"
-        aria-label="Slide anterior"
-      >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="hidden md:flex absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-stone-900/40 hover:bg-stone-900/80 text-white items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-110 cursor-pointer"
-        aria-label="Slide siguiente"
-      >
-        <ChevronRight className="w-6 h-6" />
-      </button>
-
-      <div className="hidden sm:flex absolute bottom-3 sm:bottom-4 lg:bottom-5 left-5 sm:left-8 z-20 items-center gap-2 bg-stone-900/75 backdrop-blur-md border border-white/20 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-xl">
-        <span className="text-[10px] sm:text-[11px] text-stone-300 font-mono font-semibold">
-          0{currentSlide + 1} / 0{slides.length}
-        </span>
-        <div className="flex items-center gap-1.5 ml-1">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentSlide(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                i === currentSlide
-                  ? "w-5 sm:w-6 bg-rose-500 shadow-sm shadow-rose-500/50"
-                  : "w-1.5 bg-white/40 hover:bg-white/70"
-              }`}
-              aria-label={`Ir al slide ${i + 1}`}
-            />
-          ))}
-        </div>
-      </div>
-
+      {/* Flechita sutil de exploración al pie */}
       <a
         href="#galeria"
         onClick={scrollToGallery}
         className="absolute bottom-3 sm:bottom-4 lg:bottom-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center group cursor-pointer transition-all duration-300 hover:-translate-y-0.5"
         aria-label="Descubrí el departamento y ver fotos"
       >
-        <span className="text-[9px] sm:text-[10px] lg:text-[11px] uppercase font-bold tracking-widest text-stone-300 group-hover:text-white transition-colors mb-1 drop-shadow-md">
-          Descubrí el departamento
+        <span className="text-[9px] sm:text-[10px] lg:text-[11px] uppercase font-mono tracking-widest text-stone-300 group-hover:text-white transition-colors mb-1 drop-shadow-md">
+          Descubrí los espacios
         </span>
         <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-stone-900/70 backdrop-blur-md border border-white/20 group-hover:border-white/40 flex items-center justify-center text-stone-300 group-hover:text-white shadow-lg transition-all">
           <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-bounce" />
