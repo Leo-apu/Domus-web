@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Bed,
   Bath,
@@ -11,26 +11,38 @@ import {
 } from "lucide-react";
 import { ROOMS_DETAILS } from "../data/apartmentData";
 
-export default function RoomExplorer({ onSelectRoomImage }) {
-  const [activeRoomId, setActiveRoomId] = useState(ROOMS_DETAILS[0].id);
+export default function RoomExplorer({
+  onSelectRoomImage,
+  apartment,
+  roomsDetails,
+}) {
+  const rooms = roomsDetails || apartment?.roomsDetails || ROOMS_DETAILS;
+  const [activeRoomId, setActiveRoomId] = useState(rooms[0]?.id || "living-comedor");
+
+  // Reset to first room of the active apartment
+  useEffect(() => {
+    if (rooms && rooms.length > 0) {
+      setActiveRoomId(rooms[0].id);
+    }
+  }, [apartment?.id, rooms]);
 
   const activeRoom =
-    ROOMS_DETAILS.find((r) => r.id === activeRoomId) || ROOMS_DETAILS[0];
+    rooms.find((r) => r.id === activeRoomId) || rooms[0] || ROOMS_DETAILS[0];
 
   const getRoomIcon = (id) => {
-    switch (id) {
-      case "living-comedor":
-        return <Tv className="w-4 h-4" />;
-      case "cocina":
-        return <UtensilsCrossed className="w-4 h-4" />;
-      case "dormitorio-1":
-      case "dormitorio-2":
-        return <Bed className="w-4 h-4" />;
-      case "baños":
-        return <Bath className="w-4 h-4" />;
-      default:
-        return <Compass className="w-4 h-4" />;
+    if (id.includes("living") || id.includes("suite-principal")) {
+      return <Tv className="w-4 h-4" />;
     }
+    if (id.includes("cocina") || id.includes("kitchenette")) {
+      return <UtensilsCrossed className="w-4 h-4" />;
+    }
+    if (id.includes("dorm") || id.includes("master") || id.includes("hab")) {
+      return <Bed className="w-4 h-4" />;
+    }
+    if (id.includes("baño")) {
+      return <Bath className="w-4 h-4" />;
+    }
+    return <Compass className="w-4 h-4" />;
   };
 
   return (
@@ -45,23 +57,27 @@ export default function RoomExplorer({ onSelectRoomImage }) {
             Distribución & Ambientes
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
-            Recorrido por Espacios
+            Recorrido por Espacios de{" "}
+            <span className="text-amber-700">
+              {apartment?.shortName || "la Unidad"}
+            </span>
           </h2>
           <p className="mt-3 text-base sm:text-lg text-stone-600 font-light">
-            Departamento de 3 ambientes de 66 m² diseñado para garantizar
+            {apartment?.type || "Departamento"} de {apartment?.surfaceM2 || 66} m² diseñado para garantizar
             confort, luminosidad y privacidad total.
           </p>
         </div>
 
+        {/* Room Switcher Pills */}
         <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar reveal-init reveal-up delay-100">
-          {ROOMS_DETAILS.map((room) => (
+          {rooms.map((room) => (
             <button
               key={room.id}
               onClick={() => setActiveRoomId(room.id)}
-              className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-semibold transition-all shrink-0 ${
+              className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer ${
                 activeRoomId === room.id
-                  ? "bg-stone-900 text-white shadow-xl scale-102 ring-2 ring-stone-900/10"
-                  : "bg-white text-stone-600 hover:text-stone-900 hover:bg-stone-100 border border-stone-200"
+                  ? "bg-stone-900 text-white shadow-lg scale-105"
+                  : "bg-white text-stone-600 hover:bg-stone-50 border border-stone-200"
               }`}
             >
               {getRoomIcon(room.id)}
@@ -70,92 +86,81 @@ export default function RoomExplorer({ onSelectRoomImage }) {
           ))}
         </div>
 
-        <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-200/90 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center reveal-init reveal-scale delay-200">
-          <div className="lg:col-span-7 relative group rounded-2xl overflow-hidden shadow-lg bg-stone-100 aspect-[16/10]">
-            <img
-              src={activeRoom.image}
-              alt={activeRoom.name}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-stone-950/70 via-transparent to-transparent pointer-events-none" />
+        {/* Active Room Detail Showcase */}
+        {activeRoom && (
+          <div className="bg-white rounded-3xl border border-stone-200 shadow-xl overflow-hidden reveal-init reveal-scale delay-200">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+              {/* Photo Side */}
+              <div
+                onClick={onSelectRoomImage}
+                className="lg:col-span-7 relative aspect-16/10 lg:aspect-auto overflow-hidden bg-stone-950 cursor-pointer group"
+              >
+                <img
+                  src={activeRoom.image}
+                  alt={activeRoom.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-stone-950/20 group-hover:bg-stone-950/0 transition-colors" />
 
-            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-              <span className="bg-rose-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                {activeRoom.badge}
-              </span>
-              <span className="bg-black/60 backdrop-blur-md text-white text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1">
-                <Maximize className="w-3 h-3 text-amber-400" />
-                {activeRoom.area}
-              </span>
-            </div>
-
-            <div className="absolute bottom-4 left-4 right-4 text-white">
-              <p className="text-xs text-stone-300 font-medium">
-                Ubicación y Confort
-              </p>
-              <h3 className="text-xl sm:text-2xl font-bold font-serif-title drop-shadow">
-                {activeRoom.name}
-              </h3>
-            </div>
-          </div>
-
-          <div className="lg:col-span-5 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
-                  {getRoomIcon(activeRoom.id)}
+                <div className="absolute top-4 left-4">
+                  <span className="bg-stone-900/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                    {activeRoom.badge}
+                  </span>
                 </div>
+
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <p className="text-xs bg-black/60 backdrop-blur-md inline-block px-3 py-1 rounded-md text-stone-300">
+                    Clic para ver fotos ampliadas en la galería
+                  </p>
+                </div>
+              </div>
+
+              {/* Specs & Features Side */}
+              <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
                 <div>
-                  <h3 className="font-serif-title text-2xl font-bold text-stone-900">
-                    {activeRoom.name}
-                  </h3>
-                  <div className="flex items-center gap-3 text-xs text-stone-500 font-medium mt-0.5">
-                    <span className="flex items-center gap-1">
-                      <Users className="w-3.5 h-3.5 text-stone-400" />
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">
+                      <Maximize className="w-3.5 h-3.5 text-stone-500" />
+                      {activeRoom.area}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200/60">
+                      <Users className="w-3.5 h-3.5 text-amber-600" />
                       {activeRoom.capacity}
                     </span>
-                    <span>•</span>
-                    <span>{activeRoom.area}</span>
+                  </div>
+
+                  <h3 className="font-serif-title text-2xl sm:text-3xl font-bold text-stone-900 mb-6">
+                    {activeRoom.name}
+                  </h3>
+
+                  <div className="space-y-3.5 mb-8">
+                    {activeRoom.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
+                        <span className="text-stone-700 text-sm leading-relaxed">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
 
-              <p className="text-sm text-stone-600 leading-relaxed mb-6">
-                Espacio preparado con detalles de categoría para brindar una
-                experiencia de estadía superior.
-              </p>
-
-              <div className="space-y-3 mb-8">
-                {activeRoom.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="text-xs sm:text-sm text-stone-700 font-medium leading-tight">
-                      {feature}
-                    </span>
+                <div className="pt-6 border-t border-stone-100 flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-stone-500 text-xs">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Totalmente amoblado y listo para habitar</span>
                   </div>
-                ))}
+                  <button
+                    onClick={onSelectRoomImage}
+                    className="text-xs font-bold text-rose-600 hover:text-rose-700 underline underline-offset-4 cursor-pointer"
+                  >
+                    Ver en Galería
+                  </button>
+                </div>
               </div>
-            </div>
-
-            <div className="pt-6 border-t border-stone-100 flex items-center justify-between">
-              <a
-                href="#calculadora"
-                className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold px-5 py-3 rounded-xl transition-all shadow-md hover:scale-102"
-              >
-                <span>Consultar este espacio</span>
-              </a>
-
-              <a
-                href="#galeria"
-                className="text-xs font-semibold text-rose-600 hover:text-rose-700"
-              >
-                Ver más fotos →
-              </a>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

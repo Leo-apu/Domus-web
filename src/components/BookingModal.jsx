@@ -16,13 +16,14 @@ import {
   MessageCircle,
   CalendarCheck,
   CalendarX,
+  Building,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import {
   submitBookingToGoogleSheets,
   checkAvailability,
 } from "../services/bookingService";
-import { APARTMENT_INFO } from "../data/apartmentData";
+import { APARTMENT_INFO, APARTMENTS } from "../data/apartmentData";
 
 export default function BookingModal({
   isOpen,
@@ -30,12 +31,27 @@ export default function BookingModal({
   initialCheckIn = "",
   initialCheckOut = "",
   initialGuests = 2,
+  initialApartmentId = "domus-centro",
 }) {
   const nameId = useId();
   const phoneId = useId();
   const emailId = useId();
   const guestsId = useId();
   const notesId = useId();
+  const apartmentSelectId = useId();
+
+  const [apartmentId, setApartmentId] = useState(
+    initialApartmentId || "domus-centro",
+  );
+
+  useEffect(() => {
+    if (initialApartmentId) {
+      setApartmentId(initialApartmentId);
+    }
+  }, [initialApartmentId, isOpen]);
+
+  const selectedApt =
+    APARTMENTS.find((a) => a.id === apartmentId) || APARTMENTS[0];
 
   const getTodayString = (offsetDays = 0) => {
     const d = new Date();
@@ -99,7 +115,7 @@ export default function BookingModal({
     setAvailability({ status: "checking" });
 
     const timer = setTimeout(async () => {
-      const result = await checkAvailability(checkIn, checkOut);
+      const result = await checkAvailability(checkIn, checkOut, apartmentId);
       if (result.available === true) {
         setAvailability({ status: "available" });
       } else if (result.available === false) {
@@ -114,7 +130,7 @@ export default function BookingModal({
     }, 600);
 
     return () => clearTimeout(timer);
-  }, [formData.checkIn, formData.checkOut]);
+  }, [formData.checkIn, formData.checkOut, apartmentId]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -162,6 +178,8 @@ export default function BookingModal({
     try {
       const payload = {
         ...formData,
+        apartmentId: selectedApt.id,
+        departamento: selectedApt.name,
         nights,
         submittedAt: new Date().toISOString(),
       };
@@ -190,9 +208,10 @@ export default function BookingModal({
 
   const handleDirectWhatsApp = () => {
     const msg = encodeURIComponent(
-      `¡Hola Domus Alquileres! 👋\nSoy ${formData.name || "un viajero"}. Quería consultar si tienen disponibilidad para ingresar el ${formData.checkIn} y salir el ${formData.checkOut} (${nights} ${nights === 1 ? "noche" : "noches"} para ${formData.guests} personas). ¿Está disponible?`,
+      `¡Hola Domus Alquileres! 👋\nSoy ${formData.name || "un viajero"}. Quería consultar si tienen disponibilidad para el departamento: *${selectedApt.name}*, ingresando el ${formData.checkIn} y saliendo el ${formData.checkOut} (${nights} ${nights === 1 ? "noche" : "noches"} para ${formData.guests} personas). ¿Está disponible?`,
     );
-    window.open(`https://wa.me/5493880000000?text=${msg}`, "_blank");
+    const targetPhone = APARTMENT_INFO.whatsappNumber || "543886350824";
+    window.open(`https://wa.me/${targetPhone}?text=${msg}`, "_blank");
   };
 
   return (
@@ -208,7 +227,7 @@ export default function BookingModal({
         className="relative w-full max-w-lg max-h-[92vh] sm:max-h-[88vh] flex flex-col bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-200 my-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="shrink-0 bg-gradient-to-r from-stone-900 via-stone-850 to-stone-900 text-white p-4 sm:p-6 relative border-b border-stone-800">
+        <div className="shrink-0 bg-linear-to-r from-stone-900 via-stone-850 to-stone-900 text-white p-4 sm:p-6 relative border-b border-stone-800">
           <button
             onClick={onClose}
             className="absolute top-4 sm:top-5 right-4 sm:right-5 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-stone-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
@@ -283,6 +302,37 @@ export default function BookingModal({
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3.5">
+              {/* Apartment Select Field */}
+              <div>
+                <label
+                  htmlFor={apartmentSelectId}
+                  className="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1"
+                >
+                  Departamento
+                </label>
+                <div className="relative">
+                  <Building className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <select
+                    id={apartmentSelectId}
+                    value={apartmentId}
+                    onChange={(e) => {
+                      setApartmentId(e.target.value);
+                      const apt = APARTMENTS.find((a) => a.id === e.target.value);
+                      if (apt && formData.guests > apt.capacity) {
+                        setFormData((prev) => ({ ...prev, guests: apt.capacity }));
+                      }
+                    }}
+                    className="w-full bg-stone-50 border border-stone-200 text-stone-800 text-xs sm:text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-rose-500 focus:outline-none cursor-pointer"
+                  >
+                    {APARTMENTS.map((apt) => (
+                      <option key={apt.id} value={apt.id}>
+                        {apt.name} (Hasta {apt.capacity} huéspedes)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               {status === "error" && (
                 <div className="bg-rose-50 border border-rose-200 rounded-xl p-3 text-xs text-rose-800 flex items-start gap-2.5">
                   <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
@@ -386,12 +436,12 @@ export default function BookingModal({
                     onChange={handleChange}
                     className="w-full bg-stone-50 border border-stone-200 text-stone-800 text-xs sm:text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-rose-500 focus:outline-none cursor-pointer"
                   >
-                    <option value={1}>1 Huésped</option>
-                    <option value={2}>
-                      2 Huéspedes (1 Dormitorio o 2 camas)
-                    </option>
-                    <option value={3}>3 Huéspedes</option>
-                    <option value={4}>4 Huéspedes (Capacidad total)</option>
+                    {Array.from({ length: selectedApt.capacity }, (_, i) => i + 1).map((num) => (
+                      <option key={num} value={num}>
+                        {num} {num === 1 ? "Huésped" : "Huéspedes"}{" "}
+                        {num === selectedApt.capacity ? `(Capacidad máx. ${selectedApt.shortName})` : ""}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -492,7 +542,7 @@ export default function BookingModal({
                     availability.status === "occupied" ||
                     availability.status === "checking"
                   }
-                  className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-rose-900/20 text-sm transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 disabled:opacity-50 disabled:pointer-events-none cursor-pointer text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-rose-900/20 text-sm transition-all hover:scale-[1.01] active:scale-[0.99]"
                 >
                   {status === "loading" ? (
                     <>
@@ -520,10 +570,14 @@ export default function BookingModal({
                   )}
                 </button>
 
-                <p className="text-[11px] text-stone-400 text-center mt-2">
-                  🔒 Sin cobro inmediato. El dueño revisará tu solicitud y te
-                  contactará para coordinar la seña.
-                </p>
+                <div className="mt-2 text-center space-y-1">
+                  <p className="text-[11px] text-stone-500 font-medium">
+                    🔒 Sin cobro inmediato. El anfitrión revisará tu solicitud y te contactará para coordinar la seña.
+                  </p>
+                  <p className="text-[10px] text-stone-400">
+                    Tus datos son confidenciales y están protegidos (Ley 25.326). Solo se usarán para gestionar tu estadía.
+                  </p>
+                </div>
               </div>
             </form>
           )}

@@ -1,7 +1,7 @@
 import { MapPin, Phone, Mail, Clock, Heart } from "lucide-react";
 import { APARTMENT_INFO } from "../data/apartmentData";
 
-export default function Footer() {
+export default function Footer({ onOpenPrivacyModal }) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -125,11 +125,20 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500 text-center sm:text-left">
-          <p>
-            © {currentYear} Domus Alquileres Temporarios. Todos los derechos
-            reservados.
-          </p>
+        <div className="mt-12 pt-8 border-t border-stone-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500 text-center md:text-left">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <p>
+              © {currentYear} Domus Alquileres Temporarios. Todos los derechos reservados.
+            </p>
+            <span className="hidden sm:inline text-stone-700">|</span>
+            <button
+              onClick={() => onOpenPrivacyModal && onOpenPrivacyModal()}
+              className="text-stone-400 hover:text-rose-400 underline underline-offset-4 transition-colors cursor-pointer"
+            >
+              Políticas de Privacidad & Términos (Ley 25.326)
+            </button>
+          </div>
+
           <p className="flex items-center justify-center gap-1.5">
             <span>Desarrollado con</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline" />

@@ -6,39 +6,85 @@ import {
   Clock,
   Car,
   Footprints,
+  Building,
 } from "lucide-react";
-import { NEARBY_PLACES, APARTMENT_INFO } from "../data/apartmentData";
+import { NEARBY_PLACES, APARTMENT_INFO, APARTMENTS } from "../data/apartmentData";
 
-export default function LocationSection() {
+export default function LocationSection({
+  selectedApartment,
+  onSelectApartment,
+}) {
+  const activeApartment = selectedApartment || APARTMENTS[0];
+  const places = activeApartment.nearbyPlaces || NEARBY_PLACES;
+  const address = activeApartment.address || APARTMENT_INFO.address;
+  const mapUrl = activeApartment.googleMapsUrl || APARTMENT_INFO.googleMapsUrl;
+  const embedUrl = activeApartment.mapEmbedUrl || APARTMENT_INFO.mapEmbedUrl;
+
   return (
     <section
       id="ubicacion"
       className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-12 reveal-init reveal-up">
+        <div className="text-center max-w-3xl mx-auto mb-10 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <MapPin className="w-3.5 h-3.5" />
             Ubicación Estratégica
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
-            En Pleno Centro de San Salvador de Jujuy
+            Ubicación de{" "}
+            <span className="text-rose-600">{activeApartment.shortName}</span>
           </h2>
           <p className="mt-3 text-base sm:text-lg text-stone-600 font-light">
-            {APARTMENT_INFO.address}. A solo 2 cuadras de la plaza principal y a
-            pasos de los mejores restaurantes, bancos y atractivos turísticos.
+            <strong className="text-stone-800 font-semibold">{address}</strong>
+            {" · "}
+            {activeApartment.zone}. Excelente punto de partida para disfrutar de
+            la ciudad y de las excursiones a la Quebrada.
           </p>
+
+          {/* Quick Location Switcher Buttons */}
+          <div className="mt-6 inline-flex flex-wrap items-center justify-center p-1.5 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/90 shadow-sm gap-2">
+            {APARTMENTS.map((apt) => {
+              const isSelected = apt.id === activeApartment.id;
+              return (
+                <button
+                  key={apt.id}
+                  onClick={() => onSelectApartment?.(apt.id)}
+                  className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                    isSelected
+                      ? "bg-stone-900 text-white shadow-md shadow-stone-900/20 scale-[1.02]"
+                      : "text-stone-600 hover:text-stone-900 hover:bg-stone-100"
+                  }`}
+                >
+                  <MapPin
+                    className={`w-3.5 h-3.5 ${
+                      isSelected ? "text-rose-400" : "text-stone-400"
+                    }`}
+                  />
+                  <span>{apt.shortName}</span>
+                  <span
+                    className={`hidden sm:inline text-[11px] ${
+                      isSelected ? "text-stone-300" : "text-stone-500"
+                    }`}
+                  >
+                    ({apt.address.split(",")[0]})
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Nearby places list */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-4 reveal-init reveal-left">
             <div className="space-y-3">
               <h3 className="font-serif-title text-xl font-bold text-stone-900 mb-4 flex items-center gap-2">
                 <Compass className="w-5 h-5 text-rose-600" />
-                <span>Puntos de Interés a Pocos Metros</span>
+                <span>Puntos de Interés Cercanos</span>
               </h3>
 
-              {NEARBY_PLACES.map((place, idx) => (
+              {places.map((place, idx) => (
                 <div
                   key={idx}
                   className="bg-white rounded-2xl p-4 border border-stone-200/90 shadow-sm hover:shadow-md transition-all group"
@@ -69,12 +115,13 @@ export default function LocationSection() {
                 </div>
               ))}
             </div>
+
             <div className="pt-2">
               <a
-                href={APARTMENT_INFO.googleMapsUrl}
+                href={mapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold py-3.5 px-5 rounded-2xl text-sm transition-all shadow-md hover:scale-102"
+                className="w-full inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold py-3.5 px-5 rounded-2xl text-sm transition-all shadow-md hover:scale-102 cursor-pointer"
               >
                 <Navigation className="w-4 h-4 text-rose-400" />
                 <span>Abrir en Google Maps / Cómo llegar</span>
@@ -83,23 +130,24 @@ export default function LocationSection() {
             </div>
           </div>
 
-          <div className="lg:col-span-7 bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-xl flex flex-col min-h-[380px] lg:min-h-[480px] reveal-init reveal-right">
+          {/* Map Preview */}
+          <div className="lg:col-span-7 bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-xl flex flex-col min-h-95 lg:min-h-120 reveal-init reveal-right">
             <div className="bg-stone-900 text-white px-5 py-3.5 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-rose-500 animate-pulse" />
                 <span className="text-xs font-semibold text-stone-200">
-                  {APARTMENT_INFO.address}
+                  {address}
                 </span>
               </div>
               <span className="text-[11px] bg-white/10 text-stone-300 px-2 py-0.5 rounded font-mono">
-                Jujuy, Argentina
+                {activeApartment.shortName}
               </span>
             </div>
 
-            <div className="relative flex-1 w-full h-full min-h-[350px]">
+            <div className="relative flex-1 w-full h-full min-h-87.5">
               <iframe
-                title="Ubicación de Domus Alquileres en San Salvador de Jujuy"
-                src={APARTMENT_INFO.mapEmbedUrl}
+                title={`Ubicación de ${activeApartment.name}`}
+                src={embedUrl}
                 className="w-full h-full border-0 absolute inset-0"
                 allowFullScreen=""
                 loading="lazy"

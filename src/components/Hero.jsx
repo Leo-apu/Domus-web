@@ -14,50 +14,35 @@ import {
   ChevronDown,
   ShieldCheck,
 } from "lucide-react";
-import { APARTMENT_INFO } from "../data/apartmentData";
+import { APARTMENT_INFO, APARTMENTS } from "../data/apartmentData";
 
-const HERO_SLIDES = [
-  {
-    image: "/images/landing-2.webp",
-    title: "Tu Refugio Céntrico y Exclusivo en Jujuy",
-    subtitle:
-      "Departamento 3 ambientes a solo 2 cuadras de Plaza Belgrano. Máximo confort, privacidad y ubicación privilegiada.",
-    badge: "Ubicación Inmejorable",
-    position: "object-[center_35%]",
-  },
-  {
-    image: "/images/landing-3.webp",
-    title: "Privacidad Total con 2 Baños en Suite",
-    subtitle:
-      "Cada habitación cuenta con su propio baño privado completo. La independencia ideal para familias y amigos.",
-    badge: "2 Baños en Suite",
-    position: "object-center",
-  },
-  {
-    image: "/images/landing-1.webp",
-    title: "Equipamiento de Categoría para 4 Huéspedes",
-    subtitle:
-      "Cocina integral completa, Smart TV, WiFi 300MB y balcón con vista abierta a los cerros de Jujuy.",
-    badge: "Todo Equipado",
-    position: "object-center",
-  },
-];
+const HERO_SLIDES = APARTMENTS[0].heroSlides;
 
-export default function Hero({ onOpenGallery, onOpenBookingModal }) {
+export default function Hero({
+  onOpenGallery,
+  onOpenBookingModal,
+  selectedApartment,
+  onSelectApartment,
+}) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = selectedApartment?.heroSlides || HERO_SLIDES;
+
+  useEffect(() => {
+    setCurrentSlide(0);
+  }, [selectedApartment?.id]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6500);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   const nextSlide = () =>
-    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () =>
     setCurrentSlide(
-      (prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length,
+      (prev) => (prev - 1 + slides.length) % slides.length,
     );
 
   const scrollToCalculator = (e) => {
@@ -82,7 +67,7 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
       className="relative min-h-[90vh] sm:min-h-screen flex flex-col justify-center items-center bg-stone-950 text-white pt-20 sm:pt-24 lg:pt-24 pb-14 sm:pb-16 overflow-hidden"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {HERO_SLIDES.map((slide, index) => (
+        {slides.map((slide, index) => (
           <div
             key={slide.image}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -107,6 +92,7 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center w-full my-auto py-1 sm:py-2">
+        {/* Top Badges & Rating */}
         <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium mb-3 sm:mb-4 lg:mb-5 text-stone-200 shadow-xl reveal-init reveal-up">
           <span className="flex items-center text-amber-400 gap-1 font-bold">
             <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400" />
@@ -124,18 +110,40 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
           </span>
         </div>
 
-        <div className="min-h-[3.25rem] sm:min-h-[4.5rem] lg:min-h-[5.5rem] xl:min-h-[6.5rem] flex items-center justify-center mb-2 sm:mb-3">
+        {/* Quick Apartment Unit Switcher Pills inside Hero */}
+        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-3 sm:mb-4 bg-stone-900/70 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 shadow-xl">
+          {APARTMENTS.map((apt) => {
+            const isSelected = apt.id === selectedApartment?.id;
+            return (
+              <button
+                key={apt.id}
+                onClick={() => onSelectApartment?.(apt.id)}
+                className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-rose-500 text-white shadow-md shadow-rose-500/40 scale-105"
+                    : "text-stone-300 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                <span>{apt.shortName}</span>
+                <span className="text-[10px] opacity-80">({apt.capacity}p)</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="min-h-13 sm:min-h-18 lg:min-h-22 xl:min-h-26 flex items-center justify-center mb-2 sm:mb-3">
           <h1 className="font-serif-title text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-tight sm:leading-tight drop-shadow-xl max-w-4xl reveal-init reveal-up delay-100">
-            {HERO_SLIDES[currentSlide].title}
+            {slides[currentSlide]?.title || slides[0]?.title}
           </h1>
         </div>
 
-        <div className="min-h-[2.5rem] sm:min-h-[2.75rem] lg:min-h-[3.25rem] flex items-center justify-center mb-4 sm:mb-5 lg:mb-6">
+        <div className="min-h-10 sm:min-h-11 lg:min-h-13 flex items-center justify-center mb-4 sm:mb-5 lg:mb-6">
           <p className="text-xs sm:text-base lg:text-lg text-stone-200 max-w-2xl font-light leading-relaxed drop-shadow reveal-init reveal-up delay-200">
-            {HERO_SLIDES[currentSlide].subtitle}
+            {slides[currentSlide]?.subtitle || slides[0]?.subtitle}
           </p>
         </div>
 
+        {/* Dynamic Apartment Specs Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 lg:gap-3.5 w-full max-w-4xl xl:max-w-5xl mb-5 sm:mb-7 lg:mb-8 reveal-init reveal-scale delay-300">
           <div className="bg-stone-900/60 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:px-3.5 sm:py-2.5 lg:px-4 lg:py-3 flex items-center gap-2.5 sm:gap-3 text-left shadow-lg hover:border-white/30 transition-all">
             <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
@@ -146,7 +154,7 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
                 Capacidad
               </p>
               <p className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-                Hasta 4 pers.
+                Hasta {selectedApartment?.capacity || 4} pers.
               </p>
             </div>
           </div>
@@ -160,7 +168,10 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
                 Dormitorios
               </p>
               <p className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-                2 Habitaciones
+                {selectedApartment?.bedrooms || 2}{" "}
+                {selectedApartment?.bedrooms === 1
+                  ? "Ambiente"
+                  : "Habitaciones"}
               </p>
             </div>
           </div>
@@ -174,7 +185,10 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
                 Baños
               </p>
               <p className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-                2 en Suite
+                {selectedApartment?.bathrooms || 2}{" "}
+                {selectedApartment?.bathrooms === 1
+                  ? "Baño Privado"
+                  : "en Suite"}
               </p>
             </div>
           </div>
@@ -188,7 +202,7 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
                 Superficie
               </p>
               <p className="text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-                66 m² + Balcón
+                {selectedApartment?.surfaceM2 || 66} m² + Balcón
               </p>
             </div>
           </div>
@@ -209,12 +223,12 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/25 text-white font-semibold px-5 py-3 sm:px-6 sm:py-3.5 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm lg:text-base cursor-pointer"
           >
             <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300" />
-            <span>Ver Fotos del Depto</span>
+            <span>Ver Fotos ({selectedApartment?.shortName || "Unidad"})</span>
           </button>
         </div>
 
         <div className="flex sm:hidden items-center gap-2 mt-4">
-          {HERO_SLIDES.map((_, i) => (
+          {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentSlide(i)}
@@ -246,10 +260,10 @@ export default function Hero({ onOpenGallery, onOpenBookingModal }) {
 
       <div className="hidden sm:flex absolute bottom-3 sm:bottom-4 lg:bottom-5 left-5 sm:left-8 z-20 items-center gap-2 bg-stone-900/75 backdrop-blur-md border border-white/20 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-xl">
         <span className="text-[10px] sm:text-[11px] text-stone-300 font-mono font-semibold">
-          0{currentSlide + 1} / 0{HERO_SLIDES.length}
+          0{currentSlide + 1} / 0{slides.length}
         </span>
         <div className="flex items-center gap-1.5 ml-1">
-          {HERO_SLIDES.map((_, i) => (
+          {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentSlide(i)}

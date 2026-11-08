@@ -16,9 +16,12 @@ import {
   Layers,
   Wind,
 } from "lucide-react";
-import { AMENITIES, APARTMENT_INFO } from "../data/apartmentData";
+import { AMENITIES, APARTMENTS } from "../data/apartmentData";
 
-export default function FeaturesAndAmenities() {
+export default function FeaturesAndAmenities({ selectedApartment }) {
+  const apt = selectedApartment || APARTMENTS[0];
+  const isGorriti = apt.id === "domus-centro";
+
   const getIcon = (iconName) => {
     switch (iconName) {
       case "Wifi":
@@ -60,13 +63,13 @@ export default function FeaturesAndAmenities() {
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-init reveal-up">
           <div className="inline-flex items-center gap-2 bg-rose-500/20 text-rose-300 border border-rose-500/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5" />
-            Todo Incluido
+            <span>Todo Incluido · {apt.shortName}</span>
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
             Servicios y Comodidades Pensadas para Vos
           </h2>
           <p className="mt-4 text-base sm:text-lg text-stone-300 font-light">
-            Disfrutá de una estadía sin sorpresas ni costos ocultos. Todos los
+            Disfrutá de una estadía sin sorpresas ni costos ocultos en {apt.shortName}. Todos los
             servicios están totalmente cubiertos.
           </p>
         </div>
@@ -153,23 +156,23 @@ export default function FeaturesAndAmenities() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             <div className="border-r border-stone-700/80 last:border-none pr-4">
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                3
+                {isGorriti ? "3" : "1"}
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
-                Ambientes Principales
+                {isGorriti ? "Ambientes Principales" : "Ambiente Estudio Integrado"}
               </p>
             </div>
             <div className="border-r border-stone-700/80 last:border-none pr-4">
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                2
+                {isGorriti ? "2" : "King"}
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
-                Dormitorios con Baño
+                {isGorriti ? "Dormitorios con Baño" : "Sommier de Alta Gama"}
               </p>
             </div>
             <div className="border-r border-stone-700/80 last:border-none pr-4">
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                66 m²
+                {apt.surfaceM2} m²
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
                 Superficie Cubierta
@@ -177,10 +180,10 @@ export default function FeaturesAndAmenities() {
             </div>
             <div>
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                Piso Alto
+                {isGorriti ? "Piso 4" : "Cómoda"}
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
-                Con Ascensor y Balcón
+                {isGorriti ? "Con Ascensor y Balcón" : "Kitchenette & Escritorio"}
               </p>
             </div>
           </div>

@@ -345,6 +345,10 @@ export default function ContactForm() {
                     </>
                   )}
                 </button>
+
+                <p className="text-[11px] text-stone-400 text-center mt-2.5">
+                  🔒 Tus datos están protegidos por la Ley 25.326 y solo se usarán para responder a tu consulta.
+                </p>
               </form>
             )}
           </div>
