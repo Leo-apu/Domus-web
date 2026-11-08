@@ -1,7 +1,7 @@
-import { MapPin, Phone, Mail, Clock, Heart } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Heart, Lock } from "lucide-react";
 import { APARTMENT_INFO } from "../data/apartmentData";
 
-export default function Footer({ onOpenPrivacyModal }) {
+export default function Footer({ onOpenPrivacyModal, onNavigateAdmin }) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -42,7 +42,7 @@ export default function Footer({ onOpenPrivacyModal }) {
                   href="#galeria"
                   className="hover:text-rose-400 transition-colors"
                 >
-                  Galería de Fotos (8)
+                  Galería de Fotos
                 </a>
               </li>
               <li>
@@ -63,18 +63,34 @@ export default function Footer({ onOpenPrivacyModal }) {
               </li>
               <li>
                 <a
-                  href="#ubicacion"
+                  href="#calculadora"
                   className="hover:text-rose-400 transition-colors"
                 >
-                  Ubicación & Puntos Cercanos
+                  Cotizador en Vivo
                 </a>
               </li>
               <li>
                 <a
-                  href="#faq"
+                  href="#ubicacion"
                   className="hover:text-rose-400 transition-colors"
                 >
-                  Preguntas Frecuentes
+                  Ubicación & Mapa
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#opiniones"
+                  className="hover:text-rose-400 transition-colors"
+                >
+                  Opiniones de Huéspedes
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contacto"
+                  className="hover:text-rose-400 transition-colors"
+                >
+                  Contacto
                 </a>
               </li>
             </ul>
@@ -82,43 +98,56 @@ export default function Footer({ onOpenPrivacyModal }) {
 
           <div>
             <h4 className="font-serif-title text-base font-bold text-white mb-4">
-              Horario de Atención
+              Información Importante
             </h4>
-            <div className="space-y-3 text-xs sm:text-sm text-stone-400">
-              <div className="flex items-start gap-2.5">
+            <ul className="space-y-3 text-xs sm:text-sm text-stone-400">
+              <li className="flex items-start gap-2">
                 <Clock className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-white font-medium">Lunes a Lunes</p>
-                  <p>09:00 hs a 00:00 hs</p>
-                </div>
-              </div>
-              <p className="text-[11px] text-stone-500 pt-1">
-                Atención continua todos los días del año, incluyendo feriados y
-                fines de semana largos.
-              </p>
-            </div>
+                <span>
+                  <strong className="text-stone-200">Check-in:</strong>{" "}
+                  {APARTMENT_INFO.checkIn}
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Clock className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <span>
+                  <strong className="text-stone-200">Check-out:</strong>{" "}
+                  {APARTMENT_INFO.checkOut}
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+                <span>San Salvador de Jujuy, Jujuy, Argentina</span>
+              </li>
+            </ul>
           </div>
 
-          <div>
-            <h4 className="font-serif-title text-base font-bold text-white mb-4">
-              Ubicación & Contacto
+          <div className="space-y-4">
+            <h4 className="font-serif-title text-base font-bold text-white">
+              Atención Directa
             </h4>
-            <div className="space-y-3 text-xs sm:text-sm text-stone-400">
-              <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                <span>
-                  Gral. San Martín 121, San Salvador de Jujuy, Jujuy, Argentina
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
+            <p className="text-xs text-stone-400">
+              Coordinamos tu reserva sin comisiones de intermediarios y te
+              asesoramos con tu viaje.
+            </p>
+            <div className="space-y-2 pt-1">
+              <a
+                href={APARTMENT_INFO.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-colors shadow-md"
+              >
+                <Phone className="w-3.5 h-3.5 fill-white" />
+                <span>Escribinos por WhatsApp</span>
+              </a>
+              <div>
                 <a
                   href={APARTMENT_INFO.whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-emerald-400 hover:text-emerald-300 font-semibold"
+                  className="text-xs text-stone-400 hover:text-white transition-colors"
                 >
-                  WhatsApp Directo
+                  {APARTMENT_INFO.whatsappPhone}
                 </a>
               </div>
             </div>
@@ -136,6 +165,15 @@ export default function Footer({ onOpenPrivacyModal }) {
               className="text-stone-400 hover:text-rose-400 underline underline-offset-4 transition-colors cursor-pointer"
             >
               Políticas de Privacidad & Términos (Ley 25.326)
+            </button>
+            <span className="hidden sm:inline text-stone-700">|</span>
+            <button
+              onClick={() => onNavigateAdmin && onNavigateAdmin()}
+              className="text-stone-500 hover:text-rose-400 transition-colors cursor-pointer inline-flex items-center gap-1 font-mono text-[11px]"
+              title="Acceso restringido para el dueño"
+            >
+              <Lock className="w-3 h-3" />
+              <span>Acceso Dueño</span>
             </button>
           </div>
 
