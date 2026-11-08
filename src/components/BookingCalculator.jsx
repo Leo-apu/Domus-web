@@ -170,10 +170,14 @@ export default function BookingCalculator({
   return (
     <section
       id="calculadora"
-      className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden"
+      className="py-20 sm:py-24 bg-stone-950 text-white relative overflow-hidden"
     >
+      {/* Ambient Warm Atmosphere (Coherente con la visual de las secciones antes y después) */}
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-amber-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 mesh-gradient-dark opacity-35 pointer-events-none" />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-white rounded-3xl shadow-xl border border-stone-200/90 overflow-hidden reveal-init reveal-up">
+        <div className="bg-white rounded-3xl shadow-2xl shadow-rose-950/40 border border-white/20 overflow-hidden text-stone-800 reveal-init reveal-up">
           {/* Header */}
           <div className="bg-linear-to-r from-stone-900 via-stone-850 to-stone-900 text-white p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
@@ -499,6 +503,11 @@ export default function BookingCalculator({
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Sutil divisor de luz arquitectónico que conecta con la sección siguiente */}
+      <div className="w-full max-w-5xl mx-auto px-4 pt-16 sm:pt-20">
+        <div className="h-px bg-linear-to-r from-transparent via-white/15 to-transparent" />
       </div>
     </section>
   );

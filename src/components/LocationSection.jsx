@@ -20,31 +20,37 @@ export default function LocationSection({
   const mapUrl = activeApartment.googleMapsUrl || APARTMENT_INFO.googleMapsUrl;
   const embedUrl = activeApartment.mapEmbedUrl || APARTMENT_INFO.mapEmbedUrl;
 
-  return (
+    return (
     <section
       id="ubicacion"
-      className="py-20 bg-stone-50 bg-topo-pattern mesh-gradient-warm border-b border-stone-200 relative overflow-hidden"
+      className="py-20 sm:py-24 bg-stone-900 text-white relative overflow-hidden"
     >
+      {/* Ambient Lighting & Atmosphere */}
+      <div className="absolute top-0 right-1/3 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-10 reveal-init reveal-up">
-          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-700 mb-3">
-            <span className="w-5 h-px bg-rose-500/40" />
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 reveal-init reveal-up">
+          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-400 mb-3">
+            <span className="w-5 h-px bg-rose-400/50" />
             <span>ENTORNO & CONECTIVIDAD</span>
-            <span className="w-5 h-px bg-rose-500/40" />
+            <span className="w-5 h-px bg-rose-400/50" />
           </div>
-          <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
+          <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
             Ubicación de{" "}
-            <span className="text-rose-600">{activeApartment.shortName}</span>
+            <span className="font-serif italic font-normal text-rose-400">
+              {activeApartment.shortName}
+            </span>
           </h2>
-          <p className="mt-3 text-base sm:text-lg text-stone-600 font-light">
-            <strong className="text-stone-800 font-semibold">{address}</strong>
+          <p className="mt-3 text-base sm:text-lg text-stone-300 font-light">
+            <strong className="text-white font-semibold">{address}</strong>
             {" · "}
             {activeApartment.zone}. Excelente punto de partida para disfrutar de
             la ciudad y de las excursiones a la Quebrada.
           </p>
 
           {/* Quick Location Switcher Buttons */}
-          <div className="mt-6 inline-flex flex-wrap items-center justify-center p-1.5 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/90 shadow-sm gap-2">
+          <div className="mt-6 inline-flex flex-wrap items-center justify-center p-1.5 bg-stone-800/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg gap-2">
             {APARTMENTS.map((apt) => {
               const isSelected = apt.id === activeApartment.id;
               return (
@@ -53,19 +59,19 @@ export default function LocationSection({
                   onClick={() => onSelectApartment?.(apt.id)}
                   className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                     isSelected
-                      ? "bg-stone-900 text-white shadow-md shadow-stone-900/20 scale-[1.02]"
-                      : "text-stone-600 hover:text-stone-900 hover:bg-stone-100"
+                      ? "bg-white text-stone-950 shadow-md scale-[1.02]"
+                      : "text-stone-300 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   <MapPin
                     className={`w-3.5 h-3.5 ${
-                      isSelected ? "text-rose-400" : "text-stone-400"
+                      isSelected ? "text-rose-600" : "text-stone-400"
                     }`}
                   />
                   <span>{apt.shortName}</span>
                   <span
                     className={`hidden sm:inline text-[11px] ${
-                      isSelected ? "text-stone-300" : "text-stone-500"
+                      isSelected ? "text-stone-600" : "text-stone-400"
                     }`}
                   >
                     ({apt.address.split(",")[0]})
@@ -80,37 +86,37 @@ export default function LocationSection({
           {/* Nearby places list */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-4 reveal-init reveal-left">
             <div className="space-y-3">
-              <h3 className="font-serif-title text-xl font-bold text-stone-900 mb-4 flex items-center gap-2">
-                <Compass className="w-5 h-5 text-rose-600" />
+              <h3 className="font-serif-title text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <Compass className="w-5 h-5 text-rose-400" />
                 <span>Puntos de Interés Cercanos</span>
               </h3>
 
-              <div className="bg-white rounded-2xl border border-stone-200/90 shadow-sm divide-y divide-stone-100 overflow-hidden">
+              <div className="bg-stone-800/60 backdrop-blur-md rounded-2xl border border-white/10 shadow-xl divide-y divide-white/10 overflow-hidden">
                 {places.map((place, idx) => (
                   <div
                     key={idx}
-                    className="p-3.5 sm:p-4 hover:bg-stone-50/80 transition-colors group"
+                    className="p-3.5 sm:p-4 hover:bg-white/5 transition-colors group"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <h4 className="text-sm font-bold text-stone-800 group-hover:text-rose-600 transition-colors">
+                        <h4 className="text-sm font-bold text-stone-100 group-hover:text-rose-400 transition-colors">
                           {place.name}
                         </h4>
-                        <p className="text-xs text-stone-500 mt-0.5">
+                        <p className="text-xs text-stone-400 mt-0.5">
                           {place.desc}
                         </p>
                       </div>
-                      <span className="shrink-0 bg-stone-100 text-stone-700 text-[11px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 font-mono">
-                        <Footprints className="w-3 h-3 text-rose-500" />
+                      <span className="shrink-0 bg-white/10 text-stone-200 text-[11px] font-semibold px-2 py-0.5 rounded-md flex items-center gap-1 font-mono">
+                        <Footprints className="w-3 h-3 text-rose-400" />
                         {place.distance}
                       </span>
                     </div>
 
                     <div className="mt-2 flex items-center justify-between text-[11px] text-stone-400 font-medium">
-                      <span className="text-rose-600 font-semibold">
+                      <span className="text-rose-400 font-semibold">
                         {place.type}
                       </span>
-                      <span className="flex items-center gap-1 text-stone-500">
+                      <span className="flex items-center gap-1 text-stone-400">
                         <Clock className="w-3 h-3" /> {place.time}
                       </span>
                     </div>
@@ -124,25 +130,25 @@ export default function LocationSection({
                 href={mapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold py-3.5 px-5 rounded-2xl text-sm transition-all shadow-md hover:scale-102 cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-3.5 px-5 rounded-2xl text-sm transition-all shadow-lg shadow-rose-950/40 hover:scale-102 cursor-pointer"
               >
-                <Navigation className="w-4 h-4 text-rose-400" />
+                <Navigation className="w-4 h-4 text-white" />
                 <span>Abrir en Google Maps / Cómo llegar</span>
-                <ExternalLink className="w-3.5 h-3.5 text-stone-400" />
+                <ExternalLink className="w-3.5 h-3.5 text-white/70" />
               </a>
             </div>
           </div>
 
           {/* Map Preview */}
-          <div className="lg:col-span-7 bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-xl flex flex-col min-h-95 lg:min-h-120 reveal-init reveal-right">
-            <div className="bg-stone-900 text-white px-5 py-3.5 flex items-center justify-between">
+          <div className="lg:col-span-7 bg-stone-850 rounded-3xl overflow-hidden border border-white/15 shadow-2xl flex flex-col min-h-95 lg:min-h-120 reveal-init reveal-right">
+            <div className="bg-stone-950 text-white px-5 py-3.5 flex items-center justify-between border-b border-white/10">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-rose-500 animate-pulse" />
                 <span className="text-xs font-semibold text-stone-200">
                   {address}
                 </span>
               </div>
-              <span className="text-[11px] bg-white/10 text-stone-300 px-2 py-0.5 rounded font-mono">
+              <span className="text-[11px] bg-white/10 text-stone-300 px-2.5 py-0.5 rounded font-mono">
                 {activeApartment.shortName}
               </span>
             </div>
