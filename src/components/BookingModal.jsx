@@ -180,6 +180,8 @@ export default function BookingModal({
       const payload = {
         ...formData,
         apartmentId: selectedApt.id,
+        checkIn: formData.checkIn && formData.checkIn.includes("-") ? formData.checkIn.split("-").reverse().join("/") : formData.checkIn,
+        checkOut: formData.checkOut && formData.checkOut.includes("-") ? formData.checkOut.split("-").reverse().join("/") : formData.checkOut,
         departamento: selectedApt.name,
         nights,
         submittedAt: new Date().toISOString(),

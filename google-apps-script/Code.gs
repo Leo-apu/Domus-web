@@ -1,9 +1,14 @@
 /**
- * GOOGLE APPS SCRIPT PARA DOMUS ALQUILERES TEMPORARIOS (MULTI-DEPARTAMENTO)
+ * GOOGLE APPS SCRIPT PARA DOMUS ALQUILERES TEMPORARIOS (MULTI-DEPARTAMENTO DINÁMICO)
  *
- * Este script recibe las solicitudes de reserva desde la web, las registra
- * en Google Sheets identificando exactamente el departamento reservado,
- * y verifica la disponibilidad de forma independiente para cada unidad.
+ * Versión 3.0 - Optimizada para el Panel de Control Administrador (Admin CMS)
+ *
+ * Mejoras aplicadas:
+ * 1. Soporte dinámico para N departamentos (no sólo Gorriti o Suite).
+ * 2. Normalización de fechas: siempre consistente en formato DD/MM/YYYY.
+ * 3. Parser robusto de fechas (evita errores con formatos ISO YYYY-MM-DD o DD/MM/YYYY).
+ * 4. Manejo inteligente de Columna M ("Hora solicitud") si existe en la hoja.
+ * 5. Sanitización de enlaces directos a WhatsApp para responder al huésped.
  *
  * ──────────────────────────────────────────────────────────────────────────────
  * INSTRUCCIONES DE INSTALACIÓN / ACTUALIZACIÓN:
@@ -19,16 +24,13 @@
  *    I1: Huéspedes
  *    J1: Estado
  *    K1: Notas
- *    L1: Responder WhatsApp
+ *    L1: Responder WhatsApp (Nota: corregir la 's' de más si decía 'WhastApp')
+ *    M1: [OPCIONAL] Hora solicitud (si la dejas, el script la llenará automáticamente)
  *
  * 2. En la hoja de cálculo, ve a: Extensiones > Apps Script.
  * 3. Reemplaza todo el código por este archivo completo.
  * 4. Haz clic en "Implementar" > "Gestionar implementaciones" > lápiz (editar) >
  *    Versión: "Nueva versión" > Implementar.
- * 5. Si es la primera vez que implementas:
- *    "Nueva implementación" > Tipo: "Aplicación web" > Ejecutar como: "Yo" >
- *    Quién tiene acceso: "Cualquier persona" (Anyone) > Copiar URL /exec y pegar en .env:
- *    VITE_GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/TU_CODIGO/exec
  * ──────────────────────────────────────────────────────────────────────────────
  */
 
@@ -64,8 +66,51 @@ function getEstadoStyle(estado) {
   return styles[estado] || { bg: "#fef3c7", fg: "#b45309" };
 }
 
+/**
+ * Normaliza cualquier formato de fecha a DD/MM/YYYY
+ */
+function normalizeDateStr(val) {
+  if (!val) return "";
+  if (val instanceof Date) {
+    var d = ("0" + val.getDate()).slice(-2);
+    var m = ("0" + (val.getMonth() + 1)).slice(-2);
+    var y = val.getFullYear();
+    return d + "/" + m + "/" + y;
+  }
+  var str = val.toString().trim();
+  // Formato YYYY-MM-DD -> DD/MM/YYYY
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(str)) {
+    var parts = str.split("-");
+    var day = ("0" + parts[2]).slice(-2);
+    var month = ("0" + parts[1]).slice(-2);
+    return day + "/" + month + "/" + parts[0];
+  }
+  return str;
+}
+
+/**
+ * Parsea una celda de fecha con total tolerancia a DD/MM/YYYY, ISO o Date nativo
+ */
+function parseDateRobust(val) {
+  if (!val) return null;
+  if (val instanceof Date) return isNaN(val.getTime()) ? null : val;
+  var str = val.toString().trim();
+  // DD/MM/YYYY
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)) {
+    var p = str.split("/");
+    return new Date(parseInt(p[2], 10), parseInt(p[1], 10) - 1, parseInt(p[0], 10));
+  }
+  // YYYY-MM-DD
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(str)) {
+    var p2 = str.split("-");
+    return new Date(parseInt(p2[0], 10), parseInt(p2[1], 10) - 1, parseInt(p2[2], 10));
+  }
+  var d = new Date(str);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 // ──────────────────────────────────────────────────────────────────────────────
-// doPost: Registra la reserva en Google Sheets con la columna "Departamento"
+// doPost: Registra la reserva en Google Sheets
 // ──────────────────────────────────────────────────────────────────────────────
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -82,19 +127,24 @@ function doPost(e) {
     }
 
     var timestamp = new Date();
-    // Departamento seleccionado por el huésped en la web
+    // Soporte 100% dinámico para cualquier departamento registrado en el Admin CMS
     var departamento =
       data.departamento ||
       data.apartmentName ||
+      data.apartmentTitle ||
       (data.apartmentId === "domus-suite"
         ? "Domus Suite - Av. Párroco Marshke"
-        : "Domus Gorriti - 3 Ambientes");
+        : data.apartmentId === "domus-centro"
+        ? "Domus Gorriti - 3 Ambientes"
+        : data.apartmentId || "Departamento Domus");
 
     var name = data.name || "Sin nombre";
     var phone = data.phone || "Sin teléfono";
     var email = data.email || "Sin email";
-    var checkIn = data.checkIn || "";
-    var checkOut = data.checkOut || "";
+    var checkInRaw = data.checkIn || "";
+    var checkOutRaw = data.checkOut || "";
+    var checkIn = normalizeDateStr(checkInRaw);
+    var checkOut = normalizeDateStr(checkOutRaw);
     var nights = data.nights || 1;
     var guests = data.guests || 2;
     var notes = data.notes || "";
@@ -104,7 +154,7 @@ function doPost(e) {
 
     // ── Enlace personalizado de WhatsApp ────────────────────────────────────
     var waUrl = "";
-    if (cleanPhone) {
+    if (cleanPhone && cleanPhone.length >= 8) {
       var waMsg =
         "Hola " +
         name +
@@ -132,21 +182,31 @@ function doPost(e) {
       waUrl = "https://wa.me/" + cleanPhone + "?text=" + encodedMsg;
     }
 
-    // ── Fila de datos (12 columnas: B = Departamento, J = Estado, L = WhatsApp) ──
+    // ── Fila de datos estándar (12 columnas) ──
     var newRow = [
-      timestamp,
-      departamento, // Columna B
-      name,         // Columna C
-      phone,        // Columna D
-      email,        // Columna E
-      checkIn,      // Columna F
-      checkOut,     // Columna G
-      nights,       // Columna H
-      guests,       // Columna I
-      status,       // Columna J
-      notes,        // Columna K
-      waUrl,        // Columna L
+      timestamp,       // Columna A (Fecha y Hora)
+      departamento,    // Columna B
+      name,            // Columna C
+      phone,           // Columna D
+      email,           // Columna E
+      checkIn,         // Columna F (DD/MM/YYYY)
+      checkOut,        // Columna G (DD/MM/YYYY)
+      nights,          // Columna H
+      guests,          // Columna I
+      status,          // Columna J
+      notes,           // Columna K
+      waUrl,           // Columna L
     ];
+
+    // Si la hoja tiene Columna M ("Hora solicitud"), la completamos para evitar que quede vacía
+    var lastCol = sheet.getLastColumn();
+    if (lastCol >= 13) {
+      var headerM = sheet.getRange(1, 13).getValue();
+      if (headerM && headerM.toString().toLowerCase().indexOf("hora") !== -1) {
+        var horaStr = Utilities.formatDate(timestamp, "America/Argentina/Jujuy", "HH:mm:ss");
+        newRow.push(horaStr);
+      }
+    }
 
     sheet.appendRow(newRow);
     var lastRow = sheet.getLastRow();
@@ -160,7 +220,7 @@ function doPost(e) {
           '=HYPERLINK("' + waUrl + '";"📲 WhatsApp ' + safeName + '")',
         );
     } else {
-      sheet.getRange(lastRow, 12).setValue("Sin número válido");
+      sheet.getRange(lastRow, 12).setValue(phone.indexOf("WhatsApp") !== -1 ? "Lead por Web" : "Sin número válido");
     }
 
     // ── Dropdown de Estado (Columna J = 10) ──
@@ -218,24 +278,24 @@ function doPost(e) {
             "📝 Notas: " +
             notes +
             "\n\n" +
-            "WhatsApp directo: " +
-            (waUrl || "sin número") +
-            "\n\n" +
-            "Revisá la hoja de cálculo para confirmar o rechazar la solicitud.",
+            (waUrl ? "📲 Responder directo por WhatsApp: " + waUrl + "\n\n" : "") +
+            "Podés gestionar los estados y confirmaciones directamente en tu Google Sheet.",
         });
       }
     } catch (mailError) {
-      Logger.log("No se pudo enviar notificación por email: " + mailError);
+      Logger.log("Error al enviar email: " + mailError.toString());
     }
 
     return ContentService.createTextOutput(
       JSON.stringify({
         status: "success",
+        row: lastRow,
         departamento: departamento,
-        message: "Solicitud registrada exitosamente.",
+        message: "Reserva registrada exitosamente en Google Sheets",
       }),
     ).setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
+    Logger.log("Error en doPost: " + error.toString());
     return ContentService.createTextOutput(
       JSON.stringify({ status: "error", message: error.toString() }),
     ).setMimeType(ContentService.MimeType.JSON);
@@ -245,16 +305,9 @@ function doPost(e) {
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// doGet: Disponibilidad INDEPENDIENTE por cada departamento
-//
-// Parámetros:
-//   ?checkIn=YYYY-MM-DD & checkOut=YYYY-MM-DD & apartmentId=domus-gorriti
-//
-// Revisa si las fechas solicitadas están ocupadas SOLO para ESE departamento.
-// Si "Domus Gorriti" está reservado, "Domus Suite" sigue disponible.
+// doGet: Disponibilidad INDEPENDIENTE y DINÁMICA por cada departamento
 // ──────────────────────────────────────────────────────────────────────────────
 function doGet(e) {
-  // Estados que bloquean el calendario
   var ESTADOS_OCUPADO = ["✅ CONFIRMADO", "💰 SEÑADO", "🏠 CHECK-IN REALIZADO"];
 
   var checkIn = e.parameter && e.parameter.checkIn ? e.parameter.checkIn : null;
@@ -269,7 +322,7 @@ function doGet(e) {
     return ContentService.createTextOutput(
       JSON.stringify({
         status: "online",
-        service: "Domus Alquileres - Webhook Activo Multi-Depto ✅",
+        service: "Domus Alquileres - Webhook Activo Multi-Depto v3.0 ✅",
       }),
     ).setMimeType(ContentService.MimeType.JSON);
   }
@@ -277,54 +330,50 @@ function doGet(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = sheet.getDataRange().getValues();
-    var reqIn = new Date(checkIn);
-    var reqOut = new Date(checkOut);
+    var reqIn = parseDateRobust(checkIn);
+    var reqOut = parseDateRobust(checkOut);
 
-    // Formato con 12 columnas:
-    // A(0)=Timestamp, B(1)=Departamento, C(2)=Nombre, F(5)=CheckIn, G(6)=CheckOut, J(9)=Estado
+    if (!reqIn || !reqOut) {
+      return ContentService.createTextOutput(
+        JSON.stringify({ available: true, note: "Fechas no parseables" }),
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
+
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
 
-      // Detección inteligente de columnas (por si la hoja tiene 11 o 12 columnas)
       var rowDept = "";
       var rowIn = null;
       var rowOut = null;
       var estado = "";
 
-      if (row.length >= 12) {
+      if (row.length >= 10) {
         rowDept = (row[1] || "").toString().toLowerCase().trim();
-        rowIn = row[5] ? new Date(row[5]) : null;
-        rowOut = row[6] ? new Date(row[6]) : null;
+        rowIn = parseDateRobust(row[5]);
+        rowOut = parseDateRobust(row[6]);
         estado = (row[9] || "").toString().trim();
-      } else {
-        // Compatibilidad con plantilla anterior de 11 columnas
-        rowIn = row[4] ? new Date(row[4]) : null;
-        rowOut = row[5] ? new Date(row[5]) : null;
-        estado = (row[8] || "").toString().trim();
       }
 
       if (ESTADOS_OCUPADO.indexOf(estado) === -1) continue;
       if (!rowIn || !rowOut) continue;
 
-      // FILTRADO POR DEPARTAMENTO:
-      // Si consultamos por Domus Gorriti, solo chocamos con reservas de Domus Gorriti.
+      // FILTRADO DINÁMICO POR DEPARTAMENTO:
       if (reqApartment && rowDept) {
-        var isGorritiReq =
-          reqApartment.indexOf("gorriti") !== -1 ||
-          reqApartment.indexOf("centro") !== -1;
-        var isGorritiRow =
-          rowDept.indexOf("gorriti") !== -1 ||
-          rowDept.indexOf("centro") !== -1;
+        var cleanReq = reqApartment.replace(/domus/g, "").replace(/[^a-z0-9]/g, "");
+        var cleanRow = rowDept.replace(/domus/g, "").replace(/[^a-z0-9]/g, "");
 
-        var isSuiteReq =
-          reqApartment.indexOf("suite") !== -1 ||
-          reqApartment.indexOf("marshke") !== -1;
-        var isSuiteRow =
-          rowDept.indexOf("suite") !== -1 ||
-          rowDept.indexOf("marshke") !== -1;
-
-        if (isGorritiReq && !isGorritiRow) continue; // No es el mismo depto
-        if (isSuiteReq && !isSuiteRow) continue;     // No es el mismo depto
+        var matches = false;
+        var words = reqApartment.split(/[\s\-_]+/);
+        for (var w = 0; w < words.length; w++) {
+          var word = words[w].replace(/[^a-z0-9]/g, "");
+          if (word.length >= 3 && word !== "domus" && cleanRow.indexOf(word) !== -1) {
+            matches = true;
+            break;
+          }
+        }
+        if (!matches && cleanReq && cleanRow && cleanReq !== cleanRow) {
+          continue; // Pertenecen a departamentos distintos, no hay colisión
+        }
       }
 
       // Solapamiento de fechas: reqIn < rowOut Y reqOut > rowIn
@@ -339,45 +388,40 @@ function doGet(e) {
         return ContentService.createTextOutput(
           JSON.stringify({
             available: false,
-            apartment: rowDept || reqApartment,
+            departamento: row[1],
             conflictIn: fmt(rowIn),
             conflictOut: fmt(rowOut),
+            status: estado,
           }),
         ).setMimeType(ContentService.MimeType.JSON);
       }
     }
 
-    // Fechas disponibles para este departamento
     return ContentService.createTextOutput(
-      JSON.stringify({ available: true, apartment: reqApartment }),
+      JSON.stringify({ available: true }),
     ).setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
+  } catch (error) {
+    Logger.log("Error en doGet: " + error.toString());
     return ContentService.createTextOutput(
-      JSON.stringify({ available: null, error: err.toString() }),
+      JSON.stringify({ available: true, error: error.toString() }),
     ).setMimeType(ContentService.MimeType.JSON);
   }
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// aplicarDropdownsExistentes:
-// Ejecutar manualmente desde Apps Script si deseas actualizar filas viejas
+// onEdit: Actualiza los colores de estado automáticamente al editar en la hoja
 // ──────────────────────────────────────────────────────────────────────────────
-function aplicarDropdownsExistentes() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var lastRow = sheet.getLastRow();
+function onEdit(e) {
+  var range = e.range;
+  var col = range.getColumn();
+  var row = range.getRow();
 
-  if (lastRow < 2) {
-    Logger.log("No hay filas de datos aún.");
-    return;
+  if (row <= 1) return; // Ignora los encabezados
+
+  // Columna J = 10 (Estado)
+  if (col === 10) {
+    var val = range.getValue().toString().trim();
+    var style = getEstadoStyle(val);
+    range.setBackground(style.bg).setFontColor(style.fg).setFontWeight("bold");
   }
-
-  var dropdownRule = SpreadsheetApp.newDataValidation()
-    .requireValueInList(ESTADOS_VALIDOS, true)
-    .setAllowInvalid(false)
-    .setHelpText("Seleccioná el estado actual de esta reserva")
-    .build();
-
-  // Aplica el dropdown a la columna J (columna 10)
-  sheet.getRange(2, 10, lastRow - 1, 1).setDataValidation(dropdownRule);
-  Logger.log("✅ Dropdowns aplicados a la columna de Estado.");
 }
