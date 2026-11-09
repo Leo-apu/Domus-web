@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, Clock, Heart, Lock } from "lucide-react";
+import { MapPin, Phone, Clock, Heart, Lock } from "lucide-react";
 import { APARTMENT_INFO } from "../data/apartmentData";
 
 export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdmin }) {
@@ -13,9 +13,10 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
   };
 
   return (
-    <footer className="bg-stone-950 text-stone-300 border-t border-stone-800">
+    <footer className="bg-stone-950 text-stone-300 border-t border-stone-850">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Col 1: Marca & Presentación */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-md text-white font-serif font-bold text-lg">
@@ -32,6 +33,7 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
             </p>
           </div>
 
+          {/* Col 2: Navegación Rápida */}
           <div>
             <h4 className="font-serif-title text-base font-bold text-white mb-4">
               Navegación
@@ -104,6 +106,7 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
             </ul>
           </div>
 
+          {/* Col 3: Datos de Check-in y Ubicación */}
           <div>
             <h4 className="font-serif-title text-base font-bold text-white mb-4">
               Información Importante
@@ -130,11 +133,12 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
             </ul>
           </div>
 
+          {/* Col 4: Atención Directa & Redes */}
           <div className="space-y-4">
             <h4 className="font-serif-title text-base font-bold text-white">
               Atención Directa
             </h4>
-            <p className="text-xs text-stone-400">
+            <p className="text-xs text-stone-400 leading-relaxed">
               Coordinamos tu reserva sin comisiones de intermediarios y te
               asesoramos con tu viaje.
             </p>
@@ -160,22 +164,25 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
               </div>
             </div>
 
-            {/* Redes Sociales Administrables */}
+            {/* Redes Sociales Administrables con Iconos Blancos de Alta Visibilidad */}
             {(settings.instagramUrl || settings.facebookUrl || settings.tiktokUrl) && (
-              <div className="pt-3 border-t border-stone-800">
-                <span className="block text-[11px] font-mono uppercase text-stone-500 mb-2">
-                  Seguinos en redes
-                </span>
+              <div className="pt-4 border-t border-stone-850">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-3 h-px bg-rose-400/60" />
+                  <span className="text-[11px] font-mono tracking-wider uppercase text-rose-300 font-semibold">
+                    Seguinos en redes
+                  </span>
+                </div>
                 <div className="flex items-center gap-2.5">
                   {settings.instagramUrl && (
                     <a
                       href={settings.instagramUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-lg bg-stone-900 border border-stone-800 hover:border-rose-500 hover:text-rose-400 text-stone-400 flex items-center justify-center transition-all hover:scale-110"
+                      className="w-10 h-10 rounded-xl bg-stone-900 border border-stone-750 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-linear-to-tr hover:from-amber-500 hover:via-rose-500 hover:to-purple-600 hover:border-transparent hover:shadow-lg hover:shadow-rose-950/50"
                       title="Instagram oficial"
                     >
-                      <svg className="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                       </svg>
                     </a>
@@ -185,10 +192,10 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
                       href={settings.facebookUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-lg bg-stone-900 border border-stone-800 hover:border-blue-500 hover:text-blue-400 text-stone-400 flex items-center justify-center transition-all hover:scale-110"
+                      className="w-10 h-10 rounded-xl bg-stone-900 border border-stone-750 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-blue-600 hover:border-transparent hover:shadow-lg hover:shadow-blue-950/50"
                       title="Facebook oficial"
                     >
-                      <svg className="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                       </svg>
                     </a>
@@ -198,10 +205,10 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
                       href={settings.tiktokUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-lg bg-stone-900 border border-stone-800 hover:border-pink-500 hover:text-pink-400 text-stone-400 flex items-center justify-center transition-all hover:scale-110"
+                      className="w-10 h-10 rounded-xl bg-stone-900 border border-stone-750 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-black hover:border-pink-500 hover:shadow-lg hover:shadow-pink-950/50"
                       title="TikTok oficial"
                     >
-                      <svg className="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
                         <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.73 1.47-.07 2.74-.95 3.23-2.34.24-.65.26-1.36.26-2.06V.02h-.48z"/>
                       </svg>
                     </a>
@@ -212,30 +219,33 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-stone-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500 text-center md:text-left">
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-            <p>
-              © {currentYear} Domus Alquileres Temporarios. Todos los derechos reservados.
+        {/* Sub-barra inferior: Limpia, sin saltos raros y con badges bien alineados */}
+        <div className="mt-14 pt-8 border-t border-stone-850 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-400">
+          {/* Lado Izquierdo: Copyright & Acceso Dueño */}
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 text-center md:text-left">
+            <p className="text-stone-400">
+              © {currentYear} <span className="font-semibold text-stone-200">Domus Alquileres Temporarios</span>. Todos los derechos reservados.
             </p>
-            <span className="hidden sm:inline text-stone-700">|</span>
+
             <button
               onClick={() => onOpenPrivacyModal && onOpenPrivacyModal()}
-              className="text-stone-400 hover:text-rose-400 underline underline-offset-4 transition-colors cursor-pointer"
+              className="text-stone-400 hover:text-white transition-colors cursor-pointer hover:underline underline-offset-4"
             >
-              Políticas de Privacidad & Términos (Ley 25.326)
+              Políticas de Privacidad & Términos
             </button>
-            <span className="hidden sm:inline text-stone-700">|</span>
+
             <button
               onClick={() => onNavigateAdmin && onNavigateAdmin()}
-              className="text-stone-500 hover:text-rose-400 transition-colors cursor-pointer inline-flex items-center gap-1 font-mono text-[11px]"
-              title="Acceso restringido para el dueño"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-900 border border-stone-800 text-stone-400 hover:text-rose-400 hover:border-rose-500/40 transition-all cursor-pointer font-mono text-[11px] whitespace-nowrap shadow-xs"
+              title="Panel de control para el propietario"
             >
-              <Lock className="w-3 h-3" />
+              <Lock className="w-3 h-3 text-rose-500" />
               <span>Acceso Dueño</span>
             </button>
           </div>
 
-          <p className="flex items-center justify-center gap-1.5">
+          {/* Lado Derecho: Créditos de Autor */}
+          <div className="flex items-center gap-1.5 text-stone-400 text-xs shrink-0 whitespace-nowrap">
             <span>Desarrollado con</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline" />
             <span>por</span>
@@ -243,11 +253,11 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
               href="https://portfolio-cruz-leandro.netlify.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-stone-300 hover:text-rose-400 font-semibold underline underline-offset-2 transition-colors"
+              className="text-stone-200 hover:text-rose-400 font-semibold underline underline-offset-4 transition-colors"
             >
-              Leandro V. Cruz - Analista Programador
+              Leandro V. Cruz · Analista Programador
             </a>
-          </p>
+          </div>
         </div>
       </div>
     </footer>
