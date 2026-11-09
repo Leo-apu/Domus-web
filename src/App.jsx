@@ -191,6 +191,7 @@ export default function App() {
 
           {/* Location in San Salvador de Jujuy, Maps & Nearby Attractions */}
           <LocationSection
+            apartments={apartments}
             selectedApartment={currentApartment}
             onSelectApartment={setSelectedApartmentId}
           />

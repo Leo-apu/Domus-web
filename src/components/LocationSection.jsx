@@ -11,10 +11,11 @@ import {
 import { NEARBY_PLACES, APARTMENT_INFO, APARTMENTS } from "../data/apartmentData";
 
 export default function LocationSection({
+  apartments = APARTMENTS,
   selectedApartment,
   onSelectApartment,
 }) {
-  const activeApartment = selectedApartment || APARTMENTS[0];
+  const activeApartment = selectedApartment || apartments[0] || APARTMENTS[0];
   const places = activeApartment.nearbyPlaces || NEARBY_PLACES;
   const address = activeApartment.address || APARTMENT_INFO.address;
   const mapUrl = activeApartment.googleMapsUrl || APARTMENT_INFO.googleMapsUrl;
@@ -49,37 +50,39 @@ export default function LocationSection({
             la ciudad y de las excursiones a la Quebrada.
           </p>
 
-          {/* Quick Location Switcher Buttons */}
-          <div className="mt-6 inline-flex flex-wrap items-center justify-center p-1.5 bg-stone-800/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg gap-2">
-            {APARTMENTS.map((apt) => {
-              const isSelected = apt.id === activeApartment.id;
-              return (
-                <button
-                  key={apt.id}
-                  onClick={() => onSelectApartment?.(apt.id)}
-                  className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
-                    isSelected
-                      ? "bg-white text-stone-950 shadow-md scale-[1.02]"
-                      : "text-stone-300 hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  <MapPin
-                    className={`w-3.5 h-3.5 ${
-                      isSelected ? "text-rose-600" : "text-stone-400"
-                    }`}
-                  />
-                  <span>{apt.shortName}</span>
-                  <span
-                    className={`hidden sm:inline text-[11px] ${
-                      isSelected ? "text-stone-600" : "text-stone-400"
+          {/* Quick Location Switcher Buttons (Solo si hay más de 1 unidad activa) */}
+          {apartments.length > 1 && (
+            <div className="mt-6 inline-flex flex-wrap items-center justify-center p-1.5 bg-stone-800/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg gap-2">
+              {apartments.map((apt) => {
+                const isSelected = apt.id === activeApartment.id;
+                return (
+                  <button
+                    key={apt.id}
+                    onClick={() => onSelectApartment?.(apt.id)}
+                    className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+                      isSelected
+                        ? "bg-white text-stone-950 shadow-md scale-[1.02]"
+                        : "text-stone-300 hover:text-white hover:bg-white/10"
                     }`}
                   >
-                    ({apt.address.split(",")[0]})
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                    <MapPin
+                      className={`w-3.5 h-3.5 ${
+                        isSelected ? "text-rose-600" : "text-stone-400"
+                      }`}
+                    />
+                    <span>{apt.shortName}</span>
+                    <span
+                      className={`hidden sm:inline text-[11px] ${
+                        isSelected ? "text-stone-600" : "text-stone-400"
+                      }`}
+                    >
+                      ({apt.address.split(",")[0]})
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">

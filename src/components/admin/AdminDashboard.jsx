@@ -510,9 +510,22 @@ export default function AdminDashboard({ onBackToSite }) {
               </div>
 
               <div>
-                <label className="block text-xs font-mono uppercase text-stone-400 mb-1.5">
-                  Dirección Principal de Contacto
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-mono uppercase text-stone-400">
+                    Dirección Principal de Contacto
+                  </label>
+                  {settings.address && (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address + ", San Salvador de Jujuy, Argentina")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-rose-400 hover:text-rose-300 font-mono inline-flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>Ver en Maps</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
                 <div className="relative">
                   <MapPin className="w-4 h-4 text-stone-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input

@@ -10,6 +10,10 @@ import {
   Plus,
   ArrowUp,
   ArrowDown,
+  MapPin,
+  Navigation,
+  ExternalLink,
+  Compass,
   Image as ImageIcon,
 } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/cloudinary";
@@ -187,6 +191,17 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     });
   };
 
+  const handleOpenGoogleMapsSearch = () => {
+    const query = formData.address
+      ? `${formData.address}, San Salvador de Jujuy, Argentina`
+      : formData.zone
+      ? `${formData.zone}, San Salvador de Jujuy, Argentina`
+      : "San Salvador de Jujuy, Jujuy, Argentina";
+
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.shortName.trim()) {
@@ -198,8 +213,17 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     setErrorMessage("");
 
     try {
+      const autoEmbed =
+        formData.mapEmbedUrl ||
+        (formData.address
+          ? `https://maps.google.com/maps?q=${encodeURIComponent(
+              formData.address + ", San Salvador de Jujuy"
+            )}&hl=es&z=17&output=embed`
+          : "");
+
       const payload = {
         ...formData,
+        mapEmbedUrl: autoEmbed || formData.mapEmbedUrl || "",
         gallery: formData.gallery,
         galleryImages: formData.gallery,
         coverImage: formData.coverImage || formData.gallery[0]?.src || "/images/landing-2.webp",
@@ -389,17 +413,82 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               </div>
             </div>
 
-            {/* 3. Ubicación & Dirección */}
+            {/* 3. Ubicación & Dirección con Asistente de Google Maps */}
             <div className="space-y-4">
-              <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold border-b border-white/10 pb-2">
-                3. Ubicación en San Salvador de Jujuy
-              </h3>
+              <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-rose-400" />
+                  <span>3. Ubicación en San Salvador de Jujuy</span>
+                </h3>
+
+                <button
+                  type="button"
+                  onClick={handleOpenGoogleMapsSearch}
+                  className="inline-flex items-center gap-1.5 text-xs text-rose-400 hover:text-rose-300 font-mono transition-colors cursor-pointer"
+                >
+                  <Navigation className="w-3.5 h-3.5" />
+                  <span>Abrir Google Maps</span>
+                  <ExternalLink className="w-3 h-3" />
+                </button>
+              </div>
+
+              {/* Caja Asistente para ubicar en Maps */}
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-stone-950/90 border border-stone-800 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-1">
+                    <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                      <Compass className="w-3.5 h-3.5 text-amber-400" />
+                      ¿No conocés la dirección exacta o querés ubicarlo en el mapa?
+                    </span>
+                    <p className="text-[11px] text-stone-400 leading-relaxed font-light">
+                      Tocá el botón para abrir Google Maps en Jujuy, buscá el edificio, hacé clic en <strong>Compartir</strong> &gt; <strong>Copiar enlace</strong> y pegalo abajo.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={handleOpenGoogleMapsSearch}
+                      className="inline-flex items-center gap-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all shadow-md cursor-pointer"
+                    >
+                      <MapPin className="w-3.5 h-3.5" />
+                      <span>{formData.address ? "Buscar esta dirección en Maps" : "Ubicar en Google Maps"}</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </button>
+
+                    {formData.googleMapsUrl && (
+                      <a
+                        href={formData.googleMapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold px-3 py-2.5 rounded-xl transition-colors cursor-pointer"
+                        title="Ver enlace actual"
+                      >
+                        <span>Probar enlace</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-mono uppercase text-stone-400 mb-1">
-                    Dirección Exacta
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-mono uppercase text-stone-400">
+                      Dirección Exacta
+                    </label>
+                    {formData.address && (
+                      <button
+                        type="button"
+                        onClick={handleOpenGoogleMapsSearch}
+                        className="text-[10px] text-rose-400 hover:underline inline-flex items-center gap-0.5 cursor-pointer"
+                      >
+                        <span>Ver en Maps</span>
+                        <ExternalLink className="w-2.5 h-2.5" />
+                      </button>
+                    )}
+                  </div>
                   <input
                     type="text"
                     name="address"
@@ -425,17 +514,38 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-mono uppercase text-stone-400 mb-1">
-                    Enlace de Google Maps (Copiar enlace de Maps o compartir)
-                  </label>
-                  <input
-                    type="url"
-                    name="googleMapsUrl"
-                    value={formData.googleMapsUrl}
-                    onChange={handleChange}
-                    placeholder="https://maps.app.goo.gl/..."
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-mono uppercase text-stone-400">
+                      Enlace de Google Maps (URL compartida o enlace directo)
+                    </label>
+                    <span className="text-[10px] text-stone-500 font-mono">
+                      Compartir &gt; Copiar enlace
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="url"
+                      name="googleMapsUrl"
+                      value={formData.googleMapsUrl}
+                      onChange={handleChange}
+                      placeholder="https://maps.app.goo.gl/... o https://maps.google.com/..."
+                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none pr-24"
+                    />
+                    {formData.googleMapsUrl && (
+                      <a
+                        href={formData.googleMapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-xs bg-stone-800 hover:bg-stone-700 text-rose-300 font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
+                      >
+                        <span>Abrir</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-stone-500 mt-1">
+                    Este enlace alimenta el botón "¿Cómo llegar?" y los marcadores en la web para que los huéspedes naveguen con GPS.
+                  </p>
                 </div>
               </div>
             </div>
