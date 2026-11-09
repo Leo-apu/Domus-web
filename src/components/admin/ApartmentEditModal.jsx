@@ -38,7 +38,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
       "WiFi de alta velocidad",
       "Totalmente equipado",
     ],
-    gallery: apartment?.gallery || [],
+    gallery: apartment?.gallery || apartment?.galleryImages || [],
     isActive: apartment?.isActive !== false,
   });
 

@@ -17,7 +17,11 @@ export default function ModernGallery({
   apartment,
   galleryImages,
 }) {
-  const images = galleryImages || apartment?.galleryImages || GALLERY_IMAGES;
+  const images =
+    galleryImages ||
+    apartment?.galleryImages ||
+    apartment?.gallery ||
+    GALLERY_IMAGES;
   const [selectedCategory, setSelectedCategory] = useState("todas");
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
