@@ -24,6 +24,7 @@ import {
 } from "../services/bookingService";
 
 export default function BookingCalculator({
+  apartments = APARTMENTS,
   onOpenBookingModal,
   selectedApartment,
   onSelectApartment,
@@ -33,7 +34,7 @@ export default function BookingCalculator({
   const guestsId = useId();
   const apartmentSelectId = useId();
 
-  const activeApartment = selectedApartment || APARTMENTS[0];
+  const activeApartment = selectedApartment || apartments[0] || APARTMENTS[0];
   const maxCapacity = activeApartment.capacity || 4;
 
   const getTodayString = (offsetDays = 0) => {
@@ -204,8 +205,8 @@ export default function BookingCalculator({
           </div>
 
           <div className="p-6 sm:p-8 lg:p-10">
-            {/* Apartment Selector Pills (Solo si hay más de 1 unidad) */}
-            {APARTMENTS.length > 1 && (
+            {/* Apartment Selector Pills (Solo si hay más de 1 unidad activa) */}
+            {apartments.length > 1 && (
               <div className="mb-8">
               <label
                 htmlFor={apartmentSelectId}
@@ -216,7 +217,7 @@ export default function BookingCalculator({
               </label>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {APARTMENTS.map((apt) => {
+                {apartments.map((apt) => {
                   const isSelected = apt.id === activeApartment.id;
                   return (
                     <button

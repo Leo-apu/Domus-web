@@ -13,6 +13,7 @@ import {
 import { APARTMENTS } from "../data/apartmentData";
 
 export default function ApartmentSelector({
+  apartments = APARTMENTS,
   selectedApartmentId,
   onSelectApartment,
   onOpenBookingModal,
@@ -35,7 +36,7 @@ export default function ApartmentSelector({
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 reveal-init reveal-up">
           <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-amber-800 mb-3">
             <span className="w-5 h-px bg-amber-600/40" />
-            <span>NUESTRAS 2 UNIDADES EXCLUSIVAS</span>
+            <span>NUESTRAS {apartments.length} UNIDADES EXCLUSIVAS</span>
             <span className="w-5 h-px bg-amber-600/40" />
           </div>
           <h2 className="font-serif-title text-2xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
@@ -43,13 +44,12 @@ export default function ApartmentSelector({
             <span className="font-serif italic font-normal text-rose-600">Jujuy</span>
           </h2>
           <p className="mt-3 text-stone-600 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed font-light">
-            Elegí entre nuestro amplio departamento de 3 ambientes sobre Av. Gorriti 613 (a pasos del Parque Xibi Xibi)
-            o nuestra Suite Boutique con salida directa a rutas (Av. Párroco Marshke 516).
+            Alojamientos temporarios de categoría en San Salvador de Jujuy, pensados para el descanso de familias, parejas y profesionales.
           </p>
 
           {/* Quick interactive tab bar switcher */}
           <div className="mt-6 sm:mt-8 inline-flex p-1.5 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/90 shadow-md gap-1 sm:gap-2 max-w-full overflow-x-auto">
-            {APARTMENTS.map((apt) => {
+            {apartments.map((apt) => {
               const isSelected = apt.id === selectedApartmentId;
               return (
                 <button
@@ -77,9 +77,9 @@ export default function ApartmentSelector({
           </div>
         </div>
 
-        {/* 2 Department Cards Grid - Centered & Spacious */}
-        <div className="grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto gap-6 sm:gap-8 items-stretch">
-          {APARTMENTS.map((apt) => {
+        {/* Department Cards Grid - Centered & Spacious */}
+        <div className={`grid grid-cols-1 ${apartments.length === 2 ? 'md:grid-cols-2' : apartments.length >= 3 ? 'md:grid-cols-3' : 'max-w-2xl'} max-w-5xl mx-auto gap-6 sm:gap-8 items-stretch`}>
+          {apartments.map((apt) => {
             const isSelected = apt.id === selectedApartmentId;
             return (
               <div

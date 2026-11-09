@@ -142,15 +142,17 @@ export default function App() {
         <main className="flex-1">
           {/* Hero Section with Slider, Quick Stats & Unit Switcher */}
           <Hero
+            apartments={apartments}
             onOpenGallery={handleOpenGallery}
             onOpenBookingModal={handleOpenBookingModal}
             selectedApartment={currentApartment}
             onSelectApartment={setSelectedApartmentId}
           />
 
-          {/* 🏢 Interactive Catalog / Selector of Apartments (Solo si hay más de 1) */}
+          {/* 🏢 Interactive Catalog / Selector of Apartments (Solo si hay más de 1 activa) */}
           {apartments.length > 1 && (
             <ApartmentSelector
+              apartments={apartments}
               selectedApartmentId={selectedApartmentId}
               onSelectApartment={setSelectedApartmentId}
               onOpenBookingModal={handleOpenBookingModal}
@@ -181,6 +183,7 @@ export default function App() {
 
           {/* Stay & Price Calculator with WhatsApp Direct Booking & Google Sheets Action */}
           <BookingCalculator
+            apartments={apartments}
             onOpenBookingModal={handleOpenBookingModal}
             selectedApartment={currentApartment}
             onSelectApartment={setSelectedApartmentId}
@@ -223,6 +226,7 @@ export default function App() {
 
         {/* Google Sheets Booking Request Modal */}
         <BookingModal
+          apartments={apartments}
           isOpen={isBookingModalOpen}
           onClose={() => setIsBookingModalOpen(false)}
           initialCheckIn={bookingData.checkIn}

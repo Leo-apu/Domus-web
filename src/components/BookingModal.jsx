@@ -26,6 +26,7 @@ import {
 import { APARTMENT_INFO, APARTMENTS } from "../data/apartmentData";
 
 export default function BookingModal({
+  apartments = APARTMENTS,
   isOpen,
   onClose,
   initialCheckIn = "",
@@ -316,14 +317,14 @@ export default function BookingModal({
                     value={apartmentId}
                     onChange={(e) => {
                       setApartmentId(e.target.value);
-                      const apt = APARTMENTS.find((a) => a.id === e.target.value);
+                      const apt = apartments.find((a) => a.id === e.target.value);
                       if (apt && formData.guests > apt.capacity) {
                         setFormData((prev) => ({ ...prev, guests: apt.capacity }));
                       }
                     }}
                     className="w-full bg-stone-50 border border-stone-200 text-stone-800 text-xs sm:text-sm font-semibold rounded-xl pl-10 pr-4 py-2.5 focus:ring-2 focus:ring-rose-500 focus:outline-none cursor-pointer"
                   >
-                    {APARTMENTS.map((apt) => (
+                    {apartments.map((apt) => (
                       <option key={apt.id} value={apt.id}>
                         {apt.name} (Hasta {apt.capacity} huéspedes)
                       </option>

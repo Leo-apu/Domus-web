@@ -9,6 +9,7 @@ import { APARTMENTS } from "../data/apartmentData";
 const HERO_SLIDES = APARTMENTS[0].heroSlides;
 
 export default function Hero({
+  apartments = APARTMENTS,
   onOpenGallery,
   onOpenBookingModal,
   selectedApartment,
@@ -87,10 +88,10 @@ export default function Hero({
           </span>
         </div>
 
-        {/* Selector de Unidades Minimalista (Solo si hay más de 1 unidad) */}
-        {APARTMENTS.length > 1 && (
+        {/* Selector de Unidades Minimalista (Solo si hay más de 1 unidad activa) */}
+        {apartments.length > 1 && (
           <div className="flex items-center justify-center gap-1.5 mb-3 sm:mb-4 bg-stone-900/60 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-lg">
-            {APARTMENTS.map((apt) => {
+            {apartments.map((apt) => {
               const isSelected = apt.id === selectedApartment?.id;
               return (
                 <button
