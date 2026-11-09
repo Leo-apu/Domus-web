@@ -223,7 +223,7 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
             </div>
             <div>
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                {apt.floor || (isGorriti ? "Piso 4" : "Cómoda")}
+                {apt.floor || (isGorriti ? "Piso 4 - Al frente con balcón" : "Planta Cómoda")}
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
                 {apt.zone || "Excelente Ubicación"}

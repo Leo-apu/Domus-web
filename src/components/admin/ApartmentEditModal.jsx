@@ -73,7 +73,11 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     bedrooms: apartment?.bedrooms || 1,
     bathrooms: apartment?.bathrooms || 1,
     surfaceM2: apartment?.surfaceM2 || 45,
-    floor: apartment?.floor || "Piso 1",
+    floor:
+      apartment?.floor ||
+      (apartment?.id === "domus-suite"
+        ? "Planta cómoda y luminosa"
+        : "Piso 4 - Al frente con balcón"),
     basePrice: apartment?.basePrice || 45000,
     address: apartment?.address || "San Salvador de Jujuy, Jujuy",
     zone: apartment?.zone || "Centro",
@@ -573,6 +577,24 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:border-rose-500 focus:outline-none"
                   />
                 </div>
+              </div>
+
+              {/* Piso / Nivel y Orientación del departamento */}
+              <div className="pt-1">
+                <label className="block text-[11px] font-mono uppercase text-stone-400 mb-1 flex items-center justify-between">
+                  <span>Piso / Nivel & Vista en el Edificio</span>
+                  <span className="text-[10px] text-stone-500 font-normal">
+                    Visible en la tarjeta de especificaciones (ej: "Piso 4 - Al frente con balcón")
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  name="floor"
+                  value={formData.floor}
+                  onChange={handleChange}
+                  placeholder="Ej: Piso 4 - Al frente con balcón / Planta baja cómoda"
+                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none font-medium"
+                />
               </div>
             </div>
 
