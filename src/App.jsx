@@ -21,7 +21,7 @@ import { Loader2 } from "lucide-react";
 
 // Módulo de Administración & Autenticación (Lazy loaded para rendimiento CWV óptimo)
 import { AuthProvider } from "./context/AuthContext";
-import { subscribeToApartments } from "./services/apartmentService";
+import { subscribeToApartments, getSiteSettings } from "./services/apartmentService";
 
 const AdminPage = lazy(() => import("./components/admin/AdminPage"));
 
@@ -75,6 +75,15 @@ export default function App() {
     });
 
     return () => unsubscribe();
+  }, []);
+
+  // 2.1 Carga de configuración general (redes sociales, contacto directo)
+  const [siteSettings, setSiteSettings] = useState(null);
+
+  useEffect(() => {
+    getSiteSettings().then((data) => {
+      if (data) setSiteSettings(data);
+    });
   }, []);
 
   // 3. Modales y estados de reserva
@@ -214,6 +223,7 @@ export default function App() {
 
         {/* Footer */}
         <Footer
+          siteSettings={siteSettings}
           onOpenPrivacyModal={() => setIsPrivacyModalOpen(true)}
           onNavigateAdmin={() => navigate("/admin")}
         />

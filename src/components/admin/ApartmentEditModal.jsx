@@ -16,9 +16,31 @@ import {
   Compass,
   Sparkles,
   Image as ImageIcon,
+  Sliders,
+  CheckCircle2,
+  Wind,
+  Utensils,
+  Coffee,
+  Lock,
+  Car,
+  Bed,
 } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/cloudinary";
-import { generateNearbyPlacesWithGemini } from "../../services/geminiService";
+import { generateNearbyPlacesWithGemini, generateAmenitiesWithGemini } from "../../services/geminiService";
+
+
+const POPULAR_PRESET_AMENITIES = [
+  { name: "WiFi Fibra Óptica 300MB", desc: "Conexión de ultra alta velocidad para streaming y trabajo", icon: "Wifi", category: "Servicios Esenciales" },
+  { name: "Aire Acondicionado Frío/Calor", desc: "Climatización individual en todos los ambientes", icon: "Wind", category: "Confort y Habitabilidad" },
+  { name: "Smart TV 43\" Full HD", desc: "Con Netflix, YouTube y aplicaciones de streaming", icon: "Tv", category: "Confort y Habitabilidad" },
+  { name: "Sommier King Size", desc: "Colchón de resortes pocket de alta gama con sábanas de percal", icon: "Bed", category: "Confort y Habitabilidad" },
+  { name: "Cocina Totalmente Equipada", desc: "Horno, anafes a gas, vajilla completa para 4 personas", icon: "Utensils", category: "Cocina y Gastronomía" },
+  { name: "Heladera con Freezer", desc: "Capacidad familiar para estadías prolongadas", icon: "Refrigerator", category: "Cocina y Gastronomía" },
+  { name: "Cafetera y Pava Eléctrica", desc: "Kit de bienvenida con infusiones de cortesía", icon: "Coffee", category: "Cocina y Gastronomía" },
+  { name: "Cochera Cubierta Privada", desc: "Portón automático con control remoto incluido", icon: "Car", category: "Servicios Esenciales" },
+  { name: "Check-in Autónomo 24hs", desc: "Cerradura digital con clave personalizada", icon: "Lock", category: "Servicios Esenciales" },
+  { name: "Ropa Blanca y Toallas", desc: "Juego completo de toallas y toallones de puro algodón", icon: "Sparkles", category: "Servicios Esenciales" },
+];
 
 export default function ApartmentEditModal({ apartment, onSave, onClose }) {
   const isEditing = !!apartment?.id;
@@ -65,6 +87,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     ],
     gallery: initialGallery,
     nearbyPlaces: apartment?.nearbyPlaces || [],
+    amenities: apartment?.amenities || [],
     isActive: apartment?.isActive !== false,
   });
 
@@ -75,6 +98,8 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
   const [isSaving, setIsSaving] = useState(false);
   const [isGeneratingNearby, setIsGeneratingNearby] = useState(false);
   const [nearbySuccessMessage, setNearbySuccessMessage] = useState("");
+  const [isGeneratingAmenities, setIsGeneratingAmenities] = useState(false);
+  const [amenitiesSuccessMessage, setAmenitiesSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -207,6 +232,80 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
+  
+  const handleGenerateAmenitiesWithAI = async () => {
+    setIsGeneratingAmenities(true);
+    setErrorMessage("");
+    setAmenitiesSuccessMessage("");
+    try {
+      const generated = await generateAmenitiesWithGemini(
+        formData.name || formData.shortName,
+        formData.type,
+        formData.bedrooms,
+        formData.bathrooms
+      );
+      setFormData((prev) => ({
+        ...prev,
+        amenities: generated,
+      }));
+      setAmenitiesSuccessMessage(`¡Gemini generó ${generated.length} comodidades sugeridas para esta tipología!`);
+      setTimeout(() => setAmenitiesSuccessMessage(""), 5000);
+    } catch (err) {
+      console.error("Gemini amenities error:", err);
+      setErrorMessage(err.message || "No se pudieron generar las comodidades con IA.");
+    } finally {
+      setIsGeneratingAmenities(false);
+    }
+  };
+
+  const handleTogglePresetAmenity = (preset) => {
+    setFormData((prev) => {
+      const current = prev.amenities || [];
+      const exists = current.some((a) => a.name.toLowerCase() === preset.name.toLowerCase());
+      if (exists) {
+        return {
+          ...prev,
+          amenities: current.filter((a) => a.name.toLowerCase() !== preset.name.toLowerCase()),
+        };
+      } else {
+        return {
+          ...prev,
+          amenities: [...current, { ...preset }],
+        };
+      }
+    });
+  };
+
+  const handleAddCustomAmenity = () => {
+    setFormData((prev) => ({
+      ...prev,
+      amenities: [
+        ...(prev.amenities || []),
+        {
+          name: "Nueva Comodidad",
+          desc: "Descripción del servicio o equipamiento",
+          icon: "CheckCircle2",
+          category: "Servicios Esenciales",
+        },
+      ],
+    }));
+  };
+
+  const handleUpdateAmenity = (idx, field, value) => {
+    setFormData((prev) => {
+      const updated = [...(prev.amenities || [])];
+      updated[idx] = { ...updated[idx], [field]: value };
+      return { ...prev, amenities: updated };
+    });
+  };
+
+  const handleRemoveAmenity = (idx) => {
+    setFormData((prev) => ({
+      ...prev,
+      amenities: (prev.amenities || []).filter((_, i) => i !== idx),
+    }));
+  };
+
   const handleGenerateNearbyWithAI = async () => {
     if (!formData.address && !formData.zone) {
       setErrorMessage("Ingresá primero la dirección o zona del departamento para generar los lugares cercanos con IA.");
@@ -289,6 +388,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
         gallery: formData.gallery,
         galleryImages: formData.gallery,
         nearbyPlaces: formData.nearbyPlaces || [],
+        amenities: formData.amenities || [],
         coverImage: formData.coverImage || formData.gallery[0]?.src || "/images/landing-2.webp",
       };
       await onSave(payload);
@@ -1053,7 +1153,183 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               )}
             </div>
 
-            {/* 6. Estado de la Unidad */}
+            
+            {/* 6. Comodidades y Equipamiento de la Unidad */}
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+                <div>
+                  <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold flex items-center gap-2">
+                    <Sliders className="w-4 h-4" />
+                    <span>6. Comodidades y Equipamiento de la Unidad</span>
+                  </h3>
+                  <p className="text-[11px] text-stone-400 mt-0.5">
+                    Servicios y equipamiento específicos que se exhiben en la landing pública para este departamento.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    disabled={isGeneratingAmenities}
+                    onClick={handleGenerateAmenitiesWithAI}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold shadow-md hover:shadow-purple-500/20 transition-all cursor-pointer disabled:opacity-50"
+                    title="Generar comodidades ideales según dormitorios, baños y tipo con Gemini IA"
+                  >
+                    {isGeneratingAmenities ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Consultando Gemini...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Sugerir con Gemini IA</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleAddCustomAmenity}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold border border-stone-700 transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>+ Agregar</span>
+                  </button>
+                </div>
+              </div>
+
+              {amenitiesSuccessMessage && (
+                <div className="p-3 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs flex items-center gap-2 animate-in fade-in">
+                  <Check className="w-4 h-4 text-purple-400 shrink-0" />
+                  <span>{amenitiesSuccessMessage}</span>
+                </div>
+              )}
+
+              {/* Botones de selección rápida (Chips) */}
+              <div className="p-4 rounded-2xl bg-stone-950/60 border border-stone-800/80 space-y-2.5">
+                <span className="block text-[11px] font-mono uppercase text-stone-400 font-semibold">
+                  Selección rápida (tocá para activar o desactivar):
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {POPULAR_PRESET_AMENITIES.map((preset, idx) => {
+                    const isSelected = (formData.amenities || []).some(
+                      (a) => a.name.toLowerCase() === preset.name.toLowerCase()
+                    );
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleTogglePresetAmenity(preset)}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer border ${
+                          isSelected
+                            ? "bg-rose-500/20 border-rose-500/60 text-rose-300 shadow-xs"
+                            : "bg-stone-900 border-stone-800 text-stone-400 hover:border-stone-700 hover:text-stone-200"
+                        }`}
+                      >
+                        {isSelected ? <Check className="w-3 h-3 text-rose-400" /> : <Plus className="w-3 h-3 text-stone-500" />}
+                        <span>{preset.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Lista editable de comodidades activas */}
+              {(formData.amenities || []).length === 0 ? (
+                <div className="p-6 rounded-2xl bg-stone-950 border border-stone-800 text-center text-xs text-stone-400">
+                  Esta unidad no tiene comodidades personalizadas. Utilizará las comodidades por defecto del sitio. Tocá "Sugerir con Gemini IA" o los botones rápidos para personalizarla.
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {(formData.amenities || []).map((amenity, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3.5 rounded-2xl bg-stone-950 border border-stone-800/80 hover:border-stone-700 transition-all flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 flex-1 w-full">
+                        {/* Categoría */}
+                        <div className="sm:col-span-3">
+                          <label className="block text-[10px] font-mono uppercase text-stone-500 mb-0.5">Categoría</label>
+                          <select
+                            value={amenity.category || "Servicios Esenciales"}
+                            onChange={(e) => handleUpdateAmenity(idx, "category", e.target.value)}
+                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:border-rose-500 focus:outline-none cursor-pointer"
+                          >
+                            <option value="Servicios Esenciales">Servicios Esenciales</option>
+                            <option value="Confort y Habitabilidad">Confort y Habitabilidad</option>
+                            <option value="Cocina y Gastronomía">Cocina y Gastronomía</option>
+                            <option value="Seguridad y Accesos">Seguridad y Accesos</option>
+                            <option value="Servicios Generales">Servicios Generales</option>
+                          </select>
+                        </div>
+
+                        {/* Nombre */}
+                        <div className="sm:col-span-4">
+                          <label className="block text-[10px] font-mono uppercase text-stone-500 mb-0.5">Nombre del Servicio</label>
+                          <input
+                            type="text"
+                            value={amenity.name || ""}
+                            onChange={(e) => handleUpdateAmenity(idx, "name", e.target.value)}
+                            placeholder="Ej: WiFi Fibra Óptica 300MB"
+                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none font-medium"
+                          />
+                        </div>
+
+                        {/* Icono */}
+                        <div className="sm:col-span-2">
+                          <label className="block text-[10px] font-mono uppercase text-stone-500 mb-0.5">Icono</label>
+                          <select
+                            value={amenity.icon || "CheckCircle2"}
+                            onChange={(e) => handleUpdateAmenity(idx, "icon", e.target.value)}
+                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2 py-1.5 text-xs text-stone-300 focus:border-rose-500 focus:outline-none cursor-pointer font-mono"
+                          >
+                            <option value="Wifi">Wifi</option>
+                            <option value="Tv">Tv</option>
+                            <option value="Wind">Aire / Wind</option>
+                            <option value="Bed">Cama / Bed</option>
+                            <option value="Bath">Baño / Bath</option>
+                            <option value="Utensils">Cocina</option>
+                            <option value="Refrigerator">Heladera</option>
+                            <option value="Coffee">Cafetera</option>
+                            <option value="Zap">Luz / Zap</option>
+                            <option value="Droplets">Agua</option>
+                            <option value="Car">Cochera</option>
+                            <option value="Lock">Cerradura</option>
+                            <option value="Sparkles">Limpieza</option>
+                            <option value="ShieldCheck">Seguridad</option>
+                            <option value="CheckCircle2">Tilde</option>
+                          </select>
+                        </div>
+
+                        {/* Descripción */}
+                        <div className="sm:col-span-3">
+                          <label className="block text-[10px] font-mono uppercase text-stone-500 mb-0.5">Detalle breve</label>
+                          <input
+                            type="text"
+                            value={amenity.desc || ""}
+                            onChange={(e) => handleUpdateAmenity(idx, "desc", e.target.value)}
+                            placeholder="Ej: Alta velocidad en toda la casa"
+                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:border-rose-500 focus:outline-none"
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveAmenity(idx)}
+                        className="shrink-0 p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition-colors cursor-pointer sm:self-end mb-0.5"
+                        title="Eliminar comodidad"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 7. Estado de la Unidad */}
             <div className="pt-2 flex items-center justify-between border-t border-white/10">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input

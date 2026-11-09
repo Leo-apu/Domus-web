@@ -47,6 +47,9 @@ export default function AdminDashboard({ onBackToSite }) {
     address: "Av. Juana Manuela Gorriti 613, San Salvador de Jujuy",
     schedule: "Lunes a Lunes: 09:00 hs a 00:00 hs",
     googleSheetsWebhookUrl: "",
+    instagramUrl: "https://instagram.com/domusalquileres",
+    facebookUrl: "",
+    tiktokUrl: "",
   });
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [savingSettings, setSavingSettings] = useState(false);
@@ -534,6 +537,56 @@ export default function AdminDashboard({ onBackToSite }) {
                     onChange={(e) => setSettings({ ...settings, address: e.target.value })}
                     placeholder="Av. Juana Manuela Gorriti 613, San Salvador de Jujuy"
                     className="w-full bg-stone-950 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              
+              {/* Redes Sociales & Enlaces Públicos */}
+              <div className="pt-4 border-t border-white/10 space-y-4">
+                <h3 className="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold">
+                  Redes Sociales & Enlaces Públicos
+                </h3>
+                <p className="text-[11px] text-stone-400">
+                  Los enlaces configurados aquí se mostrarán automáticamente en el pie de página (footer) de la web.
+                </p>
+
+                <div>
+                  <label className="block text-xs font-mono uppercase text-stone-400 mb-1.5">
+                    Perfil de Instagram
+                  </label>
+                  <input
+                    type="url"
+                    value={settings.instagramUrl || ""}
+                    onChange={(e) => setSettings({ ...settings, instagramUrl: e.target.value })}
+                    placeholder="https://instagram.com/domusjujuy"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono uppercase text-stone-400 mb-1.5">
+                    Página de Facebook
+                  </label>
+                  <input
+                    type="url"
+                    value={settings.facebookUrl || ""}
+                    onChange={(e) => setSettings({ ...settings, facebookUrl: e.target.value })}
+                    placeholder="https://facebook.com/domusalquileres"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono uppercase text-stone-400 mb-1.5">
+                    Cuenta de TikTok
+                  </label>
+                  <input
+                    type="url"
+                    value={settings.tiktokUrl || ""}
+                    onChange={(e) => setSettings({ ...settings, tiktokUrl: e.target.value })}
+                    placeholder="https://tiktok.com/@domusjujuy"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
                   />
                 </div>
               </div>

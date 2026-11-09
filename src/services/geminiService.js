@@ -78,3 +78,79 @@ Debes responder ÚNICAMENTE con un arreglo JSON válido, sin formato markdown ex
     throw new Error("No se pudo interpretar la respuesta de lugares generada.");
   }
 }
+
+/**
+ * Sugiere equipamiento y comodidades ideales para un departamento según su tipología
+ * @param {string} name - Nombre del departamento
+ * @param {string} type - Tipo (ej: "3 Ambientes", "Estudio Boutique")
+ * @param {number} bedrooms - Cantidad de dormitorios
+ * @param {number} bathrooms - Cantidad de baños
+ * @returns {Promise<Array<{name: string, desc: string, icon: string, category: string}>>}
+ */
+export async function generateAmenitiesWithGemini(name, type = "", bedrooms = 1, bathrooms = 1) {
+  if (!GEMINI_API_KEY) {
+    throw new Error("No se encontró la clave VITE_GEMINI_API_KEY en las variables de entorno.");
+  }
+
+  const prompt = `Actúa como diseñador de experiencias de alojamiento turístico en San Salvador de Jujuy.
+Para un departamento de alquiler temporario con las siguientes características:
+- Nombre: "${name || "Departamento Temporario"}"
+- Tipo: "${type || "Departamento"}"
+- Dormitorios: ${bedrooms}
+- Baños: ${bathrooms}
+
+Genera entre 10 y 12 comodidades y servicios clave agrupados en 3 categorías:
+1. "Servicios Esenciales"
+2. "Confort y Habitabilidad"
+3. "Cocina y Gastronomía"
+
+Usa únicamente los siguientes nombres de iconos disponibles:
+["Wifi", "Zap", "Droplets", "Tv", "Bath", "Building2", "Sparkles", "Sun", "Refrigerator", "Coffee", "Utensils", "CheckCircle2", "ShieldCheck", "Flame", "Wind"]
+
+Debes responder ÚNICAMENTE con un arreglo JSON válido sin texto extra, con esta estructura exacta:
+[
+  {
+    "name": "Nombre de la comodidad (ej: WiFi Fibra Óptica 300MB)",
+    "desc": "Descripción concisa de 1 oración destacando el beneficio para el huésped",
+    "icon": "Uno de los iconos de la lista",
+    "category": "Una de las 3 categorías exactas"
+  }
+]`;
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        responseMimeType: "application/json",
+        temperature: 0.2,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error?.message || `Error en la API de Gemini (Código ${response.status})`);
+  }
+
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+  if (!text) {
+    throw new Error("Gemini no devolvió comodidades sugeridas.");
+  }
+
+  try {
+    const amenities = JSON.parse(text);
+    if (!Array.isArray(amenities) || amenities.length === 0) {
+      throw new Error("Formato inválido de comodidades devueltas.");
+    }
+    return amenities;
+  } catch (err) {
+    console.error("Error parseando JSON de comodidades:", text, err);
+    throw new Error("No se pudo interpretar la respuesta de comodidades generada.");
+  }
+}

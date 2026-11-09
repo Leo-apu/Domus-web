@@ -52,6 +52,7 @@ export function normalizeApartment(apt) {
     gallery: normalizedGallery,
     galleryImages: normalizedGallery,
     nearbyPlaces: Array.isArray(apt.nearbyPlaces) ? apt.nearbyPlaces : [],
+    amenities: Array.isArray(apt.amenities) ? apt.amenities : [],
   };
 }
 
@@ -193,6 +194,9 @@ export async function getSiteSettings() {
       address: APARTMENT_INFO.address,
       schedule: APARTMENT_INFO.schedule,
       googleSheetsWebhookUrl: APARTMENT_INFO.googleSheetsWebhookUrl,
+      instagramUrl: "https://instagram.com/domusalquileres",
+      facebookUrl: "",
+      tiktokUrl: "",
     };
   } catch (err) {
     console.warn("Error leyendo settings:", err);

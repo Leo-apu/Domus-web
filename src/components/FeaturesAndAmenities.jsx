@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Wifi,
   Zap,
@@ -15,6 +16,10 @@ import {
   Flame,
   Layers,
   Wind,
+  Car,
+  Lock,
+  Snowflake,
+  Bed,
 } from "lucide-react";
 import { AMENITIES, APARTMENTS } from "../data/apartmentData";
 
@@ -46,10 +51,44 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
         return <Coffee className="w-6 h-6" />;
       case "Utensils":
         return <Utensils className="w-6 h-6" />;
+      case "ShieldCheck":
+        return <ShieldCheck className="w-6 h-6" />;
+      case "Flame":
+        return <Flame className="w-6 h-6" />;
+      case "Layers":
+        return <Layers className="w-6 h-6" />;
+      case "Wind":
+        return <Wind className="w-6 h-6" />;
+      case "Car":
+        return <Car className="w-6 h-6" />;
+      case "Lock":
+        return <Lock className="w-6 h-6" />;
+      case "Snowflake":
+        return <Snowflake className="w-6 h-6" />;
+      case "Bed":
+        return <Bed className="w-6 h-6" />;
       default:
         return <CheckCircle2 className="w-6 h-6" />;
     }
   };
+
+  const amenityGroups = useMemo(() => {
+    if (Array.isArray(apt.amenities) && apt.amenities.length > 0) {
+      const map = new Map();
+      apt.amenities.forEach((item) => {
+        const cat = item.category || "Servicios Principales";
+        if (!map.has(cat)) {
+          map.set(cat, []);
+        }
+        map.get(cat).push(item);
+      });
+      return Array.from(map.entries()).map(([category, items]) => ({
+        category,
+        items,
+      }));
+    }
+    return AMENITIES;
+  }, [apt.amenities]);
 
   return (
     <section
@@ -63,18 +102,19 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
         <div className="text-center max-w-3xl mx-auto mb-16 reveal-init reveal-up">
           <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-300 mb-3">
             <span className="w-5 h-px bg-rose-400/50" />
-            <span>SERVICIOS & EQUIPAMIENTO · {apt.shortName.toUpperCase()}</span>
+            <span>SERVICIOS & EQUIPAMIENTO · {(apt.shortName || apt.name || "UNIDAD").toUpperCase()}</span>
             <span className="w-5 h-px bg-rose-400/50" />
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
             Servicios y Comodidades Pensadas para Vos
           </h2>
           <p className="mt-4 text-base sm:text-lg text-stone-300 font-light">
-            Disfrutá de una estadía sin sorpresas ni costos ocultos en {apt.shortName}. Todos los
+            Disfrutá de una estadía sin sorpresas ni costos ocultos en {apt.shortName || apt.name}. Todos los
             servicios están totalmente cubiertos.
           </p>
         </div>
 
+        {/* 4 pilares destacados de servicios */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
           <div className="bg-white/5 border border-white/10 hover:border-amber-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md reveal-init reveal-scale delay-100">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -106,7 +146,7 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
               WiFi Fibra Óptica
             </h3>
             <p className="text-xs text-stone-400">
-              Alta velocidad 300MB para streaming y trabajo.
+              Alta velocidad para streaming y home office.
             </p>
           </div>
 
@@ -121,8 +161,9 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
           </div>
         </div>
 
+        {/* Grilla dinámica de categorías y comodidades */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {AMENITIES.map((group, gIdx) => (
+          {amenityGroups.map((group, gIdx) => (
             <div
               key={gIdx}
               className="bg-stone-800/60 border border-stone-700/80 rounded-3xl p-6 sm:p-7 backdrop-blur-sm flex flex-col justify-between"
@@ -153,27 +194,28 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
           ))}
         </div>
 
+        {/* Ficha técnica rápida de la unidad seleccionada */}
         <div className="bg-linear-to-r from-stone-800 to-stone-800/90 border border-stone-700 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             <div className="border-r border-stone-700/80 last:border-none pr-4">
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                {isGorriti ? "3" : "1"}
+                {apt.bedrooms || (isGorriti ? "3" : "1")}
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
-                {isGorriti ? "Ambientes Principales" : "Ambiente Estudio Integrado"}
+                {apt.bedrooms && apt.bedrooms > 1 ? `${apt.bedrooms} Dormitorios` : "Ambientes Principales"}
               </p>
             </div>
             <div className="border-r border-stone-700/80 last:border-none pr-4">
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                {isGorriti ? "2" : "King"}
+                {apt.bathrooms || (isGorriti ? "2" : "1")}
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
-                {isGorriti ? "Dormitorios con Baño" : "Sommier de Alta Gama"}
+                {apt.bathrooms && apt.bathrooms > 1 ? `${apt.bathrooms} Baños` : "Baño Privado"}
               </p>
             </div>
             <div className="border-r border-stone-700/80 last:border-none pr-4">
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                {apt.surfaceM2} m²
+                {apt.surfaceM2 || 45} m²
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
                 Superficie Cubierta
@@ -181,10 +223,10 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
             </div>
             <div>
               <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif-title">
-                {isGorriti ? "Piso 4" : "Cómoda"}
+                {apt.floor || (isGorriti ? "Piso 4" : "Cómoda")}
               </span>
               <p className="text-xs sm:text-sm text-stone-400 mt-1 font-medium">
-                {isGorriti ? "Con Ascensor y Balcón" : "Kitchenette & Escritorio"}
+                {apt.zone || "Excelente Ubicación"}
               </p>
             </div>
           </div>
