@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { Lock, Mail, ArrowLeft, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Lock, Mail, ArrowLeft, Loader2, AlertCircle, CheckCircle2, ShieldCheck } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 export default function AdminLogin({ onBackToSite }) {
-  const { login, register, resetPassword } = useAuth();
-  const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const { login, resetPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -18,14 +17,7 @@ export default function AdminLogin({ onBackToSite }) {
     setIsLoading(true);
 
     try {
-      if (isRegisterMode) {
-        if (password.length < 6) {
-          throw new Error("La contraseña debe tener al menos 6 caracteres.");
-        }
-        await register(email.trim(), password);
-      } else {
-        await login(email.trim(), password);
-      }
+      await login(email.trim(), password);
     } catch (err) {
       console.error("Auth error:", err);
       if (
@@ -34,14 +26,10 @@ export default function AdminLogin({ onBackToSite }) {
         err.code === "auth/user-not-found"
       ) {
         setErrorMessage("El correo electrónico o la contraseña ingresada son incorrectos.");
-      } else if (err.code === "auth/email-already-in-use") {
-        setErrorMessage("Este correo ya está registrado. Selecciona 'Iniciar Sesión' para ingresar.");
-      } else if (err.code === "auth/weak-password") {
-        setErrorMessage("La contraseña debe tener al menos 6 caracteres.");
       } else if (err.code === "auth/too-many-requests") {
         setErrorMessage("Demasiados intentos fallidos. Por favor espera unos minutos o restablece tu clave.");
       } else {
-        setErrorMessage(err.message || "No se pudo procesar la solicitud. Verifica tus datos e intenta nuevamente.");
+        setErrorMessage(err.message || "No se pudo iniciar sesión. Verifica tus datos de acceso.");
       }
     } finally {
       setIsLoading(false);
@@ -85,8 +73,9 @@ export default function AdminLogin({ onBackToSite }) {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-400 mb-3">
             <span className="w-4 h-px bg-rose-500/50" />
-            <span>ACCESO EXCLUSIVO</span>
-            <span className="w-5 h-px bg-rose-500/50" />
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>ACCESO EXCLUSIVO ANFITRIÓN</span>
+            <span className="w-4 h-px bg-rose-500/50" />
           </div>
           <h1 className="font-serif-title text-3xl sm:text-4xl font-bold tracking-tight text-white">
             Panel de Administración
@@ -174,32 +163,18 @@ export default function AdminLogin({ onBackToSite }) {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>{isRegisterMode ? "Creando cuenta..." : "Ingresando al sistema..."}</span>
+                  <span>Ingresando al sistema...</span>
                 </>
               ) : (
-                <span>{isRegisterMode ? "Crear Cuenta de Administrador" : "Ingresar al Administrador"}</span>
+                <span>Ingresar al Administrador</span>
               )}
             </button>
-
-            <div className="pt-2 text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsRegisterMode(!isRegisterMode);
-                  setErrorMessage("");
-                }}
-                className="text-xs text-stone-400 hover:text-amber-400 font-mono transition-colors cursor-pointer"
-              >
-                {isRegisterMode
-                  ? "¿Ya tienes cuenta? Iniciar sesión aquí"
-                  : "¿Primer acceso como dueño? Crear cuenta de acceso aquí"}
-              </button>
-            </div>
           </form>
         </div>
 
-        <p className="text-center text-[11px] text-stone-500 mt-6 font-mono">
-          Sistema de Gestión y Control · Domus Jujuy v2.0
+        <p className="text-center text-[11px] text-stone-500 mt-6 font-mono flex items-center justify-center gap-1.5">
+          <Lock className="w-3 h-3 text-stone-600" />
+          <span>Acceso restringido para el propietario · Domus Jujuy</span>
         </p>
       </div>
     </div>
