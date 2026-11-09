@@ -14,9 +14,11 @@ import {
   Navigation,
   ExternalLink,
   Compass,
+  Sparkles,
   Image as ImageIcon,
 } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/cloudinary";
+import { generateNearbyPlacesWithGemini } from "../../services/geminiService";
 
 export default function ApartmentEditModal({ apartment, onSave, onClose }) {
   const isEditing = !!apartment?.id;
@@ -62,6 +64,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
       "Totalmente equipado",
     ],
     gallery: initialGallery,
+    nearbyPlaces: apartment?.nearbyPlaces || [],
     isActive: apartment?.isActive !== false,
   });
 
@@ -70,6 +73,8 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isGeneratingNearby, setIsGeneratingNearby] = useState(false);
+  const [nearbySuccessMessage, setNearbySuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -202,6 +207,63 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
+  const handleGenerateNearbyWithAI = async () => {
+    if (!formData.address && !formData.zone) {
+      setErrorMessage("Ingresá primero la dirección o zona del departamento para generar los lugares cercanos con IA.");
+      return;
+    }
+
+    setIsGeneratingNearby(true);
+    setErrorMessage("");
+    setNearbySuccessMessage("");
+
+    try {
+      const places = await generateNearbyPlacesWithGemini(formData.address, formData.zone);
+      setFormData((prev) => ({
+        ...prev,
+        nearbyPlaces: places,
+      }));
+      setNearbySuccessMessage(`¡Se generaron ${places.length} puntos de interés estratégicos con Gemini! Podés editarlos a tu gusto.`);
+      setTimeout(() => setNearbySuccessMessage(""), 6000);
+    } catch (err) {
+      console.error("Gemini Nearby error:", err);
+      setErrorMessage(err.message || "No se pudieron generar los lugares cercanos con IA.");
+    } finally {
+      setIsGeneratingNearby(false);
+    }
+  };
+
+  const handleUpdateNearbyPlace = (index, field, value) => {
+    setFormData((prev) => {
+      const updated = [...prev.nearbyPlaces];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, nearbyPlaces: updated };
+    });
+  };
+
+  const handleRemoveNearbyPlace = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      nearbyPlaces: prev.nearbyPlaces.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleAddManualNearbyPlace = () => {
+    setFormData((prev) => ({
+      ...prev,
+      nearbyPlaces: [
+        ...prev.nearbyPlaces,
+        {
+          name: "Nuevo punto de interés",
+          distance: "2 cuadras (200 m)",
+          time: "3 minutos a pie",
+          type: "Comercial & Gastronómico",
+          desc: "Excelente opción de cercanía para los huéspedes.",
+        },
+      ],
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.shortName.trim()) {
@@ -226,6 +288,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
         mapEmbedUrl: autoEmbed || formData.mapEmbedUrl || "",
         gallery: formData.gallery,
         galleryImages: formData.gallery,
+        nearbyPlaces: formData.nearbyPlaces || [],
         coverImage: formData.coverImage || formData.gallery[0]?.src || "/images/landing-2.webp",
       };
       await onSave(payload);
@@ -546,6 +609,167 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                   <p className="text-[11px] text-stone-500 mt-1">
                     Este enlace alimenta el botón "¿Cómo llegar?" y los marcadores en la web para que los huéspedes naveguen con GPS.
                   </p>
+                </div>
+
+                {/* Puntos de Interés Cercanos (Gemini AI + Edición manual) */}
+                <div className="sm:col-span-2 pt-3 border-t border-white/10 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <div>
+                      <h4 className="text-xs font-mono uppercase tracking-wider text-rose-300 font-bold flex items-center gap-2">
+                        <Compass className="w-4 h-4 text-amber-400" />
+                        <span>Lugares Cercanos & Conectividad ({formData.nearbyPlaces?.length || 0})</span>
+                      </h4>
+                      <p className="text-[11px] text-stone-400 font-light mt-0.5">
+                        Aparecen a la izquierda del mapa en la web (distancias a pie, parques, comercios y rutas).
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleGenerateNearbyWithAI}
+                        disabled={isGeneratingNearby}
+                        className="inline-flex items-center gap-1.5 bg-linear-to-r from-purple-600 to-rose-600 hover:from-purple-500 hover:to-rose-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-md transition-all cursor-pointer disabled:opacity-50"
+                        title="Generar puntos estratégicos en base a la dirección con Gemini 3.5 Flash Lite"
+                      >
+                        {isGeneratingNearby ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Analizando con IA...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+                            <span>✨ Autogenerar con Gemini IA</span>
+                          </>
+                        )}
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleAddManualNearbyPlace}
+                        className="inline-flex items-center gap-1 bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-semibold px-3 py-2 rounded-xl transition-colors cursor-pointer"
+                        title="Agregar un punto manualmente"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Agregar</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {nearbySuccessMessage && (
+                    <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>{nearbySuccessMessage}</span>
+                    </div>
+                  )}
+
+                  {formData.nearbyPlaces?.length === 0 ? (
+                    <div className="p-5 rounded-2xl bg-stone-950/60 border border-dashed border-stone-800 text-center space-y-2">
+                      <p className="text-xs text-stone-400">
+                        No hay lugares cercanos personalizados aún para este departamento.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleGenerateNearbyWithAI}
+                        disabled={isGeneratingNearby}
+                        className="inline-flex items-center gap-1.5 text-xs text-amber-400 hover:text-amber-300 font-mono font-bold cursor-pointer"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>Hacé clic acá para autogenerarlos con Gemini en 1 segundo</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {formData.nearbyPlaces.map((place, pIdx) => (
+                        <div
+                          key={pIdx}
+                          className="p-3.5 rounded-xl bg-stone-950 border border-stone-800 space-y-2.5 relative group"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[10px] font-mono text-amber-400 font-bold uppercase">
+                              Punto #{pIdx + 1}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveNearbyPlace(pIdx)}
+                              className="text-stone-500 hover:text-rose-400 transition-colors p-1 cursor-pointer"
+                              title="Eliminar este lugar"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div className="sm:col-span-2">
+                              <label className="block text-[10px] font-mono uppercase text-stone-400 mb-1">
+                                Nombre del Lugar
+                              </label>
+                              <input
+                                type="text"
+                                value={place.name || ""}
+                                onChange={(e) => handleUpdateNearbyPlace(pIdx, "name", e.target.value)}
+                                placeholder="Ej: Parque Lineal Xibi Xibi"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-[10px] font-mono uppercase text-stone-400 mb-1">
+                                Categoría / Tipo
+                              </label>
+                              <input
+                                type="text"
+                                value={place.type || ""}
+                                onChange={(e) => handleUpdateNearbyPlace(pIdx, "type", e.target.value)}
+                                placeholder="Ej: Espacio Verde & Recreativo"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-[10px] font-mono uppercase text-stone-400 mb-1">
+                                Distancia
+                              </label>
+                              <input
+                                type="text"
+                                value={place.distance || ""}
+                                onChange={(e) => handleUpdateNearbyPlace(pIdx, "distance", e.target.value)}
+                                placeholder="Ej: 1 cuadra (100 m)"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-[10px] font-mono uppercase text-stone-400 mb-1">
+                                Tiempo Estimado
+                              </label>
+                              <input
+                                type="text"
+                                value={place.time || ""}
+                                onChange={(e) => handleUpdateNearbyPlace(pIdx, "time", e.target.value)}
+                                placeholder="Ej: 2 minutos a pie"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none"
+                              />
+                            </div>
+
+                            <div className="sm:col-span-3">
+                              <label className="block text-[10px] font-mono uppercase text-stone-400 mb-1">
+                                Descripción para el Huésped
+                              </label>
+                              <input
+                                type="text"
+                                value={place.desc || ""}
+                                onChange={(e) => handleUpdateNearbyPlace(pIdx, "desc", e.target.value)}
+                                placeholder="Ej: Paseo urbano con ciclovías, senderos peatonales y áreas de ejercicio junto al río."
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:border-rose-500 focus:outline-none"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

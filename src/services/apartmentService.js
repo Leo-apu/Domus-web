@@ -51,6 +51,7 @@ export function normalizeApartment(apt) {
     description: apt.description || "",
     gallery: normalizedGallery,
     galleryImages: normalizedGallery,
+    nearbyPlaces: Array.isArray(apt.nearbyPlaces) ? apt.nearbyPlaces : [],
   };
 }
 
