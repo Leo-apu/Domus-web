@@ -19,12 +19,24 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
           {/* Col 1: Marca & Presentación */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-md text-white font-serif font-bold text-lg">
-                D
+              <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-md shadow-rose-600/20">
+                <img
+                  src="/images/icon.svg"
+                  alt="Domus Icon"
+                  className="w-8 h-8 object-contain filter brightness-0 invert"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
               </div>
-              <span className="font-serif-title font-bold text-2xl text-white tracking-tight">
-                DOMUS
-              </span>
+              <div className="flex flex-col">
+                <span className="font-serif-title font-bold text-2xl text-white tracking-tight leading-none">
+                  DOMUS
+                </span>
+                <span className="text-[10px] font-mono tracking-[0.2em] text-rose-400 uppercase font-semibold mt-1">
+                  Alquileres Temporarios
+                </span>
+              </div>
             </div>
             <p className="text-xs sm:text-sm text-stone-400 font-light leading-relaxed">
               Departamentos en alquiler temporario en pleno centro de San
