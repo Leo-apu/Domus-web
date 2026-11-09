@@ -1,9 +1,21 @@
-import { useState } from "react";
-import { HelpCircle, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronDown } from "lucide-react";
 import { FAQS } from "../data/apartmentData";
+import { subscribeToFaqs } from "../services/apartmentService";
 
 export default function FAQ() {
+  const [faqs, setFaqs] = useState(FAQS);
   const [openIndex, setOpenIndex] = useState(0);
+
+  useEffect(() => {
+    const unsub = subscribeToFaqs((list) => {
+      if (Array.isArray(list) && list.length > 0) {
+        const activeOnly = list.filter((f) => f.active !== false);
+        setFaqs(activeOnly.length > 0 ? activeOnly : list);
+      }
+    });
+    return () => unsub();
+  }, []);
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? -1 : index);
@@ -31,16 +43,16 @@ export default function FAQ() {
         </div>
 
         <div className="space-y-3.5 reveal-init reveal-up delay-100">
-          {FAQS.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
-                key={index}
+                key={faq.id || index}
                 className="bg-white rounded-2xl border border-stone-200/90 shadow-sm overflow-hidden transition-all duration-200 hover:border-stone-300"
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full text-left px-5 sm:px-6 py-4.5 sm:py-5 flex items-center justify-between gap-4 focus:outline-none"
+                  className="w-full text-left px-5 sm:px-6 py-4.5 sm:py-5 flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
                   aria-expanded={isOpen}
                 >
                   <span className="font-semibold text-stone-800 text-sm sm:text-base">

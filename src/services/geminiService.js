@@ -154,3 +154,72 @@ Debes responder ÚNICAMENTE con un arreglo JSON válido sin texto extra, con est
     throw new Error("No se pudo interpretar la respuesta de comodidades generada.");
   }
 }
+
+/**
+ * Sugiere preguntas frecuentes relevantes para alquileres temporarios en San Salvador de Jujuy
+ * @param {Array} apartments - Lista de departamentos disponibles
+ * @returns {Promise<Array<{q: string, a: string}>>}
+ */
+export async function generateFaqsWithGemini(apartments = []) {
+  if (!GEMINI_API_KEY) {
+    throw new Error("No se encontró la clave VITE_GEMINI_API_KEY en las variables de entorno.");
+  }
+
+  const deptNames = apartments.map((a) => a.name || a.shortName).filter(Boolean).join(", ");
+
+  const prompt = `Actúa como anfitrión profesional de alojamientos temporarios en San Salvador de Jujuy (Argentina).
+Para nuestro negocio de departamentos "Domus Alquileres Jujuy" con las unidades: "${deptNames || "Domus Gorriti y Domus Suite"}",
+genera entre 5 y 6 preguntas frecuentes (FAQ) indispensables para los turistas y huéspedes.
+Debes incluir temas clave como:
+1. Horarios de check-in / check-out y flexibilidad.
+2. Cómo funciona la reserva y medios de pago (seña, transferencias, Mercado Pago, efectivo).
+3. Estacionamiento o cocheras en la zona.
+4. Ropa blanca, toallas y equipamiento.
+5. Política de mascotas o fumar.
+6. Asesoramiento turístico para excursiones a la Quebrada de Humahuaca o Purmamarca.
+
+Debes responder ÚNICAMENTE con un arreglo JSON válido sin texto extra:
+[
+  {
+    "q": "¿Pregunta clara y directa?",
+    "a": "Respuesta completa, cálida y profesional que dé tranquilidad al huésped."
+  }
+]`;
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        responseMimeType: "application/json",
+        temperature: 0.3,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error?.message || `Error en la API de Gemini (${response.status})`);
+  }
+
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+  if (!text) {
+    throw new Error("Gemini no devolvió preguntas sugeridas.");
+  }
+
+  try {
+    const faqs = JSON.parse(text);
+    if (!Array.isArray(faqs) || faqs.length === 0) {
+      throw new Error("Formato inválido de FAQs devueltas.");
+    }
+    return faqs;
+  } catch (err) {
+    console.error("Error parseando FAQs:", text, err);
+    throw new Error("No se pudo interpretar la respuesta de FAQs generada.");
+  }
+}

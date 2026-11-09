@@ -18,6 +18,8 @@ import {
   MapPin,
   Save,
   Image as ImageIcon,
+  MessageSquare,
+  HelpCircle,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -29,6 +31,8 @@ import {
   saveSiteSettings,
 } from "../../services/apartmentService";
 import ApartmentEditModal from "./ApartmentEditModal";
+import TestimonialsAdmin from "./TestimonialsAdmin";
+import FaqsAdmin from "./FaqsAdmin";
 
 export default function AdminDashboard({ onBackToSite }) {
   const { user, logout } = useAuth();
@@ -203,6 +207,30 @@ export default function AdminDashboard({ onBackToSite }) {
           >
             <Building className="w-4 h-4" />
             <span>Departamentos ({apartments.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("testimonials")}
+            className={`py-3 px-4 text-xs font-mono uppercase tracking-wider font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === "testimonials"
+                ? "border-rose-500 text-white"
+                : "border-transparent text-stone-400 hover:text-stone-200"
+            }`}
+          >
+            <MessageSquare className="w-4 h-4" />
+            <span>Testimonios</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("faqs")}
+            className={`py-3 px-4 text-xs font-mono uppercase tracking-wider font-bold border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
+              activeTab === "faqs"
+                ? "border-rose-500 text-white"
+                : "border-transparent text-stone-400 hover:text-stone-200"
+            }`}
+          >
+            <HelpCircle className="w-4 h-4" />
+            <span>Preguntas (FAQ)</span>
           </button>
 
           <button
@@ -441,6 +469,16 @@ export default function AdminDashboard({ onBackToSite }) {
               </div>
             )}
           </div>
+        )}
+
+        {/* TAB: TESTIMONIOS Y RESEÑAS */}
+        {activeTab === "testimonials" && (
+          <TestimonialsAdmin apartments={apartments} />
+        )}
+
+        {/* TAB: PREGUNTAS FRECUENTES (FAQ) */}
+        {activeTab === "faqs" && (
+          <FaqsAdmin apartments={apartments} />
         )}
 
         {/* TAB 2: CONFIGURACIÓN & CONTACTO */}

@@ -9,11 +9,13 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { APARTMENTS, APARTMENT_INFO } from "../data/apartmentData";
+import { APARTMENTS, APARTMENT_INFO, TESTIMONIALS, FAQS } from "../data/apartmentData";
 
 const APARTMENTS_COLLECTION = "apartments";
 const SETTINGS_COLLECTION = "settings";
 const GENERAL_SETTINGS_DOC = "general";
+const TESTIMONIALS_DOC = "testimonials";
+const FAQS_DOC = "faqs";
 
 /**
  * Normaliza los datos de un departamento asegurando que fotos, portadas,
@@ -213,6 +215,78 @@ export async function saveSiteSettings(settings) {
     docRef,
     {
       ...settings,
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+}
+
+/**
+ * Escucha cambios en tiempo real en los testimonios
+ */
+export function subscribeToTestimonials(callback) {
+  const docRef = doc(db, SETTINGS_COLLECTION, TESTIMONIALS_DOC);
+  return onSnapshot(
+    docRef,
+    (snapshot) => {
+      if (snapshot.exists() && Array.isArray(snapshot.data()?.list)) {
+        callback(snapshot.data().list);
+      } else {
+        callback(TESTIMONIALS);
+      }
+    },
+    (err) => {
+      console.warn("Error leyendo testimonios de Firestore, usando fallback:", err);
+      callback(TESTIMONIALS);
+    }
+  );
+}
+
+/**
+ * Guarda la lista de testimonios
+ */
+export async function saveTestimonials(list) {
+  const docRef = doc(db, SETTINGS_COLLECTION, TESTIMONIALS_DOC);
+  await setDoc(
+    docRef,
+    {
+      list,
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+}
+
+/**
+ * Escucha cambios en tiempo real en las preguntas frecuentes
+ */
+export function subscribeToFaqs(callback) {
+  const docRef = doc(db, SETTINGS_COLLECTION, FAQS_DOC);
+  return onSnapshot(
+    docRef,
+    (snapshot) => {
+      if (snapshot.exists() && Array.isArray(snapshot.data()?.list)) {
+        callback(snapshot.data().list);
+      } else {
+        callback(FAQS);
+      }
+    },
+    (err) => {
+      console.warn("Error leyendo FAQs de Firestore, usando fallback:", err);
+      callback(FAQS);
+    }
+  );
+}
+
+/**
+ * Guarda la lista de preguntas frecuentes
+ */
+export async function saveFaqs(list) {
+  const docRef = doc(db, SETTINGS_COLLECTION, FAQS_DOC);
+  await setDoc(
+    docRef,
+    {
+      list,
       updatedAt: serverTimestamp(),
     },
     { merge: true }
