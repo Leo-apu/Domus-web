@@ -16,6 +16,45 @@ const SETTINGS_COLLECTION = "settings";
 const GENERAL_SETTINGS_DOC = "general";
 
 /**
+ * Normaliza los datos de un departamento asegurando que fotos, portadas,
+ * descripciones y listas estén 100% consistentes tanto para la web como para el Admin CMS.
+ */
+export function normalizeApartment(apt) {
+  if (!apt) return null;
+
+  // Unificamos la galería garantizando que existan tanto 'gallery' como 'galleryImages'
+  const rawList = Array.isArray(apt.gallery) && apt.gallery.length > 0
+    ? apt.gallery
+    : Array.isArray(apt.galleryImages) && apt.galleryImages.length > 0
+    ? apt.galleryImages
+    : [];
+
+  const normalizedGallery = rawList.map((img, idx) => ({
+    id: img.id || `img-${Date.now().toString().slice(-4)}-${idx}`,
+    src: img.src || "",
+    alt: img.alt || img.title || `${apt.shortName || "Departamento"} - Foto`,
+    title: img.title || `Ambiente ${idx + 1}`,
+    category: img.category || "general",
+    description: img.description || "",
+    featured: Boolean(img.featured),
+  }));
+
+  const coverImage =
+    apt.coverImage ||
+    normalizedGallery.find((img) => img.featured)?.src ||
+    normalizedGallery[0]?.src ||
+    "/images/landing-2.webp";
+
+  return {
+    ...apt,
+    coverImage,
+    description: apt.description || "",
+    gallery: normalizedGallery,
+    galleryImages: normalizedGallery,
+  };
+}
+
+/**
  * Escucha cambios en tiempo real en la colección de departamentos.
  * Si Firestore está vacío, usa el catálogo por defecto de apartmentData.js.
  */
@@ -26,27 +65,29 @@ export function subscribeToApartments(onUpdate, onError) {
       colRef,
       (snapshot) => {
         if (!snapshot.empty) {
-          const list = snapshot.docs.map((d) => ({
-            id: d.id,
-            ...d.data(),
-          }));
+          const list = snapshot.docs.map((d) =>
+            normalizeApartment({
+              id: d.id,
+              ...d.data(),
+            })
+          );
           // Ordenamos por orden o por id
           list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
           onUpdate(list);
         } else {
-          // Si la base está vacía todavía, devolvemos el fallback por defecto
-          onUpdate(APARTMENTS);
+          // Si la base está vacía todavía, devolvemos el fallback por defecto normalizado
+          onUpdate(APARTMENTS.map(normalizeApartment));
         }
       },
       (error) => {
         console.warn("⚠️ [Firestore fallback] Error leyendo Firestore, usando datos locales:", error.message);
         if (onError) onError(error);
-        onUpdate(APARTMENTS);
+        onUpdate(APARTMENTS.map(normalizeApartment));
       }
     );
   } catch (err) {
     console.warn("⚠️ [Firestore fallback] No se pudo inicializar listener:", err);
-    onUpdate(APARTMENTS);
+    onUpdate(APARTMENTS.map(normalizeApartment));
     return () => {};
   }
 }
@@ -59,14 +100,16 @@ export async function getApartments() {
     const colRef = collection(db, APARTMENTS_COLLECTION);
     const snapshot = await getDocs(colRef);
     if (!snapshot.empty) {
-      const list = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+      const list = snapshot.docs.map((d) =>
+        normalizeApartment({ id: d.id, ...d.data() })
+      );
       list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
       return list;
     }
-    return APARTMENTS;
+    return APARTMENTS.map(normalizeApartment);
   } catch (error) {
     console.warn("⚠️ Error obteniendo departamentos de Firestore, usando fallback local:", error);
-    return APARTMENTS;
+    return APARTMENTS.map(normalizeApartment);
   }
 }
 
@@ -84,14 +127,15 @@ export async function saveApartment(apartmentData) {
     apartmentData.id = `domus-${cleanId}-${Date.now().toString().slice(-4)}`;
   }
 
-  const docRef = doc(db, APARTMENTS_COLLECTION, apartmentData.id);
+  const normalized = normalizeApartment(apartmentData);
+  const docRef = doc(db, APARTMENTS_COLLECTION, normalized.id);
   const payload = {
-    ...apartmentData,
+    ...normalized,
     updatedAt: serverTimestamp(),
   };
 
   await setDoc(docRef, payload, { merge: true });
-  return apartmentData.id;
+  return normalized.id;
 }
 
 /**
@@ -115,7 +159,7 @@ export async function seedInitialApartmentsIfEmpty() {
     if (snapshot.empty) {
       console.log("🌱 [Firestore Seed] Inicializando departamentos base en Firestore...");
       for (let i = 0; i < APARTMENTS.length; i++) {
-        const apt = APARTMENTS[i];
+        const apt = normalizeApartment(APARTMENTS[i]);
         const docRef = doc(db, APARTMENTS_COLLECTION, apt.id);
         await setDoc(docRef, {
           ...apt,

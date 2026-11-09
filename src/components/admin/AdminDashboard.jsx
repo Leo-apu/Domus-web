@@ -17,6 +17,7 @@ import {
   Clock,
   MapPin,
   Save,
+  Image as ImageIcon,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -303,11 +304,16 @@ export default function AdminDashboard({ onBackToSite }) {
                       </div>
 
                       {/* Info Body */}
-                      <div className="p-5 sm:p-6 space-y-3">
+                      <div className="p-5 sm:p-6 space-y-4">
                         <div>
-                          <span className="text-[10px] font-mono uppercase tracking-wider text-rose-400 font-medium">
-                            {apt.shortName}
-                          </span>
+                          <div className="flex items-center justify-between gap-2 mb-1">
+                            <span className="text-[10px] font-mono uppercase tracking-wider text-rose-400 font-semibold">
+                              {apt.shortName}
+                            </span>
+                            <span className="text-[10px] font-mono text-stone-500">
+                              ID: {apt.id}
+                            </span>
+                          </div>
                           <h3 className="font-serif-title text-xl font-bold text-white">
                             {apt.name}
                           </h3>
@@ -337,30 +343,90 @@ export default function AdminDashboard({ onBackToSite }) {
                           </div>
                         </div>
 
-                        <p className="text-xs text-stone-400 line-clamp-2 leading-relaxed">
-                          {apt.description}
-                        </p>
+                        {/* Descripción de la Unidad */}
+                        <div className="p-3.5 rounded-2xl bg-stone-950/80 border border-stone-800/80 space-y-1.5">
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold block">
+                            Descripción del Departamento:
+                          </span>
+                          <p className="text-xs text-stone-300 leading-relaxed">
+                            {apt.description || "Sin descripción asignada aún."}
+                          </p>
+                        </div>
+
+                        {/* Tira de Fotos de la Galería */}
+                        <div className="space-y-2 pt-1">
+                          <div className="flex items-center justify-between text-xs font-mono">
+                            <span className="text-stone-300 flex items-center gap-1.5 font-semibold">
+                              <ImageIcon className="w-3.5 h-3.5 text-rose-400" />
+                              <span>Fotos del Catálogo ({apt.gallery?.length || 0})</span>
+                            </span>
+                            <span className="text-[10px] text-stone-500">
+                              {apt.gallery?.length > 0 ? "Deslizá para ver todas →" : ""}
+                            </span>
+                          </div>
+
+                          {apt.gallery && apt.gallery.length > 0 ? (
+                            <div className="flex gap-2 overflow-x-auto pb-2 pt-1 scrollbar-thin scrollbar-thumb-stone-800">
+                              {apt.gallery.map((img, idx) => {
+                                const isCover = img.src === apt.coverImage;
+                                return (
+                                  <div
+                                    key={img.id || idx}
+                                    className={`relative shrink-0 w-24 h-18 rounded-xl overflow-hidden border group/thumb bg-stone-950 transition-transform hover:scale-105 ${
+                                      isCover ? "border-amber-400 ring-1 ring-amber-400" : "border-stone-800"
+                                    }`}
+                                    title={`${img.title || "Foto"} - ${img.description || ""}`}
+                                  >
+                                    <img
+                                      src={img.src}
+                                      alt={img.alt || img.title || "Foto"}
+                                      className="w-full h-full object-cover"
+                                      loading="lazy"
+                                    />
+                                    {isCover && (
+                                      <span className="absolute bottom-0 inset-x-0 bg-amber-400 text-stone-950 text-[8px] font-black tracking-wider text-center py-0.5">
+                                        PORTADA
+                                      </span>
+                                    )}
+                                    <div className="absolute inset-0 bg-black/75 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex flex-col justify-end p-1.5">
+                                      <span className="text-[9px] text-white font-bold leading-tight line-clamp-1">
+                                        {img.title || `Foto ${idx + 1}`}
+                                      </span>
+                                      <span className="text-[8px] text-stone-300 line-clamp-1">
+                                        {img.category || "general"}
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            <div className="p-3 rounded-xl bg-stone-950 border border-dashed border-stone-800 text-center text-xs text-stone-500">
+                              No hay fotos cargadas en este departamento.
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
 
                     {/* Bottom Actions */}
                     <div className="p-5 sm:p-6 pt-0 border-t border-white/5 flex items-center justify-between gap-3 mt-2">
-                      <span className="text-[11px] font-mono text-stone-500">
-                        {apt.gallery?.length || 0} fotos en galería
+                      <span className="text-[11px] font-mono text-stone-400">
+                        {apt.gallery?.length || 0} fotos • {apt.highlights?.length || 0} destacados
                       </span>
 
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleOpenEditModal(apt)}
-                          className="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-white text-xs font-bold py-2 px-3.5 rounded-xl transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1.5 bg-linear-to-r from-stone-800 to-stone-700 hover:from-stone-700 hover:to-stone-600 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-md cursor-pointer hover:scale-102"
                         >
-                          <Edit3 className="w-3.5 h-3.5" />
-                          <span>Editar / Fotos</span>
+                          <Edit3 className="w-3.5 h-3.5 text-rose-400" />
+                          <span>Editar Fotos & Textos</span>
                         </button>
 
                         <button
                           onClick={() => handleDelete(apt.id, apt.name)}
-                          className="p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded-xl transition-colors cursor-pointer"
+                          className="p-2.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 rounded-xl transition-colors cursor-pointer"
                           title="Eliminar departamento"
                         >
                           <Trash2 className="w-4 h-4" />

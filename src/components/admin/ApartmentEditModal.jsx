@@ -8,6 +8,8 @@ import {
   Check,
   AlertCircle,
   Plus,
+  ArrowUp,
+  ArrowDown,
   Image as ImageIcon,
 } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/cloudinary";
@@ -15,6 +17,23 @@ import { uploadToCloudinary } from "../../lib/cloudinary";
 export default function ApartmentEditModal({ apartment, onSave, onClose }) {
   const isEditing = !!apartment?.id;
   const fileInputRef = useRef(null);
+
+  // Normalizamos la lista de imágenes para que cada foto tenga id, src, title, category y description garantizados
+  const rawList = Array.isArray(apartment?.gallery) && apartment.gallery.length > 0
+    ? apartment.gallery
+    : Array.isArray(apartment?.galleryImages) && apartment.galleryImages.length > 0
+    ? apartment.galleryImages
+    : [];
+
+  const initialGallery = rawList.map((img, idx) => ({
+    id: img.id || `img-${idx + 1}`,
+    src: img.src || "",
+    alt: img.alt || img.title || `${apartment?.shortName || "Departamento"} - Foto`,
+    title: img.title || `Ambiente ${idx + 1}`,
+    category: img.category || "general",
+    description: img.description || "",
+    featured: Boolean(img.featured),
+  }));
 
   const [formData, setFormData] = useState({
     id: apartment?.id || "",
@@ -32,13 +51,13 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     zone: apartment?.zone || "Centro",
     googleMapsUrl: apartment?.googleMapsUrl || "",
     description: apartment?.description || "",
-    coverImage: apartment?.coverImage || "",
+    coverImage: apartment?.coverImage || initialGallery[0]?.src || "/images/landing-2.webp",
     highlights: apartment?.highlights || [
       "Excelente ubicación",
       "WiFi de alta velocidad",
       "Totalmente equipado",
     ],
-    gallery: apartment?.gallery || apartment?.galleryImages || [],
+    gallery: initialGallery,
     isActive: apartment?.isActive !== false,
   });
 
@@ -102,7 +121,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
           alt: `${formData.shortName || "Departamento"} - Foto`,
           title: file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
           category: "general",
-          description: "Ambiente confortable y equipado",
+          description: "Ambiente confortable, luminoso y totalmente equipado.",
           featured: i === 0 && !formData.coverImage,
         };
 
@@ -132,13 +151,33 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     setFormData((prev) => ({ ...prev, coverImage: imgSrc }));
   };
 
+  const handleUpdatePhoto = (index, field, value) => {
+    setFormData((prev) => {
+      const updated = [...prev.gallery];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, gallery: updated };
+    });
+  };
+
+  const handleMovePhoto = (index, direction) => {
+    setFormData((prev) => {
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= prev.gallery.length) return prev;
+      const updated = [...prev.gallery];
+      const temp = updated[index];
+      updated[index] = updated[targetIndex];
+      updated[targetIndex] = temp;
+      return { ...prev, gallery: updated };
+    });
+  };
+
   const handleDeleteImage = (index) => {
     setFormData((prev) => {
       const imgToDelete = prev.gallery[index];
       const newGallery = prev.gallery.filter((_, i) => i !== index);
       let newCover = prev.coverImage;
       if (imgToDelete?.src === prev.coverImage) {
-        newCover = newGallery[0]?.src || "";
+        newCover = newGallery[0]?.src || "/images/landing-2.webp";
       }
       return {
         ...prev,
@@ -159,7 +198,13 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     setErrorMessage("");
 
     try {
-      await onSave(formData);
+      const payload = {
+        ...formData,
+        gallery: formData.gallery,
+        galleryImages: formData.gallery,
+        coverImage: formData.coverImage || formData.gallery[0]?.src || "/images/landing-2.webp",
+      };
+      await onSave(payload);
       onClose();
     } catch (err) {
       console.error("Save error:", err);
@@ -395,42 +440,52 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               </div>
             </div>
 
-            {/* 4. Descripción */}
+            {/* 4. Descripción del Departamento */}
             <div className="space-y-4">
               <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold border-b border-white/10 pb-2">
-                4. Descripción y Puntos Clave
+                4. Descripción General y Puntos Clave
               </h3>
 
               <div>
-                <label className="block text-xs font-mono uppercase text-stone-400 mb-1">
-                  Descripción General
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-mono uppercase text-stone-400">
+                    Descripción del Departamento *
+                  </label>
+                  <span className="text-[11px] font-mono text-stone-500">
+                    {formData.description?.length || 0} caracteres
+                  </span>
+                </div>
                 <textarea
-                  rows={3}
+                  rows={4}
+                  required
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  placeholder="Detallá las comodidades, luminosidad y ventajas del departamento..."
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl p-3 text-sm text-white focus:border-rose-500 focus:outline-none resize-y"
+                  placeholder="Describí los ambientes, luminosidad, distribución, equipamiento y por qué es ideal para los huéspedes..."
+                  className="w-full bg-stone-950 border border-stone-800 rounded-xl p-3.5 text-sm text-white focus:border-rose-500 focus:outline-none resize-y leading-relaxed"
                 />
+                <p className="text-[11px] text-stone-500 mt-1">
+                  Esta descripción se muestra a los viajeros en el selector de departamentos, en la ficha de reserva y en los resúmenes.
+                </p>
               </div>
 
               {/* Highlights lista */}
               <div>
                 <label className="block text-xs font-mono uppercase text-stone-400 mb-1.5">
-                  Puntos Destacados
+                  Puntos Destacados (Comodidades principales)
                 </label>
                 <div className="space-y-2 mb-2">
                   {formData.highlights.map((h, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between gap-2 bg-stone-950 border border-stone-800 px-3 py-2 rounded-xl text-xs"
+                      className="flex items-center justify-between gap-2 bg-stone-950 border border-stone-800 px-3.5 py-2 rounded-xl text-xs"
                     >
                       <span>• {h}</span>
                       <button
                         type="button"
                         onClick={() => handleRemoveHighlight(i)}
-                        className="text-stone-500 hover:text-rose-400 transition-colors p-1"
+                        className="text-stone-500 hover:text-rose-400 transition-colors p-1 cursor-pointer"
+                        title="Eliminar punto destacado"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -443,8 +498,14 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     type="text"
                     value={newHighlight}
                     onChange={(e) => setNewHighlight(e.target.value)}
-                    placeholder="Agregar punto destacado..."
-                    className="flex-1 bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-white focus:border-rose-500 focus:outline-none"
+                    placeholder="Agregar punto destacado (ej: Cochera opcional, WiFi 300MB)..."
+                    className="flex-1 bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2 text-xs text-white focus:border-rose-500 focus:outline-none"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddHighlight(e);
+                      }
+                    }}
                   />
                   <button
                     type="button"
@@ -458,12 +519,12 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               </div>
             </div>
 
-            {/* 5. Gestor de Fotos con Cloudinary */}
+            {/* 5. Gestor de Fotos y Descripciones Individuales */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
                 <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold flex items-center gap-2">
                   <ImageIcon className="w-4 h-4 text-rose-400" />
-                  <span>5. Galería Fotográfica (Subida Cloudinary)</span>
+                  <span>5. Galería de Fotos y Descripciones de Ambientes</span>
                 </h3>
                 <span className="text-xs font-mono text-stone-400">
                   {formData.gallery.length} fotos cargadas
@@ -504,58 +565,152 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                       <Upload className="w-6 h-6" />
                     </div>
                     <span className="text-xs sm:text-sm font-bold text-white">
-                      Tocá para elegir fotos desde tu celular o computadora
+                      Tocá para subir fotos nuevas desde celular o PC
                     </span>
                     <span className="text-[11px] text-stone-400 font-light">
-                      Formatos JPG, PNG, WebP. Se optimizarán automáticamente.
+                      Formatos JPG, PNG o WebP. Se optimizan automáticamente en Cloudinary.
                     </span>
                   </label>
                 )}
               </div>
 
-              {/* Grid de Fotos Existentes */}
-              {formData.gallery.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-2">
+              {/* Lista editable de cada foto con título, categoría y descripción */}
+              {formData.gallery.length === 0 ? (
+                <div className="p-6 rounded-2xl bg-stone-950 border border-stone-800 text-center text-xs text-stone-400">
+                  No hay fotos cargadas aún en este departamento.
+                </div>
+              ) : (
+                <div className="space-y-4 pt-1">
                   {formData.gallery.map((img, idx) => {
                     const isCover = img.src === formData.coverImage;
                     return (
                       <div
                         key={img.id || idx}
-                        className={`relative group rounded-xl overflow-hidden border aspect-4/3 bg-stone-950 ${
-                          isCover ? "border-amber-400 ring-2 ring-amber-400" : "border-stone-800"
+                        className={`p-4 rounded-2xl bg-stone-950 border transition-all ${
+                          isCover
+                            ? "border-amber-400/80 shadow-lg shadow-amber-950/20 ring-1 ring-amber-400/40"
+                            : "border-stone-800 hover:border-stone-700"
                         }`}
                       >
-                        <img
-                          src={img.src}
-                          alt={img.alt || "Foto depto"}
-                          className="w-full h-full object-cover"
-                        />
+                        <div className="flex flex-col sm:flex-row gap-4 items-start">
+                          {/* Columna Izquierda: Thumbnail y acciones rápidas */}
+                          <div className="shrink-0 w-full sm:w-44 space-y-2">
+                            <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-stone-900 border border-stone-800">
+                              <img
+                                src={img.src}
+                                alt={img.alt || img.title || "Foto"}
+                                className="w-full h-full object-cover"
+                              />
+                              {isCover && (
+                                <span className="absolute top-2 left-2 bg-amber-400 text-stone-950 text-[10px] font-extrabold px-2 py-0.5 rounded shadow">
+                                  ★ PORTADA
+                                </span>
+                              )}
+                              <span className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-xs text-stone-300 text-[10px] font-mono px-1.5 py-0.5 rounded">
+                                #{idx + 1}
+                              </span>
+                            </div>
 
-                        {isCover && (
-                          <span className="absolute top-2 left-2 bg-amber-400 text-stone-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">
-                            PORTADA
-                          </span>
-                        )}
+                            {/* Acciones de la foto */}
+                            <div className="flex items-center gap-1.5 justify-between">
+                              {!isCover ? (
+                                <button
+                                  type="button"
+                                  onClick={() => handleSetCover(img.src)}
+                                  className="flex-1 inline-flex items-center justify-center gap-1 bg-amber-500/10 hover:bg-amber-500/25 text-amber-400 border border-amber-500/30 text-[10px] font-bold py-1.5 px-2 rounded-lg transition-colors cursor-pointer"
+                                  title="Definir como foto de portada"
+                                >
+                                  <Star className="w-3 h-3" />
+                                  <span>Hacer Portada</span>
+                                </button>
+                              ) : (
+                                <span className="flex-1 text-[10px] font-mono text-amber-400 font-semibold text-center py-1.5">
+                                  Foto Principal
+                                </span>
+                              )}
 
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 p-2">
-                          {!isCover && (
-                            <button
-                              type="button"
-                              onClick={() => handleSetCover(img.src)}
-                              className="p-1.5 rounded-lg bg-amber-400/90 text-stone-950 hover:bg-amber-400 transition-transform hover:scale-110 cursor-pointer"
-                              title="Hacer foto de portada"
-                            >
-                              <Star className="w-4 h-4 fill-stone-950" />
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteImage(idx)}
-                            className="p-1.5 rounded-lg bg-rose-600/90 text-white hover:bg-rose-600 transition-transform hover:scale-110 cursor-pointer"
-                            title="Eliminar foto"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                              <div className="flex items-center gap-1">
+                                <button
+                                  type="button"
+                                  disabled={idx === 0}
+                                  onClick={() => handleMovePhoto(idx, -1)}
+                                  className="p-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 disabled:opacity-30 disabled:hover:bg-stone-800 text-stone-300 transition-colors cursor-pointer"
+                                  title="Subir de posición"
+                                >
+                                  <ArrowUp className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={idx === formData.gallery.length - 1}
+                                  onClick={() => handleMovePhoto(idx, 1)}
+                                  className="p-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 disabled:opacity-30 disabled:hover:bg-stone-800 text-stone-300 transition-colors cursor-pointer"
+                                  title="Bajar de posición"
+                                >
+                                  <ArrowDown className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteImage(idx)}
+                                  className="p-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/30 transition-colors cursor-pointer"
+                                  title="Eliminar foto de la galería"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Columna Derecha: Título, Categoría y Descripción del ambiente */}
+                          <div className="flex-1 w-full space-y-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <div>
+                                <label className="block text-[11px] font-mono uppercase text-stone-400 mb-1">
+                                  Título del Ambiente / Foto
+                                </label>
+                                <input
+                                  type="text"
+                                  value={img.title || ""}
+                                  onChange={(e) => handleUpdatePhoto(idx, "title", e.target.value)}
+                                  placeholder="Ej: Living y Comedor Principal"
+                                  className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-white focus:border-rose-500 focus:outline-none"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-[11px] font-mono uppercase text-stone-400 mb-1">
+                                  Categoría para Filtro Web
+                                </label>
+                                <select
+                                  value={img.category || "general"}
+                                  onChange={(e) => handleUpdatePhoto(idx, "category", e.target.value)}
+                                  className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-200 focus:border-rose-500 focus:outline-none cursor-pointer"
+                                >
+                                  <option value="living">Living y Espacios Sociales</option>
+                                  <option value="dormitorios">Dormitorios</option>
+                                  <option value="cocina">Cocina & Comedor</option>
+                                  <option value="baños">Baños</option>
+                                  <option value="exterior">Balcón / Vistas / Exterior</option>
+                                  <option value="general">General / Servicios</option>
+                                </select>
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="block text-[11px] font-mono uppercase text-stone-400 mb-1 flex items-center justify-between">
+                                <span>Descripción de la Foto / Ambiente</span>
+                                <span className="text-[10px] text-stone-500 font-normal">
+                                  Visible en la galería y lightbox para los visitantes
+                                </span>
+                              </label>
+                              <textarea
+                                rows={2}
+                                value={img.description || ""}
+                                onChange={(e) => handleUpdatePhoto(idx, "description", e.target.value)}
+                                placeholder="Ej: Espacio amplio y luminoso con mesa para 4 personas, Smart TV y ventanal al exterior..."
+                                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:border-rose-500 focus:outline-none resize-y leading-relaxed"
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     );

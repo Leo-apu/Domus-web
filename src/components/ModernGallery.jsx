@@ -53,6 +53,16 @@ export default function ModernGallery({
       name: "Baños",
       count: images.filter((img) => img.category === "baños").length,
     },
+    {
+      id: "exterior",
+      name: "Balcón y Vistas",
+      count: images.filter((img) => img.category === "exterior").length,
+    },
+    {
+      id: "general",
+      name: "General",
+      count: images.filter((img) => img.category === "general").length,
+    },
   ];
 
   const categories = rawCategories.filter(

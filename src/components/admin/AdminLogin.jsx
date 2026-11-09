@@ -3,7 +3,8 @@ import { Lock, Mail, ArrowLeft, Loader2, AlertCircle, CheckCircle2 } from "lucid
 import { useAuth } from "../../context/AuthContext";
 
 export default function AdminLogin({ onBackToSite }) {
-  const { login, resetPassword } = useAuth();
+  const { login, register, resetPassword } = useAuth();
+  const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -17,19 +18,30 @@ export default function AdminLogin({ onBackToSite }) {
     setIsLoading(true);
 
     try {
-      await login(email.trim(), password);
+      if (isRegisterMode) {
+        if (password.length < 6) {
+          throw new Error("La contraseña debe tener al menos 6 caracteres.");
+        }
+        await register(email.trim(), password);
+      } else {
+        await login(email.trim(), password);
+      }
     } catch (err) {
-      console.error("Login error:", err);
+      console.error("Auth error:", err);
       if (
         err.code === "auth/invalid-credential" ||
         err.code === "auth/wrong-password" ||
         err.code === "auth/user-not-found"
       ) {
         setErrorMessage("El correo electrónico o la contraseña ingresada son incorrectos.");
+      } else if (err.code === "auth/email-already-in-use") {
+        setErrorMessage("Este correo ya está registrado. Selecciona 'Iniciar Sesión' para ingresar.");
+      } else if (err.code === "auth/weak-password") {
+        setErrorMessage("La contraseña debe tener al menos 6 caracteres.");
       } else if (err.code === "auth/too-many-requests") {
         setErrorMessage("Demasiados intentos fallidos. Por favor espera unos minutos o restablece tu clave.");
       } else {
-        setErrorMessage("No se pudo iniciar sesión. Verifica tus datos e intenta nuevamente.");
+        setErrorMessage(err.message || "No se pudo procesar la solicitud. Verifica tus datos e intenta nuevamente.");
       }
     } finally {
       setIsLoading(false);
@@ -162,12 +174,27 @@ export default function AdminLogin({ onBackToSite }) {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Ingresando al sistema...</span>
+                  <span>{isRegisterMode ? "Creando cuenta..." : "Ingresando al sistema..."}</span>
                 </>
               ) : (
-                <span>Ingresar al Administrador</span>
+                <span>{isRegisterMode ? "Crear Cuenta de Administrador" : "Ingresar al Administrador"}</span>
               )}
             </button>
+
+            <div className="pt-2 text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsRegisterMode(!isRegisterMode);
+                  setErrorMessage("");
+                }}
+                className="text-xs text-stone-400 hover:text-amber-400 font-mono transition-colors cursor-pointer"
+              >
+                {isRegisterMode
+                  ? "¿Ya tienes cuenta? Iniciar sesión aquí"
+                  : "¿Primer acceso como dueño? Crear cuenta de acceso aquí"}
+              </button>
+            </div>
           </form>
         </div>
 

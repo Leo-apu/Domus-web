@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
   sendPasswordResetEmail,
@@ -11,6 +12,7 @@ const AuthContext = createContext({
   user: null,
   loading: true,
   login: async () => {},
+  register: async () => {},
   logout: async () => {},
   resetPassword: async () => {},
 });
@@ -32,6 +34,10 @@ export function AuthProvider({ children }) {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  const register = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
   const logout = () => {
     return signOut(auth);
   };
@@ -46,6 +52,7 @@ export function AuthProvider({ children }) {
         user,
         loading,
         login,
+        register,
         logout,
         resetPassword,
         isAuthenticated: !!user,
