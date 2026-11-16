@@ -176,7 +176,7 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
               </div>
             </div>
 
-            {/* Redes Sociales Administrables con Iconos Blancos de Alta Visibilidad */}
+            {/* Redes Sociales */}
             {(settings.instagramUrl || settings.facebookUrl || settings.tiktokUrl) && (
               <div className="pt-4 border-t border-stone-850">
                 <div className="flex items-center gap-2 mb-3">
@@ -231,7 +231,7 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
           </div>
         </div>
 
-        {/* Sub-barra inferior: Limpia, sin saltos raros y con badges bien alineados */}
+        {/* Sub-barra inferior: Legal, Acceso Dueño y Créditos */}
         <div className="mt-14 pt-8 border-t border-stone-850 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-400">
           {/* Lado Izquierdo: Copyright & Acceso Dueño */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 text-center md:text-left">

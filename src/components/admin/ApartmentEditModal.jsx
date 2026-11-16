@@ -733,7 +733,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                   </p>
                 </div>
 
-                {/* Puntos de Interés Cercanos (Gemini AI + Edición manual) */}
+                {/* Puntos de Interés Cercanos */}
                 <div className="sm:col-span-2 pt-3 border-t border-white/10 space-y-3">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div>

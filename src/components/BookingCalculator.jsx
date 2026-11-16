@@ -155,7 +155,7 @@ export default function BookingCalculator({
       .catch((err) => console.log("Nota: Registro silencioso:", err))
       .finally(() => setIsSendingLead(false));
 
-    // 2. Redacción exacta del mensaje para Leo
+    // 2. Redacción del mensaje de consulta para WhatsApp
     const discountText = hasWeeklyDiscount
       ? ` (con 10% de descuento semanal aplicado)`
       : "";
@@ -173,7 +173,7 @@ export default function BookingCalculator({
       id="calculadora"
       className="py-20 sm:py-24 bg-stone-950 text-white relative overflow-hidden"
     >
-      {/* Ambient Warm Atmosphere (Coherente con la visual de las secciones antes y después) */}
+      {/* Ambient Warm Atmosphere */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-amber-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute inset-0 mesh-gradient-dark opacity-35 pointer-events-none" />
@@ -354,7 +354,7 @@ export default function BookingCalculator({
               </div>
             </div>
 
-            {/* 🌟 ESTADO DE DISPONIBILIDAD Y MATEMÁTICA EN VIVO */}
+            {/* Estado de disponibilidad y cálculo */}
             <div className="mb-8">
               {availability.status === "checking" && (
                 <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-amber-900 flex items-center gap-3 animate-pulse">
@@ -453,7 +453,7 @@ export default function BookingCalculator({
               )}
             </div>
 
-            {/* 🚀 BOTÓN PRINCIPAL UNIFICADO */}
+            {/* Botón principal de reserva */}
             <div className="space-y-3">
               {availability.status === "occupied" ? (
                 <button
