@@ -1,7 +1,26 @@
-import { Star, Quote, CheckCircle2, Award, HeartHandshake } from "lucide-react";
-import { TESTIMONIALS, APARTMENT_INFO } from "../data/apartmentData";
+import { useState, useEffect } from "react";
+import { Star, CheckCircle2 } from "lucide-react";
+import { TESTIMONIALS } from "../data/apartmentData";
+import { subscribeToTestimonials } from "../services/apartmentService";
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState(TESTIMONIALS);
+
+  useEffect(() => {
+    const unsub = subscribeToTestimonials((list) => {
+      if (Array.isArray(list) && list.length > 0) {
+        const activeOnly = list.filter((t) => t.active !== false);
+        setTestimonials(activeOnly.length > 0 ? activeOnly : list);
+      }
+    });
+    return () => unsub();
+  }, []);
+
+  const averageRating = (
+    testimonials.reduce((acc, t) => acc + (Number(t.rating) || 5), 0) /
+    (testimonials.length || 1)
+  ).toFixed(1);
+
   return (
     <section
       id="opiniones"
@@ -9,9 +28,10 @@ export default function Testimonials() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-14 reveal-init reveal-up">
-          <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-            <Award className="w-3.5 h-3.5" />
-            Experiencia de Nuestros Huéspedes
+          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-amber-800 mb-3">
+            <span className="w-5 h-px bg-amber-600/40" />
+            <span>OPINIONES & VALORACIONES</span>
+            <span className="w-5 h-px bg-amber-600/40" />
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
             Opiniones Reales y Calificaciones
@@ -27,11 +47,11 @@ export default function Testimonials() {
               ))}
             </div>
             <span className="font-extrabold text-stone-900 text-xl font-serif-title">
-              {APARTMENT_INFO.rating}
+              {averageRating}
             </span>
             <span className="text-stone-400">|</span>
             <span className="text-xs sm:text-sm text-stone-600 font-medium">
-              Más de {APARTMENT_INFO.reviewsCount} estadías exitosas
+              {testimonials.length} experiencias compartidas
             </span>
           </div>
         </div>
@@ -51,7 +71,7 @@ export default function Testimonials() {
             <span className="text-xs text-stone-500 font-medium">
               Atención Anfitrión
             </span>
-            <p className="text-xl font-bold text-stone-900 mt-0.5">4.9 ★</p>
+            <p className="text-xl font-bold text-stone-900 mt-0.5">5.0 ★</p>
           </div>
           <div className="bg-white p-4 rounded-2xl border border-stone-200/90 shadow-sm text-center">
             <span className="text-xs text-stone-500 font-medium">
@@ -62,25 +82,27 @@ export default function Testimonials() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {TESTIMONIALS.map((t, idx) => (
+          {testimonials.map((t, idx) => (
             <div
-              key={idx}
-              className={`bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-init reveal-up delay-${(idx + 1) * 100}`}
+              key={t.id || idx}
+              className={`bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/90 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between reveal-init reveal-up delay-${((idx % 3) + 1) * 100}`}
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-1 text-amber-400">
-                    {[...Array(t.rating)].map((_, i) => (
+                    {[...Array(Number(t.rating) || 5)].map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-amber-400" />
                     ))}
                   </div>
-                  <span className="text-[11px] bg-rose-50 text-rose-700 font-semibold px-2.5 py-0.5 rounded-full">
-                    {t.tag}
-                  </span>
+                  {t.tag && (
+                    <span className="text-[11px] bg-rose-50 text-rose-700 font-semibold px-2.5 py-0.5 rounded-full">
+                      {t.tag}
+                    </span>
+                  )}
                 </div>
 
                 <h3 className="font-serif-title font-bold text-stone-900 text-base mb-2">
-                  "{t.title}"
+                  "{t.title || "Excelente estadía"}"
                 </h3>
 
                 <p className="text-xs sm:text-sm text-stone-600 leading-relaxed italic mb-6">
@@ -92,10 +114,10 @@ export default function Testimonials() {
                 <div>
                   <h4 className="text-sm font-bold text-stone-900">{t.name}</h4>
                   <p className="text-[11px] text-stone-400 font-medium">
-                    {t.origin} · {t.date}
+                    {t.origin || "Huésped verificado"} {t.date ? `· ${t.date}` : ""}
                   </p>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0" title="Huésped verificado">
                   <CheckCircle2 className="w-4 h-4" />
                 </div>
               </div>

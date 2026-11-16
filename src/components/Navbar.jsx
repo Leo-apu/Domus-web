@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Phone, CalendarCheck, MapPin, Sparkles } from "lucide-react";
-import { APARTMENT_INFO } from "../data/apartmentData";
+import { Menu, X, CalendarCheck } from "lucide-react";
 
-export default function Navbar({ onOpenBookingModal }) {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -21,6 +20,7 @@ export default function Navbar({ onOpenBookingModal }) {
 
   const navLinks = [
     { name: "Inicio", href: "#inicio" },
+    { name: "Departamentos", href: "#departamentos" },
     { name: "Fotos", href: "#galeria" },
     { name: "Espacios", href: "#espacios" },
     { name: "Comodidades", href: "#comodidades" },
@@ -68,7 +68,7 @@ export default function Navbar({ onOpenBookingModal }) {
                   isScrolled ? "text-rose-600" : "text-rose-400"
                 }`}
               >
-                Alquileres Jujuy
+                Hospedaje de Autor · Jujuy
               </span>
             </div>
           </a>
@@ -90,27 +90,16 @@ export default function Navbar({ onOpenBookingModal }) {
           </nav>
 
           <div className="hidden sm:flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => onOpenBookingModal && onOpenBookingModal()}
-              className={`hidden md:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-lg transition-colors cursor-pointer ${
-                isScrolled
-                  ? "text-stone-700 hover:bg-stone-100"
-                  : "text-stone-200 hover:bg-white/10"
-              }`}
-            >
-              <CalendarCheck className="w-4 h-4 text-rose-500" />
-              <span>Cotizar Estadía</span>
-            </button>
-
             <a
-              href={APARTMENT_INFO.whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-emerald-700/20 transition-all hover:scale-105 active:scale-95"
+              href="#calculadora"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("calculadora")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white text-xs font-bold px-4.5 py-2.5 rounded-xl shadow-md shadow-rose-900/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
             >
-              <Phone className="w-3.5 h-3.5" />
-              <span>Consultar WhatsApp</span>
+              <CalendarCheck className="w-4 h-4 text-amber-200" />
+              <span>Cotizar Estadía</span>
             </a>
           </div>
 
@@ -150,23 +139,12 @@ export default function Navbar({ onOpenBookingModal }) {
 
             <div className="pt-4 border-t border-stone-200 flex flex-col gap-2.5">
               <a
-                href={APARTMENT_INFO.whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 bg-emerald-600 text-white font-semibold py-3 px-4 rounded-xl shadow-sm text-sm"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Contactar por WhatsApp</span>
-              </a>
-
-              <a
                 href="#calculadora"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 bg-stone-100 text-stone-800 font-semibold py-3 px-4 rounded-xl text-sm"
+                className="w-full flex items-center justify-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 text-white font-bold py-3 px-4 rounded-xl shadow-md text-sm"
               >
-                <CalendarCheck className="w-4 h-4 text-rose-600" />
-                <span>Calcular precio de estadía</span>
+                <CalendarCheck className="w-4 h-4 text-amber-200" />
+                <span>Cotizar Estadía</span>
               </a>
             </div>
           </div>

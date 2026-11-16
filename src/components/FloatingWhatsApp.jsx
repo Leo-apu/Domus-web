@@ -31,7 +31,7 @@ export default function FloatingWhatsApp() {
   return (
     <aside
       aria-label="Contacto por WhatsApp"
-      className="fixed bottom-20 sm:bottom-6 right-5 z-40 flex items-center gap-3 pointer-events-auto"
+      className="hidden sm:flex fixed bottom-6 right-5 z-40 items-center gap-3 pointer-events-auto"
     >
       {showBubble && (
         <div className="hidden sm:flex items-center gap-2.5 bg-stone-900/95 backdrop-blur-md text-white text-xs font-semibold pl-4 pr-3 py-2.5 rounded-full shadow-2xl border border-stone-700/80 animate-in fade-in slide-in-from-right-3 duration-300">

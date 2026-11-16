@@ -1,32 +1,46 @@
 /**
- * GOOGLE APPS SCRIPT PARA DOMUS ALQUILERES TEMPORARIOS
+ * GOOGLE APPS SCRIPT PARA DOMUS ALQUILERES TEMPORARIOS (MULTI-DEPARTAMENTO DINÁMICO)
  *
- * Este script recibe las solicitudes de reserva desde la web y las registra
- * automáticamente en tu Google Sheet en tiempo real.
+ * Versión 3.0 - Optimizada para el Panel de Control Administrador (Admin CMS)
  *
- * INSTRUCCIONES DE INSTALACIÓN:
- * 1. Crea una hoja de cálculo en Google Drive llamada "Domus - Reservas".
- * 2. En la Fila 1, coloca estos encabezados:
- *    A1: Fecha Solicitud | B1: Nombre | C1: WhatsApp | D1: Email | E1: Check-in | F1: Check-out | G1: Noches | H1: Huéspedes | I1: Estado | J1: Notas | K1: Responder WhatsApp
- * 3. En la hoja de cálculo, ve a: Extensiones > Apps Script.
- * 4. Borra todo el código que aparezca y pega este archivo completo.
- * 5. Haz clic en "Implementar" (botón azul arriba a la derecha) > "Nueva implementación".
- * 6. Tipo: "Aplicación web".
- * 7. Ejecutar como: "Yo (tu cuenta de Google)".
- * 8. Quién tiene acceso: "Cualquier persona" (Anyone).
- * 9. Haz clic en "Implementar" y copia la URL que te genera (termina en /exec).
- * 10. Pega esa URL en tu archivo .env:
- *     VITE_GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/TU_CODIGO_AQUI/exec
+ * Mejoras aplicadas:
+ * 1. Soporte dinámico para N departamentos (no sólo Gorriti o Suite).
+ * 2. Normalización de fechas: siempre consistente en formato DD/MM/YYYY.
+ * 3. Parser robusto de fechas (evita errores con formatos ISO YYYY-MM-DD o DD/MM/YYYY).
+ * 4. Manejo inteligente de Columna M ("Hora solicitud") si existe en la hoja.
+ * 5. Sanitización de enlaces directos a WhatsApp para responder al huésped.
+ *
+ * ──────────────────────────────────────────────────────────────────────────────
+ * INSTRUCCIONES DE INSTALACIÓN / ACTUALIZACIÓN:
+ * 1. En tu hoja de cálculo "Domus - Reservas", coloca estos 12 encabezados en la Fila 1:
+ *    A1: Fecha Solicitud
+ *    B1: Departamento
+ *    C1: Nombre
+ *    D1: WhatsApp
+ *    E1: Email
+ *    F1: Check-in
+ *    G1: Check-out
+ *    H1: Noches
+ *    I1: Huéspedes
+ *    J1: Estado
+ *    K1: Notas
+ *    L1: Responder WhatsApp (Nota: corregir la 's' de más si decía 'WhastApp')
+ *    M1: [OPCIONAL] Hora solicitud (si la dejas, el script la llenará automáticamente)
+ *
+ * 2. En la hoja de cálculo, ve a: Extensiones > Apps Script.
+ * 3. Reemplaza todo el código por este archivo completo.
+ * 4. Haz clic en "Implementar" > "Gestionar implementaciones" > lápiz (editar) >
+ *    Versión: "Nueva versión" > Implementar.
+ * ──────────────────────────────────────────────────────────────────────────────
  */
 
 // ──────────────────────────────────────────────────────────────────────────────
-// 📧 CORREO DE NOTIFICACIÓN
-// Cambiá este valor por el email donde querés recibir los avisos de reserva.
+// 📧 CORREO DE NOTIFICACIÓN AL ANFITRIÓN
 // ──────────────────────────────────────────────────────────────────────────────
-var NOTIFY_EMAIL = "apuleoc@gmail.com"; // ← Reemplazá con tu correo real
+var NOTIFY_EMAIL = "apuleoc@gmail.com"; // ← Tu correo donde recibirás los avisos
 
 // ──────────────────────────────────────────────────────────────────────────────
-// Opciones válidas del dropdown de Estado (columna I)
+// Opciones válidas del dropdown de Estado (Columna J)
 // ──────────────────────────────────────────────────────────────────────────────
 var ESTADOS_VALIDOS = [
   "⏳ PENDIENTE",
@@ -38,7 +52,7 @@ var ESTADOS_VALIDOS = [
   "🔁 CONSULTA ADICIONAL",
 ];
 
-// Colores de fondo y texto para cada estado
+// Colores según el estado
 function getEstadoStyle(estado) {
   var styles = {
     "⏳ PENDIENTE": { bg: "#fef3c7", fg: "#b45309" }, // Amarillo
@@ -52,17 +66,59 @@ function getEstadoStyle(estado) {
   return styles[estado] || { bg: "#fef3c7", fg: "#b45309" };
 }
 
+/**
+ * Normaliza cualquier formato de fecha a DD/MM/YYYY
+ */
+function normalizeDateStr(val) {
+  if (!val) return "";
+  if (val instanceof Date) {
+    var d = ("0" + val.getDate()).slice(-2);
+    var m = ("0" + (val.getMonth() + 1)).slice(-2);
+    var y = val.getFullYear();
+    return d + "/" + m + "/" + y;
+  }
+  var str = val.toString().trim();
+  // Formato YYYY-MM-DD -> DD/MM/YYYY
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(str)) {
+    var parts = str.split("-");
+    var day = ("0" + parts[2]).slice(-2);
+    var month = ("0" + parts[1]).slice(-2);
+    return day + "/" + month + "/" + parts[0];
+  }
+  return str;
+}
+
+/**
+ * Parsea una celda de fecha con total tolerancia a DD/MM/YYYY, ISO o Date nativo
+ */
+function parseDateRobust(val) {
+  if (!val) return null;
+  if (val instanceof Date) return isNaN(val.getTime()) ? null : val;
+  var str = val.toString().trim();
+  // DD/MM/YYYY
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)) {
+    var p = str.split("/");
+    return new Date(parseInt(p[2], 10), parseInt(p[1], 10) - 1, parseInt(p[0], 10));
+  }
+  // YYYY-MM-DD
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(str)) {
+    var p2 = str.split("-");
+    return new Date(parseInt(p2[0], 10), parseInt(p2[1], 10) - 1, parseInt(p2[2], 10));
+  }
+  var d = new Date(str);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 // ──────────────────────────────────────────────────────────────────────────────
-// doPost: Recibe las reservas enviadas desde la web
+// doPost: Registra la reserva en Google Sheets
 // ──────────────────────────────────────────────────────────────────────────────
 function doPost(e) {
   var lock = LockService.getScriptLock();
-  lock.tryLock(10000); // Evita escrituras concurrentes conflictivas
+  lock.tryLock(10000);
 
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
-    // Parsear los datos recibidos desde la web en JSON
     var data = {};
     if (e.postData && e.postData.contents) {
       data = JSON.parse(e.postData.contents);
@@ -71,42 +127,50 @@ function doPost(e) {
     }
 
     var timestamp = new Date();
+    // Soporte 100% dinámico para cualquier departamento registrado en el Admin CMS
+    var departamento =
+      data.departamento ||
+      data.apartmentName ||
+      data.apartmentTitle ||
+      (data.apartmentId === "domus-suite"
+        ? "Domus Suite - Av. Párroco Marshke"
+        : data.apartmentId === "domus-centro"
+        ? "Domus Gorriti - 3 Ambientes"
+        : data.apartmentId || "Departamento Domus");
+
     var name = data.name || "Sin nombre";
     var phone = data.phone || "Sin teléfono";
     var email = data.email || "Sin email";
-    var checkIn = data.checkIn || "";
-    var checkOut = data.checkOut || "";
+    var checkInRaw = data.checkIn || "";
+    var checkOutRaw = data.checkOut || "";
+    var checkIn = normalizeDateStr(checkInRaw);
+    var checkOut = normalizeDateStr(checkOutRaw);
     var nights = data.nights || 1;
     var guests = data.guests || 2;
     var notes = data.notes || "";
     var status = "⏳ PENDIENTE";
 
-    // Limpiar número de teléfono (solo dígitos)
     var cleanPhone = phone.toString().replace(/[^0-9]/g, "");
 
-    // ── Construir URL de WhatsApp ───────────────────────────────────────────
-    // CAUSA DEL #ERROR!: encodeURIComponent() en JS NO codifica: ( ) ! ' * ~
-    // Google Sheets interpreta esos paréntesis como parte de la sintaxis de
-    // =HYPERLINK(...) y rompe el parseo de la fórmula.
-    // SOLUCIÓN: codificarlos manualmente con .replace() después del encode.
+    // ── Enlace personalizado de WhatsApp ────────────────────────────────────
     var waUrl = "";
-    if (cleanPhone) {
+    if (cleanPhone && cleanPhone.length >= 8) {
       var waMsg =
         "Hola " +
         name +
         "! Te escribo desde Domus Alquileres Jujuy " +
-        "por tu consulta del " +
+        "por tu consulta para el departamento: " +
+        departamento +
+        ", con fecha del " +
         checkIn +
         " al " +
         checkOut +
-        " - " +
+        " (" +
         nights +
         " noches, " +
         guests +
-        " huesped/es.";
+        " personas).";
 
-      // encodeURIComponent NO codifica: ( ) ! ' * ~
-      // Los codificamos manualmente para que Sheets no rompa la fórmula HYPERLINK
       var encodedMsg = encodeURIComponent(waMsg)
         .replace(/\(/g, "%28")
         .replace(/\)/g, "%29")
@@ -118,74 +182,80 @@ function doPost(e) {
       waUrl = "https://wa.me/" + cleanPhone + "?text=" + encodedMsg;
     }
 
-    // ── Insertar nueva fila (columna K vacía, la fórmula se aplica abajo) ───
-    // IMPORTANTE: NO meter la fórmula =HYPERLINK() dentro de appendRow().
-    // Hacerlo así causa #ERROR! por cómo Sheets interpreta los strings con
-    // caracteres especiales (%20, emojis, etc.) al escribirlos via API.
+    // ── Fila de datos estándar (12 columnas) ──
     var newRow = [
-      timestamp,
-      name,
-      phone,
-      email,
-      checkIn,
-      checkOut,
-      nights,
-      guests,
-      status,
-      notes,
-      waUrl, // URL plana por ahora; la convertimos a hyperlink clicable abajo
+      timestamp,       // Columna A (Fecha y Hora)
+      departamento,    // Columna B
+      name,            // Columna C
+      phone,           // Columna D
+      email,           // Columna E
+      checkIn,         // Columna F (DD/MM/YYYY)
+      checkOut,        // Columna G (DD/MM/YYYY)
+      nights,          // Columna H
+      guests,          // Columna I
+      status,          // Columna J
+      notes,           // Columna K
+      waUrl,           // Columna L
     ];
 
-    sheet.appendRow(newRow);
+    // Si la hoja tiene Columna M ("Hora solicitud"), la completamos para evitar que quede vacía
+    var lastCol = sheet.getLastColumn();
+    if (lastCol >= 13) {
+      var headerM = sheet.getRange(1, 13).getValue();
+      if (headerM && headerM.toString().toLowerCase().indexOf("hora") !== -1) {
+        var horaStr = Utilities.formatDate(timestamp, "America/Argentina/Jujuy", "HH:mm:ss");
+        newRow.push(horaStr);
+      }
+    }
 
+    sheet.appendRow(newRow);
     var lastRow = sheet.getLastRow();
 
-    // ── Convertir columna K en hipervínculo clicable ────────────────────────
-    // Usamos setFormula() directo en la celda (no en appendRow) para evitar #ERROR!
+    // ── Celda de WhatsApp clicable (Columna L = 12) ──
     if (waUrl) {
-      // Sanitizar el nombre para que no rompa las comillas de la fórmula
       var safeName = name.replace(/"/g, "'");
       sheet
-        .getRange(lastRow, 11)
+        .getRange(lastRow, 12)
         .setFormula(
           '=HYPERLINK("' + waUrl + '";"📲 WhatsApp ' + safeName + '")',
         );
     } else {
-      sheet.getRange(lastRow, 11).setValue("Sin número válido");
+      sheet.getRange(lastRow, 12).setValue(phone.indexOf("WhatsApp") !== -1 ? "Lead por Web" : "Sin número válido");
     }
 
-    // ── Dropdown de Estado en columna I ────────────────────────────────────
-    var estadoCell = sheet.getRange(lastRow, 9);
+    // ── Dropdown de Estado (Columna J = 10) ──
+    var estadoCell = sheet.getRange(lastRow, 10);
     var dropdownRule = SpreadsheetApp.newDataValidation()
-      .requireValueInList(ESTADOS_VALIDOS, true) // true = mostrar flecha de lista
+      .requireValueInList(ESTADOS_VALIDOS, true)
       .setAllowInvalid(false)
       .setHelpText("Seleccioná el estado actual de esta reserva")
       .build();
     estadoCell.setDataValidation(dropdownRule);
 
-    // ── Color según el estado actual ───────────────────────────────────────
     var style = getEstadoStyle(status);
     estadoCell
       .setBackground(style.bg)
       .setFontColor(style.fg)
       .setFontWeight("bold");
 
-    // ── Notificación por correo al anfitrión ───────────────────────────────
-    // Usa NOTIFY_EMAIL (definido arriba). Session.getActiveUser() devuelve vacío
-    // cuando el script está publicado como "Cualquier persona", por eso usamos
-    // el email fijo configurado manualmente.
+    // ── Notificación por correo con detalle del departamento ──
     try {
       if (NOTIFY_EMAIL && NOTIFY_EMAIL !== "TU_EMAIL@gmail.com") {
         MailApp.sendEmail({
           to: NOTIFY_EMAIL,
           subject:
-            "🛎️ Nueva Solicitud de Reserva: " +
+            "🛎️ Reserva: " +
+            departamento +
+            " - " +
             name +
             " (" +
             nights +
             " noches)",
           body:
             "Has recibido una nueva solicitud en Domus Alquileres Jujuy:\n\n" +
+            "🏢 DEPARTAMENTO: " +
+            departamento +
+            "\n" +
             "👤 Huésped: " +
             name +
             "\n" +
@@ -208,27 +278,24 @@ function doPost(e) {
             "📝 Notas: " +
             notes +
             "\n\n" +
-            "WhatsApp directo: " +
-            (waUrl || "sin número") +
-            "\n\n" +
-            "Revisá la hoja de cálculo para confirmar o rechazar la solicitud.",
+            (waUrl ? "📲 Responder directo por WhatsApp: " + waUrl + "\n\n" : "") +
+            "Podés gestionar los estados y confirmaciones directamente en tu Google Sheet.",
         });
-      } else {
-        Logger.log(
-          "⚠️ Email no enviado: configurá NOTIFY_EMAIL con tu correo real.",
-        );
       }
     } catch (mailError) {
-      Logger.log("No se pudo enviar notificación por email: " + mailError);
+      Logger.log("Error al enviar email: " + mailError.toString());
     }
 
     return ContentService.createTextOutput(
       JSON.stringify({
         status: "success",
-        message: "Solicitud registrada exitosamente.",
+        row: lastRow,
+        departamento: departamento,
+        message: "Reserva registrada exitosamente en Google Sheets",
       }),
     ).setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
+    Logger.log("Error en doPost: " + error.toString());
     return ContentService.createTextOutput(
       JSON.stringify({ status: "error", message: error.toString() }),
     ).setMimeType(ContentService.MimeType.JSON);
@@ -238,28 +305,24 @@ function doPost(e) {
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// doGet: Endpoint de disponibilidad + verificación de webhook activo
-//
-// Sin parámetros  → responde { status: "online" }
-// Con ?checkIn=YYYY-MM-DD&checkOut=YYYY-MM-DD
-//   → consulta la planilla y responde:
-//     { available: true }  si las fechas están libres
-//     { available: false, reason: "..." } si hay solapamiento con reserva activa
+// doGet: Disponibilidad INDEPENDIENTE y DINÁMICA por cada departamento
 // ──────────────────────────────────────────────────────────────────────────────
 function doGet(e) {
-  // Estados que bloquean disponibilidad (PENDIENTE y CANCELADO no bloquean)
   var ESTADOS_OCUPADO = ["✅ CONFIRMADO", "💰 SEÑADO", "🏠 CHECK-IN REALIZADO"];
 
   var checkIn = e.parameter && e.parameter.checkIn ? e.parameter.checkIn : null;
   var checkOut =
     e.parameter && e.parameter.checkOut ? e.parameter.checkOut : null;
+  var reqApartment =
+    e.parameter && (e.parameter.apartmentId || e.parameter.departamento)
+      ? (e.parameter.apartmentId || e.parameter.departamento).toLowerCase().trim()
+      : "";
 
-  // Sin fechas → solo verificar que el webhook está activo
   if (!checkIn || !checkOut) {
     return ContentService.createTextOutput(
       JSON.stringify({
         status: "online",
-        service: "Domus Alquileres - Webhook Activo ✅",
+        service: "Domus Alquileres - Webhook Activo Multi-Depto v3.0 ✅",
       }),
     ).setMimeType(ContentService.MimeType.JSON);
   }
@@ -267,26 +330,57 @@ function doGet(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = sheet.getDataRange().getValues();
-    var reqIn = new Date(checkIn);
-    var reqOut = new Date(checkOut);
+    var reqIn = parseDateRobust(checkIn);
+    var reqOut = parseDateRobust(checkOut);
 
-    // Columnas (índice 0): A=0 B=1 C=2 D=3 E=checkIn=4 F=checkOut=5 I=estado=8
+    if (!reqIn || !reqOut) {
+      return ContentService.createTextOutput(
+        JSON.stringify({ available: true, note: "Fechas no parseables" }),
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
+
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
-      var estado = (row[8] || "").toString().trim();
-      var rowIn = row[4] ? new Date(row[4]) : null;
-      var rowOut = row[5] ? new Date(row[5]) : null;
 
-      // Solo analizar filas con estado que bloquea disponibilidad
+      var rowDept = "";
+      var rowIn = null;
+      var rowOut = null;
+      var estado = "";
+
+      if (row.length >= 10) {
+        rowDept = (row[1] || "").toString().toLowerCase().trim();
+        rowIn = parseDateRobust(row[5]);
+        rowOut = parseDateRobust(row[6]);
+        estado = (row[9] || "").toString().trim();
+      }
+
       if (ESTADOS_OCUPADO.indexOf(estado) === -1) continue;
       if (!rowIn || !rowOut) continue;
 
-      // Hay solapamiento si: reqIn < rowOut  Y  reqOut > rowIn
+      // FILTRADO DINÁMICO POR DEPARTAMENTO:
+      if (reqApartment && rowDept) {
+        var cleanReq = reqApartment.replace(/domus/g, "").replace(/[^a-z0-9]/g, "");
+        var cleanRow = rowDept.replace(/domus/g, "").replace(/[^a-z0-9]/g, "");
+
+        var matches = false;
+        var words = reqApartment.split(/[\s\-_]+/);
+        for (var w = 0; w < words.length; w++) {
+          var word = words[w].replace(/[^a-z0-9]/g, "");
+          if (word.length >= 3 && word !== "domus" && cleanRow.indexOf(word) !== -1) {
+            matches = true;
+            break;
+          }
+        }
+        if (!matches && cleanReq && cleanRow && cleanReq !== cleanRow) {
+          continue; // Pertenecen a departamentos distintos, no hay colisión
+        }
+      }
+
+      // Solapamiento de fechas: reqIn < rowOut Y reqOut > rowIn
       if (reqIn < rowOut && reqOut > rowIn) {
-        // Formatear las fechas del conflicto en dd/MM/yyyy para mostrarlas al usuario
-        var fmt = function(d) {
-          var dd   = ("0" + d.getDate()).slice(-2);
-          var mm   = ("0" + (d.getMonth() + 1)).slice(-2);
+        var fmt = function (d) {
+          var dd = ("0" + d.getDate()).slice(-2);
+          var mm = ("0" + (d.getMonth() + 1)).slice(-2);
           var yyyy = d.getFullYear();
           return dd + "/" + mm + "/" + yyyy;
         };
@@ -294,49 +388,40 @@ function doGet(e) {
         return ContentService.createTextOutput(
           JSON.stringify({
             available: false,
-            conflictIn:  fmt(rowIn),
+            departamento: row[1],
+            conflictIn: fmt(rowIn),
             conflictOut: fmt(rowOut),
+            status: estado,
           }),
         ).setMimeType(ContentService.MimeType.JSON);
       }
     }
 
-    // Ninguna reserva activa se superpone → disponible
     return ContentService.createTextOutput(
       JSON.stringify({ available: true }),
     ).setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
+  } catch (error) {
+    Logger.log("Error en doGet: " + error.toString());
     return ContentService.createTextOutput(
-      JSON.stringify({ available: null, error: err.toString() }),
+      JSON.stringify({ available: true, error: error.toString() }),
     ).setMimeType(ContentService.MimeType.JSON);
   }
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// aplicarDropdownsExistentes:
-// Ejecutar MANUALMENTE desde Apps Script (Ejecutar > aplicarDropdownsExistentes)
-// para poner el dropdown de Estado en las filas que ya existen en la planilla.
-// Solo necesitás ejecutarlo UNA SOLA VEZ para corregir filas viejas.
+// onEdit: Actualiza los colores de estado automáticamente al editar en la hoja
 // ──────────────────────────────────────────────────────────────────────────────
-function aplicarDropdownsExistentes() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var lastRow = sheet.getLastRow();
+function onEdit(e) {
+  var range = e.range;
+  var col = range.getColumn();
+  var row = range.getRow();
 
-  if (lastRow < 2) {
-    Logger.log("No hay filas de datos aún (solo encabezados).");
-    return;
+  if (row <= 1) return; // Ignora los encabezados
+
+  // Columna J = 10 (Estado)
+  if (col === 10) {
+    var val = range.getValue().toString().trim();
+    var style = getEstadoStyle(val);
+    range.setBackground(style.bg).setFontColor(style.fg).setFontWeight("bold");
   }
-
-  var dropdownRule = SpreadsheetApp.newDataValidation()
-    .requireValueInList(ESTADOS_VALIDOS, true)
-    .setAllowInvalid(false)
-    .setHelpText("Seleccioná el estado actual de esta reserva")
-    .build();
-
-  // Aplica el dropdown a todas las celdas I2:I<lastRow>
-  sheet.getRange(2, 9, lastRow - 1, 1).setDataValidation(dropdownRule);
-
-  Logger.log(
-    "✅ Dropdowns aplicados en " + (lastRow - 1) + " fila(s) existentes.",
-  );
 }

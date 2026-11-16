@@ -1,9 +1,21 @@
-import { useState } from "react";
-import { HelpCircle, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronDown } from "lucide-react";
 import { FAQS } from "../data/apartmentData";
+import { subscribeToFaqs } from "../services/apartmentService";
 
 export default function FAQ() {
+  const [faqs, setFaqs] = useState(FAQS);
   const [openIndex, setOpenIndex] = useState(0);
+
+  useEffect(() => {
+    const unsub = subscribeToFaqs((list) => {
+      if (Array.isArray(list) && list.length > 0) {
+        const activeOnly = list.filter((f) => f.active !== false);
+        setFaqs(activeOnly.length > 0 ? activeOnly : list);
+      }
+    });
+    return () => unsub();
+  }, []);
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? -1 : index);
@@ -16,9 +28,10 @@ export default function FAQ() {
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12 reveal-init reveal-up">
-          <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-            <HelpCircle className="w-3.5 h-3.5" />
-            Preguntas Frecuentes
+          <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-700 mb-3">
+            <span className="w-5 h-px bg-rose-500/40" />
+            <span>PREGUNTAS FRECUENTES</span>
+            <span className="w-5 h-px bg-rose-500/40" />
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-stone-900 tracking-tight">
             Todo lo que Necesitás Saber
@@ -30,16 +43,16 @@ export default function FAQ() {
         </div>
 
         <div className="space-y-3.5 reveal-init reveal-up delay-100">
-          {FAQS.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <div
-                key={index}
+                key={faq.id || index}
                 className="bg-white rounded-2xl border border-stone-200/90 shadow-sm overflow-hidden transition-all duration-200 hover:border-stone-300"
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full text-left px-5 sm:px-6 py-4.5 sm:py-5 flex items-center justify-between gap-4 focus:outline-none"
+                  className="w-full text-left px-5 sm:px-6 py-4.5 sm:py-5 flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
                   aria-expanded={isOpen}
                 >
                   <span className="font-semibold text-stone-800 text-sm sm:text-base">

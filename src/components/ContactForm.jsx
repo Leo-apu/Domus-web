@@ -1,7 +1,6 @@
 import { useState, useRef, useId } from "react";
 import emailjs from "@emailjs/browser";
 import {
-  Mail,
   Phone,
   Clock,
   MapPin,
@@ -9,7 +8,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-  MessageCircle,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { APARTMENT_INFO } from "../data/apartmentData";
@@ -77,7 +75,7 @@ export default function ContactForm() {
           origin: { y: 0.6 },
         });
       } catch {
-        // ignore
+
       }
     } catch (err) {
       console.error("Error enviando email:", err);
@@ -97,9 +95,9 @@ export default function ContactForm() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-5 space-y-6 reveal-init reveal-left">
             <div>
-              <div className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-                <Mail className="w-3.5 h-3.5" />
-                Atención Directa
+              <div className="flex items-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-rose-700 mb-3">
+                <span className="w-5 h-px bg-rose-500/40" />
+                <span>ATENCIÓN DIRECTA</span>
               </div>
               <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-stone-900 tracking-tight">
                 Estamos para Ayudarte a Planificar tu Estadía
@@ -345,6 +343,10 @@ export default function ContactForm() {
                     </>
                   )}
                 </button>
+
+                <p className="text-[11px] text-stone-400 text-center mt-2.5">
+                  🔒 Tus datos están protegidos por la Ley 25.326 y solo se usarán para responder a tu consulta.
+                </p>
               </form>
             )}
           </div>

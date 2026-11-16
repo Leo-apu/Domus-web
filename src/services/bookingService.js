@@ -1,6 +1,6 @@
 import { APARTMENT_INFO } from "../data/apartmentData";
 
-export async function checkAvailability(checkIn, checkOut) {
+export async function checkAvailability(checkIn, checkOut, apartmentId = "") {
   const webhookUrl = APARTMENT_INFO.googleSheetsWebhookUrl;
 
   if (
@@ -14,7 +14,10 @@ export async function checkAvailability(checkIn, checkOut) {
   if (!checkIn || !checkOut) return { available: null };
 
   try {
-    const url = `${webhookUrl}?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`;
+    const aptParam = apartmentId
+      ? `&apartmentId=${encodeURIComponent(apartmentId)}`
+      : "";
+    const url = `${webhookUrl}?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}${aptParam}`;
     const res = await fetch(url, { method: "GET" });
 
     if (!res.ok) return { available: null };

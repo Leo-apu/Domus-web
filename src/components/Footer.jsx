@@ -1,21 +1,42 @@
-import { MapPin, Phone, Mail, Clock, Heart } from "lucide-react";
+import { MapPin, Phone, Clock, Heart, Lock } from "lucide-react";
 import { APARTMENT_INFO } from "../data/apartmentData";
 
-export default function Footer() {
+export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdmin }) {
   const currentYear = new Date().getFullYear();
+  const settings = siteSettings || {
+    whatsappPhone: APARTMENT_INFO.whatsappPhone,
+    whatsappLink: APARTMENT_INFO.whatsappLink,
+    address: APARTMENT_INFO.address,
+    instagramUrl: "https://instagram.com/domusalquileres",
+    facebookUrl: "",
+    tiktokUrl: "",
+  };
 
   return (
-    <footer className="bg-stone-950 text-stone-300 border-t border-stone-800">
+    <footer className="bg-stone-950 text-stone-300 border-t border-stone-850">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-md text-white font-serif font-bold text-lg">
-                D
+              <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-md shadow-rose-600/20">
+                <img
+                  src="/images/icon.svg"
+                  alt="Domus Icon"
+                  className="w-8 h-8 object-contain filter brightness-0 invert"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
               </div>
-              <span className="font-serif-title font-bold text-2xl text-white tracking-tight">
-                DOMUS
-              </span>
+              <div className="flex flex-col">
+                <span className="font-serif-title font-bold text-2xl text-white tracking-tight leading-none">
+                  DOMUS
+                </span>
+                <span className="text-[10px] font-mono tracking-[0.2em] text-rose-400 uppercase font-semibold mt-1">
+                  Alquileres Temporarios
+                </span>
+              </div>
             </div>
             <p className="text-xs sm:text-sm text-stone-400 font-light leading-relaxed">
               Departamentos en alquiler temporario en pleno centro de San
@@ -42,7 +63,7 @@ export default function Footer() {
                   href="#galeria"
                   className="hover:text-rose-400 transition-colors"
                 >
-                  Galería de Fotos (8)
+                  Galería de Fotos
                 </a>
               </li>
               <li>
@@ -63,18 +84,34 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#ubicacion"
+                  href="#calculadora"
                   className="hover:text-rose-400 transition-colors"
                 >
-                  Ubicación & Puntos Cercanos
+                  Cotizador en Vivo
                 </a>
               </li>
               <li>
                 <a
-                  href="#faq"
+                  href="#ubicacion"
                   className="hover:text-rose-400 transition-colors"
                 >
-                  Preguntas Frecuentes
+                  Ubicación & Mapa
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#opiniones"
+                  className="hover:text-rose-400 transition-colors"
+                >
+                  Opiniones de Huéspedes
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contacto"
+                  className="hover:text-rose-400 transition-colors"
+                >
+                  Contacto
                 </a>
               </li>
             </ul>
@@ -82,55 +119,139 @@ export default function Footer() {
 
           <div>
             <h4 className="font-serif-title text-base font-bold text-white mb-4">
-              Horario de Atención
+              Información Importante
             </h4>
-            <div className="space-y-3 text-xs sm:text-sm text-stone-400">
-              <div className="flex items-start gap-2.5">
+            <ul className="space-y-3 text-xs sm:text-sm text-stone-400">
+              <li className="flex items-start gap-2">
                 <Clock className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-white font-medium">Lunes a Lunes</p>
-                  <p>09:00 hs a 00:00 hs</p>
-                </div>
-              </div>
-              <p className="text-[11px] text-stone-500 pt-1">
-                Atención continua todos los días del año, incluyendo feriados y
-                fines de semana largos.
-              </p>
-            </div>
+                <span>
+                  <strong className="text-stone-200">Check-in:</strong>{" "}
+                  {APARTMENT_INFO.checkIn}
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Clock className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <span>
+                  <strong className="text-stone-200">Check-out:</strong>{" "}
+                  {APARTMENT_INFO.checkOut}
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+                <span>{settings.address || "San Salvador de Jujuy, Jujuy, Argentina"}</span>
+              </li>
+            </ul>
           </div>
 
-          <div>
-            <h4 className="font-serif-title text-base font-bold text-white mb-4">
-              Ubicación & Contacto
+          <div className="space-y-4">
+            <h4 className="font-serif-title text-base font-bold text-white">
+              Atención Directa
             </h4>
-            <div className="space-y-3 text-xs sm:text-sm text-stone-400">
-              <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                <span>
-                  Gral. San Martín 121, San Salvador de Jujuy, Jujuy, Argentina
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
+            <p className="text-xs text-stone-400 leading-relaxed">
+              Coordinamos tu reserva sin comisiones de intermediarios y te
+              asesoramos con tu viaje.
+            </p>
+            <div className="space-y-2 pt-1">
+              <a
+                href={settings.whatsappLink || APARTMENT_INFO.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-colors shadow-md"
+              >
+                <Phone className="w-3.5 h-3.5 fill-white" />
+                <span>Escribinos por WhatsApp</span>
+              </a>
+              <div>
                 <a
-                  href={APARTMENT_INFO.whatsappLink}
+                  href={settings.whatsappLink || APARTMENT_INFO.whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-emerald-400 hover:text-emerald-300 font-semibold"
+                  className="text-xs text-stone-400 hover:text-white transition-colors"
                 >
-                  WhatsApp Directo
+                  {settings.whatsappPhone || APARTMENT_INFO.whatsappPhone}
                 </a>
               </div>
             </div>
+
+            {(settings.instagramUrl || settings.facebookUrl || settings.tiktokUrl) && (
+              <div className="pt-4 border-t border-stone-850">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-3 h-px bg-rose-400/60" />
+                  <span className="text-[11px] font-mono tracking-wider uppercase text-rose-300 font-semibold">
+                    Seguinos en redes
+                  </span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  {settings.instagramUrl && (
+                    <a
+                      href={settings.instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-xl bg-stone-900 border border-stone-750 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-linear-to-tr hover:from-amber-500 hover:via-rose-500 hover:to-purple-600 hover:border-transparent hover:shadow-lg hover:shadow-rose-950/50"
+                      title="Instagram oficial"
+                    >
+                      <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                      </svg>
+                    </a>
+                  )}
+                  {settings.facebookUrl && (
+                    <a
+                      href={settings.facebookUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-xl bg-stone-900 border border-stone-750 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-blue-600 hover:border-transparent hover:shadow-lg hover:shadow-blue-950/50"
+                      title="Facebook oficial"
+                    >
+                      <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                      </svg>
+                    </a>
+                  )}
+                  {settings.tiktokUrl && (
+                    <a
+                      href={settings.tiktokUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-xl bg-stone-900 border border-stone-750 text-white flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-black hover:border-pink-500 hover:shadow-lg hover:shadow-pink-950/50"
+                      title="TikTok oficial"
+                    >
+                      <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
+                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.73 1.47-.07 2.74-.95 3.23-2.34.24-.65.26-1.36.26-2.06V.02h-.48z"/>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500 text-center sm:text-left">
-          <p>
-            © {currentYear} Domus Alquileres Temporarios. Todos los derechos
-            reservados.
-          </p>
-          <p className="flex items-center justify-center gap-1.5">
+        <div className="mt-14 pt-8 border-t border-stone-850 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-400">
+
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 text-center md:text-left">
+            <p className="text-stone-400">
+              © {currentYear} <span className="font-semibold text-stone-200">Domus Alquileres Temporarios</span>. Todos los derechos reservados.
+            </p>
+
+            <button
+              onClick={() => onOpenPrivacyModal && onOpenPrivacyModal()}
+              className="text-stone-400 hover:text-white transition-colors cursor-pointer hover:underline underline-offset-4"
+            >
+              Políticas de Privacidad & Términos
+            </button>
+
+            <button
+              onClick={() => onNavigateAdmin && onNavigateAdmin()}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-900 border border-stone-800 text-stone-400 hover:text-rose-400 hover:border-rose-500/40 transition-all cursor-pointer font-mono text-[11px] whitespace-nowrap shadow-xs"
+              title="Panel de control para el propietario"
+            >
+              <Lock className="w-3 h-3 text-rose-500" />
+              <span>Acceso Dueño</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-1.5 text-stone-400 text-xs shrink-0 whitespace-nowrap">
             <span>Desarrollado con</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline" />
             <span>por</span>
@@ -138,11 +259,11 @@ export default function Footer() {
               href="https://portfolio-cruz-leandro.netlify.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-stone-300 hover:text-rose-400 font-semibold underline underline-offset-2 transition-colors"
+              className="text-stone-200 hover:text-rose-400 font-semibold underline underline-offset-4 transition-colors"
             >
-              Leandro V. Cruz - Analista Programador
+              Leandro V. Cruz · Analista Programador
             </a>
-          </p>
+          </div>
         </div>
       </div>
     </footer>
