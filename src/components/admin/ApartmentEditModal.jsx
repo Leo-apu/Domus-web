@@ -16,6 +16,7 @@ import {
   Compass,
   Sparkles,
   Image as ImageIcon,
+  Sliders,
 } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/cloudinary";
 import { generateNearbyPlacesWithGemini, generateAmenitiesWithGemini } from "../../services/geminiService";
