@@ -13,7 +13,7 @@ export default function PrivacyModal({ isOpen, onClose }) {
         className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden flex flex-col max-h-[88vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+
         <div className="bg-stone-900 text-white px-6 py-5 flex items-center justify-between border-b border-stone-800">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center">
@@ -37,9 +37,8 @@ export default function PrivacyModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        {/* Content */}
         <div className="p-6 overflow-y-auto space-y-6 text-stone-700 text-sm leading-relaxed">
-          {/* Section 1: Ley 25.326 */}
+
           <div>
             <div className="flex items-center gap-2 text-rose-600 font-bold mb-2">
               <Lock className="w-4 h-4" />
@@ -55,7 +54,6 @@ export default function PrivacyModal({ isOpen, onClose }) {
             </ul>
           </div>
 
-          {/* Section 2: Cookies */}
           <div>
             <div className="flex items-center gap-2 text-amber-600 font-bold mb-2">
               <CheckCircle2 className="w-4 h-4" />
@@ -66,7 +64,6 @@ export default function PrivacyModal({ isOpen, onClose }) {
             </p>
           </div>
 
-          {/* Section 3: Normas de Convivencia y Estadía */}
           <div>
             <div className="flex items-center gap-2 text-emerald-600 font-bold mb-2">
               <FileText className="w-4 h-4" />
@@ -88,7 +85,6 @@ export default function PrivacyModal({ isOpen, onClose }) {
             </ul>
           </div>
 
-          {/* Contact Box */}
           <div className="bg-stone-50 border border-stone-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
             <div>
               <p className="font-bold text-stone-800">¿Tenés dudas sobre el manejo de tus datos?</p>
@@ -106,7 +102,6 @@ export default function PrivacyModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="px-6 py-4 bg-stone-50 border-t border-stone-200 flex justify-end">
           <button
             onClick={onClose}

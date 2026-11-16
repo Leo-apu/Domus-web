@@ -19,7 +19,6 @@ import ParallaxBanner from "./components/ParallaxBanner";
 import ParallaxStory from "./components/ParallaxStory";
 import { Loader2 } from "lucide-react";
 
-// Módulo de Administración & Autenticación (Lazy loaded para rendimiento CWV óptimo)
 import { AuthProvider } from "./context/AuthContext";
 import { subscribeToApartments, getSiteSettings } from "./services/apartmentService";
 
@@ -31,7 +30,6 @@ import { APARTMENTS } from "./data/apartmentData";
 export default function App() {
   useScrollReveal();
 
-  // 1. Enrutador ligero sin dependencias pesadas
   const [currentPath, setCurrentPath] = useState(
     typeof window !== "undefined" ? window.location.pathname.toLowerCase() : "/"
   );
@@ -52,7 +50,6 @@ export default function App() {
     }
   };
 
-  // 2. Estado reactivo de departamentos (desde Firestore con fallback a apartmentData.js)
   const [apartments, setApartments] = useState(APARTMENTS);
   const [selectedApartmentId, setSelectedApartmentId] = useState(
     APARTMENTS[0]?.id || "domus-centro"
@@ -61,11 +58,11 @@ export default function App() {
   useEffect(() => {
     const unsubscribe = subscribeToApartments((list) => {
       if (list && list.length > 0) {
-        // En la web pública solo mostramos los departamentos activos
+
         const activeUnits = list.filter((a) => a.isActive !== false);
         if (activeUnits.length > 0) {
           setApartments(activeUnits);
-          // Si el seleccionado ya no existe, seleccionamos el primero activo
+
           setSelectedApartmentId((prev) => {
             const exists = activeUnits.some((a) => a.id === prev);
             return exists ? prev : activeUnits[0].id;
@@ -77,7 +74,6 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // 2.1 Carga de configuración general (redes sociales, contacto directo)
   const [siteSettings, setSiteSettings] = useState(null);
 
   useEffect(() => {
@@ -86,7 +82,6 @@ export default function App() {
     });
   }, []);
 
-  // 3. Modales y estados de reserva
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
@@ -116,7 +111,6 @@ export default function App() {
     setIsBookingModalOpen(true);
   };
 
-  // Si la ruta es /admin o hash #admin, mostramos el Panel de Administración
   const isAdminRoute =
     currentPath.startsWith("/admin") ||
     (typeof window !== "undefined" && window.location.hash === "#admin");
@@ -140,16 +134,14 @@ export default function App() {
     );
   }
 
-  // Vista Pública de la Landing Page
   return (
     <AuthProvider>
       <div className="min-h-screen bg-stone-50 text-stone-800 flex flex-col font-sans selection:bg-rose-500 selection:text-white pb-16 sm:pb-0">
-        {/* Top Fixed Header */}
+
         <Navbar onOpenBookingModal={handleOpenBookingModal} />
 
-        {/* Main Page Content */}
         <main className="flex-1">
-          {/* Hero Section with Slider, Quick Stats & Unit Switcher */}
+
           <Hero
             apartments={apartments}
             onOpenGallery={handleOpenGallery}
@@ -158,7 +150,6 @@ export default function App() {
             onSelectApartment={setSelectedApartmentId}
           />
 
-          {/* 🏢 Interactive Catalog / Selector of Apartments (Solo si hay más de 1 activa) */}
           {apartments.length > 1 && (
             <ApartmentSelector
               apartments={apartments}
@@ -168,29 +159,24 @@ export default function App() {
             />
           )}
 
-          {/* Modern Airbnb-style Image Gallery for the active apartment */}
           <ModernGallery
             isLightboxOpen={isLightboxOpen}
             setIsLightboxOpen={setIsLightboxOpen}
             apartment={currentApartment}
           />
 
-          {/* Room-by-Room Walkthrough & Breakdown for the active apartment */}
           <RoomExplorer
             onSelectRoomImage={() => setIsLightboxOpen(true)}
             apartment={currentApartment}
           />
 
-          {/* 🏔️ Parallax Experience Banner */}
           <ParallaxBanner
             selectedApartment={currentApartment}
             onOpenBookingModal={handleOpenBookingModal}
           />
 
-          {/* All Amenities and Included Services with Warm Glow */}
           <FeaturesAndAmenities selectedApartment={currentApartment} />
 
-          {/* Stay & Price Calculator with WhatsApp Direct Booking & Google Sheets Action */}
           <BookingCalculator
             apartments={apartments}
             onOpenBookingModal={handleOpenBookingModal}
@@ -198,44 +184,36 @@ export default function App() {
             onSelectApartment={setSelectedApartmentId}
           />
 
-          {/* Location in San Salvador de Jujuy, Maps & Nearby Attractions */}
           <LocationSection
             apartments={apartments}
             selectedApartment={currentApartment}
             onSelectApartment={setSelectedApartmentId}
           />
 
-          {/* 🌟 2nd Parallax Section: History, Quality & Animated Stats Counters */}
           <ParallaxStory
             selectedApartment={currentApartment}
             onOpenBookingModal={handleOpenBookingModal}
           />
 
-          {/* Guest Reviews & 4.96 Rating Breakdown */}
           <Testimonials />
 
-          {/* Frequently Asked Questions */}
           <FAQ />
 
-          {/* Direct EmailJS Contact Form */}
           <ContactForm />
         </main>
 
-        {/* Footer */}
         <Footer
           siteSettings={siteSettings}
           onOpenPrivacyModal={() => setIsPrivacyModalOpen(true)}
           onNavigateAdmin={() => navigate("/admin")}
         />
 
-        {/* Floating Elements for Mobile & Desktop UX */}
         <FloatingWhatsApp />
         <MobileBookingBar
           onOpenBookingModal={handleOpenBookingModal}
           selectedApartment={currentApartment}
         />
 
-        {/* Google Sheets Booking Request Modal */}
         <BookingModal
           apartments={apartments}
           isOpen={isBookingModalOpen}
@@ -246,7 +224,6 @@ export default function App() {
           initialApartmentId={bookingData.apartmentId || selectedApartmentId}
         />
 
-        {/* Legal & Privacy Policy Modal (Ley 25.326) */}
         <PrivacyModal
           isOpen={isPrivacyModalOpen}
           onClose={() => setIsPrivacyModalOpen(false)}

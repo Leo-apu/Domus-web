@@ -1,25 +1,13 @@
-/**
- * Servicio de subida directa a Cloudinary (Unsigned Preset)
- * Permite subir fotos desde celular o PC sin necesidad de backend propio.
- */
 
 const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "b8cppc5m";
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "domus-up";
 
-/**
- * Sube una imagen a Cloudinary y devuelve la URL optimizada WebP
- * @param {File} file - Archivo de imagen seleccionado por el usuario
- * @param {string} [folder="domus-alquiler"] - Carpeta dentro de Cloudinary
- * @param {function} [onProgress] - Callback opcional para reportar progreso (0-100)
- * @returns {Promise<{url: string, publicId: string, width: number, height: number}>}
- */
 export async function uploadToCloudinary(file, folder = "domus-alquiler", onProgress = null) {
   if (!file) throw new Error("No se seleccionó ningún archivo.");
   if (!file.type.startsWith("image/")) {
     throw new Error("El archivo seleccionado debe ser una imagen (JPG, PNG, WebP).");
   }
 
-  // Validación de peso máximo en cliente: 15MB
   if (file.size > 15 * 1024 * 1024) {
     throw new Error("La imagen es demasiado pesada (máximo 15MB). Por favor elegí una imagen más liviana.");
   }
@@ -50,7 +38,7 @@ export async function uploadToCloudinary(file, folder = "domus-alquiler", onProg
       if (xhr.status >= 200 && xhr.status < 300) {
         try {
           const res = JSON.parse(xhr.responseText);
-          // Auto optimización: forzamos entrega en formato óptimo f_auto,q_auto
+
           const optimizedUrl = res.secure_url.replace(
             "/upload/",
             "/upload/f_auto,q_auto/"

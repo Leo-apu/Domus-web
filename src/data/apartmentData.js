@@ -1,5 +1,3 @@
-// Configuración centralizada de Domus Alquileres
-// San Salvador de Jujuy, Argentina
 
 export const APARTMENT_INFO = {
   name: "Domus Alquileres Temporarios",
@@ -26,9 +24,6 @@ export const APARTMENT_INFO = {
   googleSheetsWebhookUrl: import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL || "",
 };
 
-// ==========================================
-// CATÁLOGO DE LOS 2 DEPARTAMENTOS
-// ==========================================
 export const APARTMENTS = [
   {
     id: "domus-centro",
@@ -476,13 +471,11 @@ export const APARTMENTS = [
   },
 ];
 
-// Compatibilidad por defecto (Unidad 1)
 export const DEFAULT_APARTMENT = APARTMENTS[0];
 export const GALLERY_IMAGES = DEFAULT_APARTMENT.galleryImages;
 export const ROOMS_DETAILS = DEFAULT_APARTMENT.roomsDetails;
 export const NEARBY_PLACES = DEFAULT_APARTMENT.nearbyPlaces;
 
-// Servicios incluidos generales
 export const AMENITIES = [
   {
     category: "Servicios Esenciales",
@@ -561,7 +554,6 @@ export const AMENITIES = [
   },
 ];
 
-// Opiniones de huéspedes verificados
 export const TESTIMONIALS = [
   {
     name: "Martín & Valeria",
@@ -585,7 +577,6 @@ export const TESTIMONIALS = [
   },
 ];
 
-// Preguntas Frecuentes
 export const FAQS = [
   {
     q: "¿Cuántos departamentos tienen y cómo elijo el adecuado?",

@@ -304,7 +304,7 @@ export default function BookingModal({
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-3.5">
-              {/* Apartment Select Field */}
+
               <div>
                 <label
                   htmlFor={apartmentSelectId}

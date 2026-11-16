@@ -19,7 +19,6 @@ export default function RoomExplorer({
   const rooms = roomsDetails || apartment?.roomsDetails || ROOMS_DETAILS;
   const [activeRoomId, setActiveRoomId] = useState(rooms[0]?.id || "living-comedor");
 
-  // Reset to first room of the active apartment
   useEffect(() => {
     if (rooms && rooms.length > 0) {
       setActiveRoomId(rooms[0].id);
@@ -69,7 +68,6 @@ export default function RoomExplorer({
           </p>
         </div>
 
-        {/* Room Switcher Pills */}
         <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar reveal-init reveal-up delay-100">
           {rooms.map((room) => (
             <button
@@ -87,11 +85,10 @@ export default function RoomExplorer({
           ))}
         </div>
 
-        {/* Active Room Detail Showcase */}
         {activeRoom && (
           <div className="bg-white rounded-3xl border border-stone-200 shadow-xl overflow-hidden reveal-init reveal-scale delay-200">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-              {/* Photo Side */}
+
               <div
                 onClick={onSelectRoomImage}
                 className="lg:col-span-7 relative aspect-16/10 lg:aspect-auto overflow-hidden bg-stone-950 cursor-pointer group"
@@ -116,7 +113,6 @@ export default function RoomExplorer({
                 </div>
               </div>
 
-              {/* Specs & Features Side */}
               <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-4">

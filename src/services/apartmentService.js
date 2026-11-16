@@ -17,14 +17,9 @@ const GENERAL_SETTINGS_DOC = "general";
 const TESTIMONIALS_DOC = "testimonials";
 const FAQS_DOC = "faqs";
 
-/**
- * Normaliza los datos de un departamento asegurando que fotos, portadas,
- * descripciones y listas estén 100% consistentes tanto para la web como para el Admin CMS.
- */
 export function normalizeApartment(apt) {
   if (!apt) return null;
 
-  // Unificamos la galería garantizando que existan tanto 'gallery' como 'galleryImages'
   const rawList = Array.isArray(apt.gallery) && apt.gallery.length > 0
     ? apt.gallery
     : Array.isArray(apt.galleryImages) && apt.galleryImages.length > 0
@@ -58,10 +53,6 @@ export function normalizeApartment(apt) {
   };
 }
 
-/**
- * Escucha cambios en tiempo real en la colección de departamentos.
- * Si Firestore está vacío, usa el catálogo por defecto de apartmentData.js.
- */
 export function subscribeToApartments(onUpdate, onError) {
   try {
     const colRef = collection(db, APARTMENTS_COLLECTION);
@@ -75,11 +66,11 @@ export function subscribeToApartments(onUpdate, onError) {
               ...d.data(),
             })
           );
-          // Ordenamos por orden o por id
+
           list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
           onUpdate(list);
         } else {
-          // Si la base está vacía todavía, devolvemos el fallback por defecto normalizado
+
           onUpdate(APARTMENTS.map(normalizeApartment));
         }
       },
@@ -96,9 +87,6 @@ export function subscribeToApartments(onUpdate, onError) {
   }
 }
 
-/**
- * Obtiene todos los departamentos una sola vez
- */
 export async function getApartments() {
   try {
     const colRef = collection(db, APARTMENTS_COLLECTION);
@@ -117,12 +105,9 @@ export async function getApartments() {
   }
 }
 
-/**
- * Guarda o actualiza un departamento en Firestore
- */
 export async function saveApartment(apartmentData) {
   if (!apartmentData.id) {
-    // Generar un ID limpio basado en el nombre si es nuevo
+
     const cleanId = (apartmentData.shortName || apartmentData.name || "depto")
       .toLowerCase()
       .trim()
@@ -142,19 +127,12 @@ export async function saveApartment(apartmentData) {
   return normalized.id;
 }
 
-/**
- * Elimina un departamento de Firestore
- */
 export async function deleteApartment(id) {
   if (!id) throw new Error("ID de departamento no especificado.");
   const docRef = doc(db, APARTMENTS_COLLECTION, id);
   await deleteDoc(docRef);
 }
 
-/**
- * Si Firestore está vacío, carga los 2 departamentos iniciales existentes
- * para que el administrador los vea y pueda editarlos inmediatamente.
- */
 export async function seedInitialApartmentsIfEmpty() {
   try {
     const colRef = collection(db, APARTMENTS_COLLECTION);
@@ -179,9 +157,6 @@ export async function seedInitialApartmentsIfEmpty() {
   }
 }
 
-/**
- * Obtiene la configuración general del sitio (WhatsApp, redes, textos clave)
- */
 export async function getSiteSettings() {
   try {
     const docRef = doc(db, SETTINGS_COLLECTION, GENERAL_SETTINGS_DOC);
@@ -206,9 +181,6 @@ export async function getSiteSettings() {
   }
 }
 
-/**
- * Guarda la configuración general del sitio
- */
 export async function saveSiteSettings(settings) {
   const docRef = doc(db, SETTINGS_COLLECTION, GENERAL_SETTINGS_DOC);
   await setDoc(
@@ -221,9 +193,6 @@ export async function saveSiteSettings(settings) {
   );
 }
 
-/**
- * Escucha cambios en tiempo real en los testimonios
- */
 export function subscribeToTestimonials(callback) {
   const docRef = doc(db, SETTINGS_COLLECTION, TESTIMONIALS_DOC);
   return onSnapshot(
@@ -242,9 +211,6 @@ export function subscribeToTestimonials(callback) {
   );
 }
 
-/**
- * Guarda la lista de testimonios
- */
 export async function saveTestimonials(list) {
   const docRef = doc(db, SETTINGS_COLLECTION, TESTIMONIALS_DOC);
   await setDoc(
@@ -257,9 +223,6 @@ export async function saveTestimonials(list) {
   );
 }
 
-/**
- * Escucha cambios en tiempo real en las preguntas frecuentes
- */
 export function subscribeToFaqs(callback) {
   const docRef = doc(db, SETTINGS_COLLECTION, FAQS_DOC);
   return onSnapshot(
@@ -278,9 +241,6 @@ export function subscribeToFaqs(callback) {
   );
 }
 
-/**
- * Guarda la lista de preguntas frecuentes
- */
 export async function saveFaqs(list) {
   const docRef = doc(db, SETTINGS_COLLECTION, FAQS_DOC);
   await setDoc(

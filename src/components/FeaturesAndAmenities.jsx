@@ -114,7 +114,6 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
           </p>
         </div>
 
-        {/* 4 pilares destacados de servicios */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
           <div className="bg-white/5 border border-white/10 hover:border-amber-400/40 rounded-2xl p-6 text-center transition-all hover:-translate-y-1 group backdrop-blur-md reveal-init reveal-scale delay-100">
             <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -161,7 +160,6 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
           </div>
         </div>
 
-        {/* Grilla dinámica de categorías y comodidades */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {amenityGroups.map((group, gIdx) => (
             <div
@@ -194,7 +192,6 @@ export default function FeaturesAndAmenities({ selectedApartment }) {
           ))}
         </div>
 
-        {/* Ficha técnica rápida de la unidad seleccionada */}
         <div className="bg-linear-to-r from-stone-800 to-stone-800/90 border border-stone-700 rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             <div className="border-r border-stone-700/80 last:border-none pr-4">

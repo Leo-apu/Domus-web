@@ -36,7 +36,6 @@ export default function ParallaxStory({
           sientas como en tu propia casa.
         </p>
 
-        {/* Cita cálida de autor / anfitrión */}
         <div className="max-w-2xl mx-auto mb-12 p-5 sm:p-6 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md text-stone-200 text-center reveal-init reveal-up delay-250">
           <p className="font-serif italic text-base sm:text-lg text-stone-100 font-light leading-relaxed">
             “Diseñamos cada espacio para que al volver de recorrer la Quebrada y los cerros, sientas la paz y el verdadero confort de llegar a casa.”
@@ -117,4 +116,3 @@ export default function ParallaxStory({
     </section>
   );
 }
-

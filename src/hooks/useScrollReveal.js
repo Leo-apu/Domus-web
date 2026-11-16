@@ -1,12 +1,8 @@
 import { useEffect } from 'react';
 
-/**
- * Hook para animaciones de entrada al hacer scroll (reemplazo moderno y liviano de WOW.js)
- * Observa todos los elementos con la clase `.reveal-init` y les agrega `.revealed` al entrar al viewport.
- */
 export function useScrollReveal() {
   useEffect(() => {
-    // Si el navegador no soporta IntersectionObserver, revelar todo de inmediato
+
     if (!('IntersectionObserver' in window)) {
       document.querySelectorAll('.reveal-init').forEach((el) => el.classList.add('revealed'));
       return;
@@ -34,13 +30,10 @@ export function useScrollReveal() {
       elements.forEach((el) => observer.observe(el));
     };
 
-    // Observar elementos iniciales
     observeAll();
 
-    // Pequeño timeout por si alguna imagen o fuente retrasa el layout inicial
     const timeoutId = setTimeout(observeAll, 200);
 
-    // MutationObserver para componentes montados dinámicamente
     const mutationObserver = new MutationObserver(() => {
       observeAll();
     });
@@ -57,4 +50,3 @@ export function useScrollReveal() {
     };
   }, []);
 }
-

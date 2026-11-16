@@ -25,7 +25,6 @@ export default function ModernGallery({
   const [selectedCategory, setSelectedCategory] = useState("todas");
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  // Reset category filter when apartment changes
   useEffect(() => {
     setSelectedCategory("todas");
     setLightboxIndex(0);
@@ -87,7 +86,6 @@ export default function ModernGallery({
     setIsLightboxOpen(true);
   };
 
-  // Safe items for the collage grid (5 slots)
   const collageSlot0 = images[0] || images[0];
   const collageSlot1 = images[1] || images[0];
   const collageSlot2 = images[2] || images[1] || images[0];
@@ -118,11 +116,10 @@ export default function ModernGallery({
           </p>
         </div>
 
-        {/* Mosaic Collage Gallery Showcase */}
         {images.length > 0 && (
           <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl mb-12 bg-stone-900 reveal-init reveal-scale delay-100">
             <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-2 sm:gap-2.5 h-105 sm:h-125 lg:h-140">
-              {/* Main large feature image */}
+
               <div
                 onClick={() => openLightboxWithGlobalIndex(0)}
                 className="relative md:col-span-2 md:row-span-2 overflow-hidden cursor-pointer group"
@@ -149,7 +146,6 @@ export default function ModernGallery({
                 </div>
               </div>
 
-              {/* Secondary slot 1 */}
               <div
                 onClick={() => openLightboxWithGlobalIndex(1)}
                 className="hidden md:block relative overflow-hidden cursor-pointer group"
@@ -167,7 +163,6 @@ export default function ModernGallery({
                 </div>
               </div>
 
-              {/* Secondary slot 2 */}
               <div
                 onClick={() => openLightboxWithGlobalIndex(2)}
                 className="hidden md:block relative overflow-hidden cursor-pointer group"
@@ -185,7 +180,6 @@ export default function ModernGallery({
                 </div>
               </div>
 
-              {/* Secondary slot 3 */}
               <div
                 onClick={() => openLightboxWithGlobalIndex(3)}
                 className="hidden md:block relative overflow-hidden cursor-pointer group"
@@ -203,7 +197,6 @@ export default function ModernGallery({
                 </div>
               </div>
 
-              {/* Secondary slot 4 */}
               <div
                 onClick={() => openLightboxWithGlobalIndex(4)}
                 className="hidden md:block relative overflow-hidden cursor-pointer group"
@@ -222,7 +215,6 @@ export default function ModernGallery({
               </div>
             </div>
 
-            {/* Floating button to open lightbox */}
             <button
               onClick={() => openLightboxWithGlobalIndex(0)}
               className="absolute bottom-4 right-4 z-20 inline-flex items-center gap-2 bg-stone-950/85 hover:bg-stone-950 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl border border-white/20 backdrop-blur-md shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer"
@@ -233,7 +225,6 @@ export default function ModernGallery({
           </div>
         )}
 
-        {/* Filter Pills */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10 reveal-init reveal-up delay-200">
           {categories.map((cat) => (
             <button
@@ -259,7 +250,6 @@ export default function ModernGallery({
           ))}
         </div>
 
-        {/* Filtered Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredImages.map((image, index) => (
             <div
@@ -308,7 +298,6 @@ export default function ModernGallery({
         </div>
       </div>
 
-      {/* Lightbox Modal */}
       <PhotoLightbox
         isOpen={isLightboxOpen}
         onClose={() => setIsLightboxOpen(false)}

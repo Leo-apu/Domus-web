@@ -16,7 +16,7 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
     <footer className="bg-stone-950 text-stone-300 border-t border-stone-850">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Col 1: Marca & Presentación */}
+
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-md shadow-rose-600/20">
@@ -45,7 +45,6 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
             </p>
           </div>
 
-          {/* Col 2: Navegación Rápida */}
           <div>
             <h4 className="font-serif-title text-base font-bold text-white mb-4">
               Navegación
@@ -118,7 +117,6 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
             </ul>
           </div>
 
-          {/* Col 3: Datos de Check-in y Ubicación */}
           <div>
             <h4 className="font-serif-title text-base font-bold text-white mb-4">
               Información Importante
@@ -145,7 +143,6 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
             </ul>
           </div>
 
-          {/* Col 4: Atención Directa & Redes */}
           <div className="space-y-4">
             <h4 className="font-serif-title text-base font-bold text-white">
               Atención Directa
@@ -176,7 +173,6 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
               </div>
             </div>
 
-            {/* Redes Sociales */}
             {(settings.instagramUrl || settings.facebookUrl || settings.tiktokUrl) && (
               <div className="pt-4 border-t border-stone-850">
                 <div className="flex items-center gap-2 mb-3">
@@ -231,9 +227,8 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
           </div>
         </div>
 
-        {/* Sub-barra inferior: Legal, Acceso Dueño y Créditos */}
         <div className="mt-14 pt-8 border-t border-stone-850 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-400">
-          {/* Lado Izquierdo: Copyright & Acceso Dueño */}
+
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 text-center md:text-left">
             <p className="text-stone-400">
               © {currentYear} <span className="font-semibold text-stone-200">Domus Alquileres Temporarios</span>. Todos los derechos reservados.
@@ -256,7 +251,6 @@ export default function Footer({ siteSettings, onOpenPrivacyModal, onNavigateAdm
             </button>
           </div>
 
-          {/* Lado Derecho: Créditos de Autor */}
           <div className="flex items-center gap-1.5 text-stone-400 text-xs shrink-0 whitespace-nowrap">
             <span>Desarrollado con</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline" />

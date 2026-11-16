@@ -118,7 +118,7 @@ export default function TestimonialsAdmin({ apartments = [] }) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/10">
         <div>
           <div className="flex items-center gap-2">
@@ -165,7 +165,6 @@ export default function TestimonialsAdmin({ apartments = [] }) {
         </div>
       </div>
 
-      {/* Alertas */}
       {successMsg && (
         <div className="p-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2.5 animate-in fade-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -180,7 +179,6 @@ export default function TestimonialsAdmin({ apartments = [] }) {
         </div>
       )}
 
-      {/* Lista de testimonios */}
       {testimonials.length === 0 ? (
         <div className="p-8 rounded-3xl bg-stone-900 border border-stone-800 text-center space-y-3">
           <p className="text-sm text-stone-400">No hay testimonios cargados.</p>
@@ -205,14 +203,13 @@ export default function TestimonialsAdmin({ apartments = [] }) {
               }`}
             >
               <div className="space-y-4">
-                {/* Header de la tarjeta */}
+
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/5">
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-mono font-bold bg-white/10 text-stone-300 px-2 py-0.5 rounded-md">
                       #{idx + 1}
                     </span>
 
-                    {/* Selector interactivo de estrellas */}
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -238,7 +235,6 @@ export default function TestimonialsAdmin({ apartments = [] }) {
                     </span>
                   </div>
 
-                  {/* Acciones y visibilidad */}
                   <div className="flex items-center gap-1.5">
                     <button
                       type="button"
@@ -285,7 +281,6 @@ export default function TestimonialsAdmin({ apartments = [] }) {
                   </div>
                 </div>
 
-                {/* Campos de texto */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className="block text-[10px] font-mono uppercase text-stone-400 mb-1">

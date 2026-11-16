@@ -15,7 +15,7 @@
     overflow-x: hidden;
   }
 
-  /* Custom subtle scrollbar */
+  
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -36,7 +36,7 @@
   font-family: 'Playfair Display', Georgia, serif;
 }
 
-/* 🎬 Ken Burns subtle cinematic zoom */
+
 @keyframes kenburns {
   0% {
     transform: scale(1.02);
@@ -81,7 +81,7 @@
   animation: pulse-subtle 2.5s infinite;
 }
 
-/* 🌟 Glassmorphism utilities */
+
 .glass-nav {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(14px);
@@ -100,12 +100,12 @@
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* 🏔️ Topographic elevation lines texture (Quebrada / Jujuy inspiration - VISIBLE & DEFINED) */
+
 .bg-topo-pattern {
   background-image: url("data:image/svg+xml,%3Csvg width='240' height='240' viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30c45-20 90 20 135 0s60-35 105-15M0 75c55-25 105 30 165 5s45-25 75-10M0 120c45-20 100 25 160 5s40-20 80 0M0 165c35-25 95 20 150-5s55-20 90 0M0 210c50-20 110 25 170 5s45-25 70-10M30 50c30 25 75-15 110 15M60 110c30-25 65 20 100-5M80 170c25-20 50 15 80-5' stroke='%23b45309' stroke-width='1.2' stroke-opacity='0.18' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
-/* 🌅 Warm organic mesh gradient backgrounds (Warm Sandstone + Terracotta Glow) */
+
 .mesh-gradient-warm {
   background-color: #faf7f2;
   background-image:
@@ -122,7 +122,7 @@
     radial-gradient(at 50% 90%, rgba(180, 83, 9, 0.20) 0px, transparent 55%);
 }
 
-/* 🏔️ Parallax section effect */
+
 .bg-parallax-banner {
   background-attachment: fixed;
   background-position: center;
@@ -130,7 +130,7 @@
   background-size: cover;
 }
 
-/* ✨ Scroll Reveal Animations (Reemplazo moderno y fluido de WOW.js / animate.css) */
+
 .reveal-init {
   opacity: 0;
   transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);

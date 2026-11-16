@@ -77,7 +77,7 @@ export default function ContactForm() {
           origin: { y: 0.6 },
         });
       } catch {
-        // ignore
+
       }
     } catch (err) {
       console.error("Error enviando email:", err);

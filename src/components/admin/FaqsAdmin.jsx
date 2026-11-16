@@ -131,7 +131,7 @@ export default function FaqsAdmin({ apartments = [] }) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/10">
         <div>
           <div className="flex items-center gap-2">
@@ -198,7 +198,6 @@ export default function FaqsAdmin({ apartments = [] }) {
         </div>
       </div>
 
-      {/* Alertas */}
       {successMsg && (
         <div className="p-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2.5 animate-in fade-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -213,7 +212,6 @@ export default function FaqsAdmin({ apartments = [] }) {
         </div>
       )}
 
-      {/* Lista de FAQs */}
       {faqs.length === 0 ? (
         <div className="p-8 rounded-3xl bg-stone-900 border border-stone-800 text-center space-y-3">
           <p className="text-sm text-stone-400">No hay preguntas frecuentes cargadas.</p>
@@ -238,7 +236,7 @@ export default function FaqsAdmin({ apartments = [] }) {
               }`}
             >
               <div className="space-y-3">
-                {/* Pregunta & Botones de Acción */}
+
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                   <div className="flex items-center gap-2 flex-1">
                     <span className="text-[10px] font-mono font-bold bg-white/10 text-stone-400 px-2 py-0.5 rounded-md shrink-0">
@@ -299,7 +297,6 @@ export default function FaqsAdmin({ apartments = [] }) {
                   </div>
                 </div>
 
-                {/* Respuesta */}
                 <div>
                   <textarea
                     rows={2}

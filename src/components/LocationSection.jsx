@@ -26,7 +26,7 @@ export default function LocationSection({
       id="ubicacion"
       className="py-20 sm:py-24 bg-stone-900 text-white relative overflow-hidden"
     >
-      {/* Ambient Lighting & Atmosphere */}
+
       <div className="absolute top-0 right-1/3 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -50,7 +50,6 @@ export default function LocationSection({
             la ciudad y de las excursiones a la Quebrada.
           </p>
 
-          {/* Quick Location Switcher Buttons (Solo si hay más de 1 unidad activa) */}
           {apartments.length > 1 && (
             <div className="mt-6 inline-flex flex-wrap items-center justify-center p-1.5 bg-stone-800/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg gap-2">
               {apartments.map((apt) => {
@@ -86,7 +85,7 @@ export default function LocationSection({
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* Nearby places list */}
+
           <div className="lg:col-span-5 flex flex-col justify-between space-y-4 reveal-init reveal-left">
             <div className="space-y-3">
               <h3 className="font-serif-title text-xl font-bold text-white mb-4 flex items-center gap-2">
@@ -142,7 +141,6 @@ export default function LocationSection({
             </div>
           </div>
 
-          {/* Map Preview */}
           <div className="lg:col-span-7 bg-stone-850 rounded-3xl overflow-hidden border border-white/15 shadow-2xl flex flex-col min-h-95 lg:min-h-120 reveal-init reveal-right">
             <div className="bg-stone-950 text-white px-5 py-3.5 flex items-center justify-between border-b border-white/10">
               <div className="flex items-center gap-2">

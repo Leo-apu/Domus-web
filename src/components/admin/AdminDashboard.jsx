@@ -37,13 +37,12 @@ import FaqsAdmin from "./FaqsAdmin";
 export default function AdminDashboard({ onBackToSite }) {
   const { user, logout } = useAuth();
 
-  const [activeTab, setActiveTab] = useState("apartments"); // 'apartments' | 'settings' | 'sheets'
+  const [activeTab, setActiveTab] = useState("apartments"); 
   const [apartments, setApartments] = useState([]);
   const [loadingApartments, setLoadingApartments] = useState(true);
   const [editingApartment, setEditingApartment] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Settings State
   const [settings, setSettings] = useState({
     whatsappNumber: "543886350824",
     whatsappPhone: "+54 9 388 635-0824",
@@ -59,11 +58,9 @@ export default function AdminDashboard({ onBackToSite }) {
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsSavedSuccess, setSettingsSavedSuccess] = useState(false);
 
-  // Google Sheets Webhook Health Test
-  const [webhookStatus, setWebhookStatus] = useState("idle"); // 'idle' | 'testing' | 'online' | 'offline'
+  const [webhookStatus, setWebhookStatus] = useState("idle"); 
   const [webhookLatency, setWebhookLatency] = useState(null);
 
-  // 1. Escuchar departamentos en Firestore
   useEffect(() => {
     seedInitialApartmentsIfEmpty();
 
@@ -81,7 +78,6 @@ export default function AdminDashboard({ onBackToSite }) {
     return () => unsubscribe();
   }, []);
 
-  // 2. Cargar configuración general
   useEffect(() => {
     async function loadSettings() {
       const data = await getSiteSettings();
@@ -93,7 +89,6 @@ export default function AdminDashboard({ onBackToSite }) {
     loadSettings();
   }, []);
 
-  // Probar webhook de Google Sheets en vivo
   const testWebhook = async () => {
     const url = settings.googleSheetsWebhookUrl || import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL;
     if (!url) {
@@ -161,7 +156,7 @@ export default function AdminDashboard({ onBackToSite }) {
 
   return (
     <div className="min-h-screen bg-stone-950 text-white flex flex-col">
-      {/* Top Navbar Admin */}
+
       <header className="border-b border-white/10 bg-stone-900/90 backdrop-blur-md sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -195,7 +190,6 @@ export default function AdminDashboard({ onBackToSite }) {
           </div>
         </div>
 
-        {/* Tab Selector */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-2 border-t border-white/5 overflow-x-auto">
           <button
             onClick={() => setActiveTab("apartments")}
@@ -262,9 +256,8 @@ export default function AdminDashboard({ onBackToSite }) {
         </div>
       </header>
 
-      {/* Main Admin Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-        {/* TAB 1: DEPARTAMENTOS */}
+
         {activeTab === "apartments" && (
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -307,7 +300,7 @@ export default function AdminDashboard({ onBackToSite }) {
                     className="bg-stone-900/80 border border-white/10 rounded-3xl overflow-hidden shadow-xl flex flex-col justify-between group"
                   >
                     <div>
-                      {/* Cover Photo */}
+
                       <div className="relative aspect-16/9 bg-stone-950 overflow-hidden">
                         <img
                           src={apt.coverImage || "/images/landing-2.webp"}
@@ -334,7 +327,6 @@ export default function AdminDashboard({ onBackToSite }) {
                         </div>
                       </div>
 
-                      {/* Info Body */}
                       <div className="p-5 sm:p-6 space-y-4">
                         <div>
                           <div className="flex items-center justify-between gap-2 mb-1">
@@ -354,7 +346,6 @@ export default function AdminDashboard({ onBackToSite }) {
                           </p>
                         </div>
 
-                        {/* Quick Specs */}
                         <div className="grid grid-cols-4 gap-2 py-2.5 px-3 rounded-xl bg-stone-950 border border-stone-800 text-center text-xs font-mono">
                           <div>
                             <span className="text-[10px] text-stone-500 block">Huéspedes</span>
@@ -374,7 +365,6 @@ export default function AdminDashboard({ onBackToSite }) {
                           </div>
                         </div>
 
-                        {/* Descripción de la Unidad */}
                         <div className="p-3.5 rounded-2xl bg-stone-950/80 border border-stone-800/80 space-y-1.5">
                           <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold block">
                             Descripción del Departamento:
@@ -384,7 +374,6 @@ export default function AdminDashboard({ onBackToSite }) {
                           </p>
                         </div>
 
-                        {/* Tira de Fotos de la Galería */}
                         <div className="space-y-2 pt-1">
                           <div className="flex items-center justify-between text-xs font-mono">
                             <span className="text-stone-300 flex items-center gap-1.5 font-semibold">
@@ -440,7 +429,6 @@ export default function AdminDashboard({ onBackToSite }) {
                       </div>
                     </div>
 
-                    {/* Bottom Actions */}
                     <div className="p-5 sm:p-6 pt-0 border-t border-white/5 flex items-center justify-between gap-3 mt-2">
                       <span className="text-[11px] font-mono text-stone-400">
                         {apt.gallery?.length || 0} fotos • {apt.highlights?.length || 0} destacados
@@ -471,17 +459,14 @@ export default function AdminDashboard({ onBackToSite }) {
           </div>
         )}
 
-        {/* TAB: TESTIMONIOS Y RESEÑAS */}
         {activeTab === "testimonials" && (
           <TestimonialsAdmin apartments={apartments} />
         )}
 
-        {/* TAB: PREGUNTAS FRECUENTES (FAQ) */}
         {activeTab === "faqs" && (
           <FaqsAdmin apartments={apartments} />
         )}
 
-        {/* TAB 2: CONFIGURACIÓN & CONTACTO */}
         {activeTab === "settings" && (
           <div className="max-w-2xl mx-auto space-y-6">
             <div>
@@ -579,8 +564,6 @@ export default function AdminDashboard({ onBackToSite }) {
                 </div>
               </div>
 
-              
-              {/* Redes Sociales & Enlaces Públicos */}
               <div className="pt-4 border-t border-white/10 space-y-4">
                 <h3 className="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold">
                   Redes Sociales & Enlaces Públicos
@@ -652,7 +635,6 @@ export default function AdminDashboard({ onBackToSite }) {
           </div>
         )}
 
-        {/* TAB 3: GOOGLE SHEETS & RESERVAS */}
         {activeTab === "sheets" && (
           <div className="max-w-3xl mx-auto space-y-6">
             <div>
@@ -664,7 +646,6 @@ export default function AdminDashboard({ onBackToSite }) {
               </p>
             </div>
 
-            {/* Health Test Card */}
             <div className="bg-stone-900 border border-white/10 rounded-3xl p-6 sm:p-8 space-y-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
                 <div>
@@ -708,7 +689,6 @@ export default function AdminDashboard({ onBackToSite }) {
                 </button>
               </div>
 
-              {/* Botón directo a la planilla */}
               <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <h4 className="text-sm font-bold text-emerald-300">
@@ -719,7 +699,7 @@ export default function AdminDashboard({ onBackToSite }) {
                   </p>
                 </div>
                 <a
-                  href="https://docs.google.com/spreadsheets/d/1X5XQe6_hQeZc5s7s8s9/edit" // Fallback / placeholder o personalizable
+                  href="https://docs.google.com/spreadsheets/d/1X5XQe6_hQeZc5s7s8s9/edit" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl transition-all shadow-md shrink-0 cursor-pointer"
@@ -729,7 +709,6 @@ export default function AdminDashboard({ onBackToSite }) {
                 </a>
               </div>
 
-              {/* URL Webhook field */}
               <div className="space-y-2 pt-2">
                 <label className="block text-xs font-mono uppercase text-stone-400">
                   URL del Webhook de Apps Script (/exec)
@@ -750,7 +729,6 @@ export default function AdminDashboard({ onBackToSite }) {
         )}
       </main>
 
-      {/* Modal de Crear / Editar Departamento */}
       {isModalOpen && (
         <ApartmentEditModal
           apartment={editingApartment}

@@ -32,7 +32,7 @@ export default function ApartmentSelector({
       className="py-16 sm:py-20 bg-stone-100/70 bg-topo-pattern border-b border-stone-200 relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
+
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 reveal-init reveal-up">
           <div className="flex items-center justify-center gap-2.5 text-xs font-mono font-medium tracking-[0.25em] uppercase text-amber-800 mb-3">
             <span className="w-5 h-px bg-amber-600/40" />
@@ -47,7 +47,6 @@ export default function ApartmentSelector({
             Alojamientos temporarios de categoría en San Salvador de Jujuy, pensados para el descanso de familias, parejas y profesionales.
           </p>
 
-          {/* Quick interactive tab bar switcher */}
           <div className="mt-6 sm:mt-8 inline-flex p-1.5 bg-white/90 backdrop-blur-md rounded-2xl border border-stone-200/90 shadow-md gap-1 sm:gap-2 max-w-full overflow-x-auto">
             {apartments.map((apt) => {
               const isSelected = apt.id === selectedApartmentId;
@@ -77,7 +76,6 @@ export default function ApartmentSelector({
           </div>
         </div>
 
-        {/* Department Cards Grid - Centered & Spacious */}
         <div className={`grid grid-cols-1 ${apartments.length === 2 ? 'md:grid-cols-2' : apartments.length >= 3 ? 'md:grid-cols-3' : 'max-w-2xl'} max-w-5xl mx-auto gap-6 sm:gap-8 items-stretch`}>
           {apartments.map((apt) => {
             const isSelected = apt.id === selectedApartmentId;
@@ -91,7 +89,7 @@ export default function ApartmentSelector({
                     : "border border-stone-200/90 shadow-md hover:shadow-xl hover:border-stone-300 hover:-translate-y-1"
                 }`}
               >
-                {/* Active Indicator Top Bar */}
+
                 {isSelected && (
                   <div className="bg-linear-to-r from-rose-600 via-rose-500 to-amber-500 text-white text-xs font-bold py-1.5 px-4 text-center flex items-center justify-center gap-1.5 shadow-sm">
                     <Sparkles className="w-3.5 h-3.5 fill-white" />
@@ -99,7 +97,6 @@ export default function ApartmentSelector({
                   </div>
                 )}
 
-                {/* Card Image Header */}
                 <div className="relative aspect-16/10 overflow-hidden bg-stone-900">
                   <img
                     src={apt.coverImage}
@@ -108,7 +105,6 @@ export default function ApartmentSelector({
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-stone-950/80 via-stone-950/20 to-transparent" />
 
-                  {/* Badges Overlay */}
                   <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
                     <span className="bg-stone-900/85 backdrop-blur-md text-white border border-white/20 text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-md">
                       {apt.type}
@@ -118,7 +114,6 @@ export default function ApartmentSelector({
                     </span>
                   </div>
 
-                  {/* Location & Capacity inside photo */}
                   <div className="absolute bottom-3 left-3 right-3 text-white text-xs font-medium flex items-center justify-between">
                     <span className="text-stone-300 drop-shadow-sm flex items-center gap-1">
                       <MapPin className="w-3 h-3 text-rose-400" />
@@ -130,7 +125,6 @@ export default function ApartmentSelector({
                   </div>
                 </div>
 
-                {/* Card Body */}
                 <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-1.5 text-xs text-rose-600 font-semibold mb-1">
@@ -146,7 +140,6 @@ export default function ApartmentSelector({
                       {apt.description}
                     </p>
 
-                    {/* Quick Specs Grid */}
                     <div className="grid grid-cols-4 gap-2 py-3 px-2 rounded-2xl bg-stone-50 border border-stone-200/80 mb-5 text-center">
                       <div className="flex flex-col items-center justify-center">
                         <Users className="w-4 h-4 text-rose-500 mb-1" />
@@ -186,7 +179,6 @@ export default function ApartmentSelector({
                       </div>
                     </div>
 
-                    {/* Highlights bullet list */}
                     <div className="space-y-2 mb-6">
                       {apt.highlights.slice(0, 3).map((item, idx) => (
                         <div
@@ -200,7 +192,6 @@ export default function ApartmentSelector({
                     </div>
                   </div>
 
-                  {/* Actions Bottom */}
                   <div className="pt-4 border-t border-stone-100 flex flex-col gap-2">
                     <button
                       onClick={(e) => {

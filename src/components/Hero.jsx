@@ -22,7 +22,6 @@ export default function Hero({
     setCurrentSlide(0);
   }, [selectedApartment?.id]);
 
-  // Transición 100% automática y suave del carrusel (sin controles manuales)
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -51,7 +50,7 @@ export default function Hero({
       id="inicio"
       className="relative min-h-[90vh] sm:min-h-screen flex flex-col justify-center items-center bg-stone-950 text-white pt-20 sm:pt-24 lg:pt-24 pb-14 sm:pb-16 overflow-hidden"
     >
-      {/* Background Slides with smooth Ken Burns animation and cinematic overlays */}
+
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {slides.map((slide, index) => (
           <div
@@ -78,7 +77,7 @@ export default function Hero({
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center w-full my-auto py-1 sm:py-2">
-        {/* Editorial Overline */}
+
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-light tracking-[0.2em] uppercase text-stone-300/90 mb-3 sm:mb-4 reveal-init reveal-up">
           <span className="font-mono text-stone-400">SAN SALVADOR DE JUJUY</span>
           <span className="w-1 h-1 rounded-full bg-amber-400/80" />
@@ -88,7 +87,6 @@ export default function Hero({
           </span>
         </div>
 
-        {/* Selector de Unidades Minimalista (Solo si hay más de 1 unidad activa) */}
         {apartments.length > 1 && (
           <div className="flex items-center justify-center gap-1.5 mb-3 sm:mb-4 bg-stone-900/60 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-lg">
             {apartments.map((apt) => {
@@ -123,7 +121,6 @@ export default function Hero({
           </p>
         </div>
 
-        {/* Especificaciones principales */}
         <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10 bg-black/40 backdrop-blur-md border border-white/15 rounded-2xl max-w-3xl w-full py-2.5 sm:py-3.5 px-3 sm:px-6 mb-6 sm:mb-8 shadow-2xl reveal-init reveal-scale delay-300">
           <div className="py-1.5 sm:py-0 px-2 sm:px-4 text-center sm:text-left">
             <span className="text-[10px] uppercase tracking-wider text-stone-400 block font-mono font-medium">
@@ -164,7 +161,6 @@ export default function Hero({
           </div>
         </div>
 
-        {/* Botones de Acción */}
         <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3.5 w-full sm:w-auto reveal-init reveal-up delay-400">
           <a
             href="#calculadora"
@@ -185,7 +181,6 @@ export default function Hero({
         </div>
       </div>
 
-      {/* Flechita sutil de exploración al pie */}
       <a
         href="#galeria"
         onClick={scrollToGallery}

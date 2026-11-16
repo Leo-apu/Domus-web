@@ -28,7 +28,6 @@ import {
 import { uploadToCloudinary } from "../../lib/cloudinary";
 import { generateNearbyPlacesWithGemini, generateAmenitiesWithGemini } from "../../services/geminiService";
 
-
 const POPULAR_PRESET_AMENITIES = [
   { name: "WiFi Fibra Óptica 300MB", desc: "Conexión de ultra alta velocidad para streaming y trabajo", icon: "Wifi", category: "Servicios Esenciales" },
   { name: "Aire Acondicionado Frío/Calor", desc: "Climatización individual en todos los ambientes", icon: "Wind", category: "Confort y Habitabilidad" },
@@ -46,7 +45,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
   const isEditing = !!apartment?.id;
   const fileInputRef = useRef(null);
 
-  // Normalizamos la lista de imágenes para que cada foto tenga id, src, title, category y description garantizados
   const rawList = Array.isArray(apartment?.gallery) && apartment.gallery.length > 0
     ? apartment.gallery
     : Array.isArray(apartment?.galleryImages) && apartment.galleryImages.length > 0
@@ -135,7 +133,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     }));
   };
 
-  // Subida de múltiples fotos a Cloudinary
   const handleFilesSelected = async (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
@@ -171,7 +168,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
         return {
           ...prev,
           gallery: updatedGallery,
-          // Si no tenía foto de portada, asignamos la primera que subió
+
           coverImage: prev.coverImage || uploadedImages[0]?.src || "",
         };
       });
@@ -236,7 +233,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  
   const handleGenerateAmenitiesWithAI = async () => {
     setIsGeneratingAmenities(true);
     setErrorMessage("");
@@ -412,7 +408,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
     >
       <div className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-stone-900 border border-white/10 rounded-3xl shadow-2xl overflow-hidden my-auto">
-        {/* Header Modal */}
+
         <div className="shrink-0 p-5 sm:p-6 border-b border-white/10 flex items-center justify-between bg-stone-950 text-white">
           <div>
             <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-rose-400 block mb-1">
@@ -431,7 +427,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
           </button>
         </div>
 
-        {/* Form Body Scrollable */}
         <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6 text-stone-200">
           {errorMessage && (
             <div className="p-4 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2.5">
@@ -441,7 +436,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
           )}
 
           <form id="apartment-form" onSubmit={handleSubmit} className="space-y-6">
-            {/* 1. Datos Principales */}
+
             <div className="space-y-4">
               <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold border-b border-white/10 pb-2">
                 1. Datos Principales & Tarifa
@@ -511,7 +506,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               </div>
             </div>
 
-            {/* 2. Especificaciones & Capacidad */}
             <div className="space-y-4">
               <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold border-b border-white/10 pb-2">
                 2. Capacidad y Distribución
@@ -579,7 +573,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                 </div>
               </div>
 
-              {/* Piso / Nivel y Orientación del departamento */}
               <div className="pt-1">
                 <label className="block text-[11px] font-mono uppercase text-stone-400 mb-1 flex items-center justify-between">
                   <span>Piso / Nivel & Vista en el Edificio</span>
@@ -598,7 +591,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               </div>
             </div>
 
-            {/* 3. Ubicación & Dirección con Asistente de Google Maps */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
                 <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold flex items-center gap-2">
@@ -617,7 +609,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                 </button>
               </div>
 
-              {/* Caja Asistente para ubicar en Maps */}
               <div className="p-3.5 sm:p-4 rounded-2xl bg-stone-950/90 border border-stone-800 space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="space-y-1">
@@ -733,7 +724,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                   </p>
                 </div>
 
-                {/* Puntos de Interés Cercanos */}
                 <div className="sm:col-span-2 pt-3 border-t border-white/10 space-y-3">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div>
@@ -896,7 +886,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               </div>
             </div>
 
-            {/* 4. Descripción del Departamento */}
             <div className="space-y-4">
               <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold border-b border-white/10 pb-2">
                 4. Descripción General y Puntos Clave
@@ -925,7 +914,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                 </p>
               </div>
 
-              {/* Highlights lista */}
               <div>
                 <label className="block text-xs font-mono uppercase text-stone-400 mb-1.5">
                   Puntos Destacados (Comodidades principales)
@@ -975,7 +963,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               </div>
             </div>
 
-            {/* 5. Gestor de Fotos y Descripciones Individuales */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
                 <h3 className="text-xs font-mono tracking-wider uppercase text-amber-400 font-bold flex items-center gap-2">
@@ -987,7 +974,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                 </span>
               </div>
 
-              {/* Dropzone / Botón de subida desde celular o PC */}
               <div className="border-2 border-dashed border-stone-700 hover:border-rose-500 rounded-2xl p-6 text-center transition-colors bg-stone-950/60">
                 <input
                   ref={fileInputRef}
@@ -1030,7 +1016,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                 )}
               </div>
 
-              {/* Lista editable de cada foto con título, categoría y descripción */}
               {formData.gallery.length === 0 ? (
                 <div className="p-6 rounded-2xl bg-stone-950 border border-stone-800 text-center text-xs text-stone-400">
                   No hay fotos cargadas aún en este departamento.
@@ -1049,7 +1034,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                         }`}
                       >
                         <div className="flex flex-col sm:flex-row gap-4 items-start">
-                          {/* Columna Izquierda: Thumbnail y acciones rápidas */}
+
                           <div className="shrink-0 w-full sm:w-44 space-y-2">
                             <div className="relative aspect-4/3 rounded-xl overflow-hidden bg-stone-900 border border-stone-800">
                               <img
@@ -1067,7 +1052,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                               </span>
                             </div>
 
-                            {/* Acciones de la foto */}
                             <div className="flex items-center gap-1.5 justify-between">
                               {!isCover ? (
                                 <button
@@ -1116,7 +1100,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                             </div>
                           </div>
 
-                          {/* Columna Derecha: Título, Categoría y Descripción del ambiente */}
                           <div className="flex-1 w-full space-y-3">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               <div>
@@ -1175,8 +1158,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               )}
             </div>
 
-            
-            {/* 6. Comodidades y Equipamiento de la Unidad */}
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
                 <div>
@@ -1228,7 +1209,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                 </div>
               )}
 
-              {/* Botones de selección rápida (Chips) */}
               <div className="p-4 rounded-2xl bg-stone-950/60 border border-stone-800/80 space-y-2.5">
                 <span className="block text-[11px] font-mono uppercase text-stone-400 font-semibold">
                   Selección rápida (tocá para activar o desactivar):
@@ -1257,7 +1237,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                 </div>
               </div>
 
-              {/* Lista editable de comodidades activas */}
               {(formData.amenities || []).length === 0 ? (
                 <div className="p-6 rounded-2xl bg-stone-950 border border-stone-800 text-center text-xs text-stone-400">
                   Esta unidad no tiene comodidades personalizadas. Utilizará las comodidades por defecto del sitio. Tocá "Sugerir con Gemini IA" o los botones rápidos para personalizarla.
@@ -1270,7 +1249,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                       className="p-3.5 rounded-2xl bg-stone-950 border border-stone-800/80 hover:border-stone-700 transition-all flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between"
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 flex-1 w-full">
-                        {/* Categoría */}
+
                         <div className="sm:col-span-3">
                           <label className="block text-[10px] font-mono uppercase text-stone-500 mb-0.5">Categoría</label>
                           <select
@@ -1286,7 +1265,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                           </select>
                         </div>
 
-                        {/* Nombre */}
                         <div className="sm:col-span-4">
                           <label className="block text-[10px] font-mono uppercase text-stone-500 mb-0.5">Nombre del Servicio</label>
                           <input
@@ -1298,7 +1276,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                           />
                         </div>
 
-                        {/* Icono */}
                         <div className="sm:col-span-2">
                           <label className="block text-[10px] font-mono uppercase text-stone-500 mb-0.5">Icono</label>
                           <select
@@ -1324,7 +1301,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                           </select>
                         </div>
 
-                        {/* Descripción */}
                         <div className="sm:col-span-3">
                           <label className="block text-[10px] font-mono uppercase text-stone-500 mb-0.5">Detalle breve</label>
                           <input
@@ -1351,7 +1327,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               )}
             </div>
 
-            {/* 7. Estado de la Unidad */}
             <div className="pt-2 flex items-center justify-between border-t border-white/10">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
@@ -1369,7 +1344,6 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
           </form>
         </div>
 
-        {/* Footer Actions */}
         <div className="shrink-0 p-4 sm:p-6 border-t border-white/10 flex items-center justify-end gap-3 bg-stone-950">
           <button
             type="button"

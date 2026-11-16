@@ -55,11 +55,10 @@ export default function AdminLogin({ onBackToSite }) {
 
   return (
     <div className="min-h-screen bg-stone-950 text-white flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden">
-      {/* Luces de fondo ambientales */}
+
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Botón Volver a la web */}
       <button
         type="button"
         onClick={onBackToSite}

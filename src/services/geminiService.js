@@ -1,17 +1,7 @@
-/**
- * Servicio de Inteligencia Artificial con Google Gemini API
- * Modelo: gemini-3.5-flash-lite (Rápido, preciso y gratuito en Google AI Studio)
- */
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
 const GEMINI_MODEL = "gemini-3.5-flash-lite";
 
-/**
- * Genera puntos de interés estratégicos y reales cercanos a una dirección en Jujuy
- * @param {string} address - Dirección del departamento (ej: "Av. Juana Manuela Gorriti 613")
- * @param {string} zone - Zona o barrio opcional (ej: "Centro")
- * @returns {Promise<Array<{name: string, distance: string, time: string, type: string, desc: string}>>}
- */
 export async function generateNearbyPlacesWithGemini(address, zone = "") {
   if (!GEMINI_API_KEY) {
     throw new Error(
@@ -79,14 +69,6 @@ Debes responder ÚNICAMENTE con un arreglo JSON válido, sin formato markdown ex
   }
 }
 
-/**
- * Sugiere equipamiento y comodidades ideales para un departamento según su tipología
- * @param {string} name - Nombre del departamento
- * @param {string} type - Tipo (ej: "3 Ambientes", "Estudio Boutique")
- * @param {number} bedrooms - Cantidad de dormitorios
- * @param {number} bathrooms - Cantidad de baños
- * @returns {Promise<Array<{name: string, desc: string, icon: string, category: string}>>}
- */
 export async function generateAmenitiesWithGemini(name, type = "", bedrooms = 1, bathrooms = 1) {
   if (!GEMINI_API_KEY) {
     throw new Error("No se encontró la clave VITE_GEMINI_API_KEY en las variables de entorno.");
@@ -155,11 +137,6 @@ Debes responder ÚNICAMENTE con un arreglo JSON válido sin texto extra, con est
   }
 }
 
-/**
- * Sugiere preguntas frecuentes relevantes para alquileres temporarios en San Salvador de Jujuy
- * @param {Array} apartments - Lista de departamentos disponibles
- * @returns {Promise<Array<{q: string, a: string}>>}
- */
 export async function generateFaqsWithGemini(apartments = []) {
   if (!GEMINI_API_KEY) {
     throw new Error("No se encontró la clave VITE_GEMINI_API_KEY en las variables de entorno.");

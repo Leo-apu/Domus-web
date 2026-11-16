@@ -47,23 +47,20 @@ export default function BookingCalculator({
   const [checkOut, setCheckOut] = useState(getTodayString(4));
   const [guests, setGuests] = useState(Math.min(2, maxCapacity));
 
-  // Estado de disponibilidad en vivo desde Google Sheets
   const [availability, setAvailability] = useState({
-    status: "idle", // 'idle' | 'checking' | 'available' | 'occupied'
+    status: "idle", 
     conflictIn: null,
     conflictOut: null,
   });
 
   const [isSendingLead, setIsSendingLead] = useState(false);
 
-  // Ajustar huéspedes si la unidad seleccionada tiene menor capacidad
   useEffect(() => {
     if (guests > maxCapacity) {
       setGuests(maxCapacity);
     }
   }, [maxCapacity, guests]);
 
-  // Consulta en tiempo real a Google Sheets cuando cambian fechas o departamento
   useEffect(() => {
     if (!checkIn || !checkOut || checkIn >= checkOut) {
       setAvailability({ status: "idle", conflictIn: null, conflictOut: null });
@@ -106,7 +103,6 @@ export default function BookingCalculator({
 
   const nights = calculateNights();
 
-  // Matemática de tarifas
   const pricePerNight = activeApartment.basePrice || 48000;
   const hasWeeklyDiscount = nights >= 7;
   const subtotal = nights * pricePerNight;
@@ -123,7 +119,6 @@ export default function BookingCalculator({
     return `${day}/${month}/${year}`;
   };
 
-  // Acción principal: Señar por WhatsApp + registro silencioso en Google Sheets
   const handleWhatsAppBooking = async () => {
     if (availability.status === "occupied") return;
 
@@ -134,10 +129,9 @@ export default function BookingCalculator({
         origin: { y: 0.65 },
       });
     } catch {
-      // Ignorar si confetti falla
+
     }
 
-    // 1. Registro silencioso en Google Sheets para no perder el lead si no manda el mensaje
     setIsSendingLead(true);
     submitBookingToGoogleSheets({
       name: "Cliente Web (Inició Seña)",
@@ -155,7 +149,6 @@ export default function BookingCalculator({
       .catch((err) => console.log("Nota: Registro silencioso:", err))
       .finally(() => setIsSendingLead(false));
 
-    // 2. Redacción del mensaje de consulta para WhatsApp
     const discountText = hasWeeklyDiscount
       ? ` (con 10% de descuento semanal aplicado)`
       : "";
@@ -173,13 +166,13 @@ export default function BookingCalculator({
       id="calculadora"
       className="py-20 sm:py-24 bg-stone-950 text-white relative overflow-hidden"
     >
-      {/* Ambient Warm Atmosphere */}
+
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-amber-600/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute inset-0 mesh-gradient-dark opacity-35 pointer-events-none" />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="bg-white rounded-3xl shadow-2xl shadow-rose-950/40 border border-white/20 overflow-hidden text-stone-800 reveal-init reveal-up">
-          {/* Header */}
+
           <div className="bg-linear-to-r from-stone-900 via-stone-850 to-stone-900 text-white p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <div className="text-[11px] font-mono tracking-[0.2em] uppercase text-rose-300/90 font-medium mb-1.5 flex items-center justify-center sm:justify-start gap-2">
@@ -205,7 +198,7 @@ export default function BookingCalculator({
           </div>
 
           <div className="p-6 sm:p-8 lg:p-10">
-            {/* Apartment Selector Pills (Solo si hay más de 1 unidad activa) */}
+
             {apartments.length > 1 && (
               <div className="mb-8">
               <label
@@ -267,7 +260,6 @@ export default function BookingCalculator({
             </div>
             )}
 
-            {/* Date and Guests Inputs */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
               <div className="space-y-1.5">
                 <label
@@ -354,7 +346,6 @@ export default function BookingCalculator({
               </div>
             </div>
 
-            {/* Estado de disponibilidad y cálculo */}
             <div className="mb-8">
               {availability.status === "checking" && (
                 <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-amber-900 flex items-center gap-3 animate-pulse">
@@ -387,7 +378,7 @@ export default function BookingCalculator({
 
               {availability.status !== "occupied" && availability.status !== "checking" && (
                 <div className="bg-stone-50 rounded-2xl p-5 sm:p-6 border border-stone-200/90 shadow-xs space-y-4">
-                  {/* Badge de disponibilidad */}
+
                   <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-stone-200/80">
                     <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300">
                       <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
@@ -406,7 +397,6 @@ export default function BookingCalculator({
                     </span>
                   </div>
 
-                  {/* Desglose de Cálculo Matemático */}
                   <div className="space-y-1.5 text-xs sm:text-sm text-stone-600">
                     <div className="flex items-center justify-between">
                       <span>
@@ -430,7 +420,6 @@ export default function BookingCalculator({
                     )}
                   </div>
 
-                  {/* Total Destacado */}
                   <div className="pt-3 border-t border-stone-200 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                     <div>
                       <p className="text-xs uppercase font-extrabold text-stone-500 tracking-wider">
@@ -453,7 +442,6 @@ export default function BookingCalculator({
               )}
             </div>
 
-            {/* Botón principal de reserva */}
             <div className="space-y-3">
               {availability.status === "occupied" ? (
                 <button
@@ -477,7 +465,6 @@ export default function BookingCalculator({
                 </button>
               )}
 
-              {/* Opción secundaria para quien no desea chatear de inmediato */}
               <div className="text-center pt-2">
                 <button
                   type="button"
@@ -506,7 +493,6 @@ export default function BookingCalculator({
         </div>
       </div>
 
-      {/* Sutil divisor de luz arquitectónico que conecta con la sección siguiente */}
       <div className="w-full max-w-5xl mx-auto px-4 pt-16 sm:pt-20">
         <div className="h-px bg-linear-to-r from-transparent via-white/15 to-transparent" />
       </div>
