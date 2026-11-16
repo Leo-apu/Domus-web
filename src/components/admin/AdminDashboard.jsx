@@ -497,7 +497,7 @@ export default function AdminDashboard({ onBackToSite }) {
                     value={settings.whatsappNumber}
                     onChange={(e) => setSettings({ ...settings, whatsappNumber: e.target.value.replace(/[^0-9]/g, "") })}
                     placeholder="543886350824"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
                 <span className="text-[10px] text-stone-500 mt-1 block">
@@ -514,7 +514,7 @@ export default function AdminDashboard({ onBackToSite }) {
                   value={settings.whatsappPhone}
                   onChange={(e) => setSettings({ ...settings, whatsappPhone: e.target.value })}
                   placeholder="+54 9 388 635-0824"
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                 />
               </div>
 
@@ -529,7 +529,7 @@ export default function AdminDashboard({ onBackToSite }) {
                     value={settings.schedule}
                     onChange={(e) => setSettings({ ...settings, schedule: e.target.value })}
                     placeholder="Lunes a Lunes: 09:00 hs a 00:00 hs"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
               </div>
@@ -558,7 +558,7 @@ export default function AdminDashboard({ onBackToSite }) {
                     value={settings.address}
                     onChange={(e) => setSettings({ ...settings, address: e.target.value })}
                     placeholder="Av. Juana Manuela Gorriti 613, San Salvador de Jujuy"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
               </div>
@@ -580,7 +580,7 @@ export default function AdminDashboard({ onBackToSite }) {
                     value={settings.instagramUrl || ""}
                     onChange={(e) => setSettings({ ...settings, instagramUrl: e.target.value })}
                     placeholder="https://instagram.com/domusjujuy"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -593,7 +593,7 @@ export default function AdminDashboard({ onBackToSite }) {
                     value={settings.facebookUrl || ""}
                     onChange={(e) => setSettings({ ...settings, facebookUrl: e.target.value })}
                     placeholder="https://facebook.com/domusalquileres"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -606,7 +606,7 @@ export default function AdminDashboard({ onBackToSite }) {
                     value={settings.tiktokUrl || ""}
                     onChange={(e) => setSettings({ ...settings, tiktokUrl: e.target.value })}
                     placeholder="https://tiktok.com/@domusjujuy"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
               </div>
@@ -717,7 +717,7 @@ export default function AdminDashboard({ onBackToSite }) {
                   value={settings.googleSheetsWebhookUrl || import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL || ""}
                   onChange={(e) => setSettings({ ...settings, googleSheetsWebhookUrl: e.target.value })}
                   placeholder="https://script.google.com/macros/s/.../exec"
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-xs font-mono text-stone-300 focus:border-rose-500 focus:outline-none"
+                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-4 py-2.5 text-xs font-mono text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500"
                 />
                 <p className="text-[11px] text-stone-500">
                   Esta es la URL que la web consulta para verificar disponibilidad por fechas y calcular precios.

@@ -359,7 +359,7 @@ export default function BookingCalculator({
 
                   <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-stone-200/80">
                     <span className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300">
-                      <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                      <Check className="w-3.5 h-3.5 text-emerald-600 stroke-3" />
                       ¡Fechas Disponibles en el Calendario!
                     </span>
 
@@ -408,7 +408,7 @@ export default function BookingCalculator({
                       </p>
                     </div>
                     <div className="text-left sm:text-right mt-1 sm:mt-0">
-                      <span className="font-serif-title text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight text-emerald-700">
+                      <span className="font-serif-title text-2xl sm:text-3xl font-extrabold tracking-tight text-emerald-700">
                         {formatMoney(totalPrice)}
                       </span>
                       <span className="text-xs text-stone-500 ml-1 font-semibold">

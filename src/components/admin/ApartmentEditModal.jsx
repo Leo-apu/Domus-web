@@ -446,7 +446,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Ej: Domus Gorriti - 3 Ambientes"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -461,7 +461,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     value={formData.shortName}
                     onChange={handleChange}
                     placeholder="Ej: Domus Gorriti"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -475,7 +475,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     value={formData.type}
                     onChange={handleChange}
                     placeholder="Ej: 3 Ambientes / Suite Boutique"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -492,7 +492,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     value={formData.basePrice}
                     onChange={handleChange}
                     placeholder="48000"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-amber-400 font-bold focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-amber-400 font-bold focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
               </div>
@@ -515,7 +515,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     name="capacity"
                     value={formData.capacity}
                     onChange={handleChange}
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -530,7 +530,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     name="bedrooms"
                     value={formData.bedrooms}
                     onChange={handleChange}
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -545,7 +545,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     name="bathrooms"
                     value={formData.bathrooms}
                     onChange={handleChange}
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -560,7 +560,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     name="surfaceM2"
                     value={formData.surfaceM2}
                     onChange={handleChange}
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
               </div>
@@ -578,7 +578,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                   value={formData.floor}
                   onChange={handleChange}
                   placeholder="Ej: Piso 4 - Al frente con balcón / Planta baja cómoda"
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none font-medium"
+                  className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500 font-medium"
                 />
               </div>
             </div>
@@ -663,7 +663,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     value={formData.address}
                     onChange={handleChange}
                     placeholder="Ej: Av. Gorriti 613, San Salvador de Jujuy"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -677,7 +677,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     value={formData.zone}
                     onChange={handleChange}
                     placeholder="Ej: Zona Centro - Frente al Parque Xibi Xibi"
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                   />
                 </div>
 
@@ -697,7 +697,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                       value={formData.googleMapsUrl}
                       onChange={handleChange}
                       placeholder="https://maps.app.goo.gl/... o https://maps.google.com/..."
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-rose-500 focus:outline-none pr-24"
+                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500 pr-24"
                     />
                     {formData.googleMapsUrl && (
                       <a
@@ -814,7 +814,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                                 value={place.name || ""}
                                 onChange={(e) => handleUpdateNearbyPlace(pIdx, "name", e.target.value)}
                                 placeholder="Ej: Parque Lineal Xibi Xibi"
-                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                               />
                             </div>
 
@@ -827,7 +827,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                                 value={place.type || ""}
                                 onChange={(e) => handleUpdateNearbyPlace(pIdx, "type", e.target.value)}
                                 placeholder="Ej: Espacio Verde & Recreativo"
-                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                               />
                             </div>
 
@@ -840,7 +840,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                                 value={place.distance || ""}
                                 onChange={(e) => handleUpdateNearbyPlace(pIdx, "distance", e.target.value)}
                                 placeholder="Ej: 1 cuadra (100 m)"
-                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                               />
                             </div>
 
@@ -853,7 +853,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                                 value={place.time || ""}
                                 onChange={(e) => handleUpdateNearbyPlace(pIdx, "time", e.target.value)}
                                 placeholder="Ej: 2 minutos a pie"
-                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                               />
                             </div>
 
@@ -866,7 +866,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                                 value={place.desc || ""}
                                 onChange={(e) => handleUpdateNearbyPlace(pIdx, "desc", e.target.value)}
                                 placeholder="Ej: Paseo urbano con ciclovías, senderos peatonales y áreas de ejercicio junto al río."
-                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:border-rose-500 focus:outline-none"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500"
                               />
                             </div>
                           </div>
@@ -899,7 +899,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                   value={formData.description}
                   onChange={handleChange}
                   placeholder="Describí los ambientes, luminosidad, distribución, equipamiento y por qué es ideal para los huéspedes..."
-                  className="w-full bg-stone-950 border border-stone-800 rounded-xl p-3.5 text-sm text-white focus:border-rose-500 focus:outline-none resize-y leading-relaxed"
+                  className="w-full bg-stone-950 border border-stone-800 rounded-xl p-3.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-rose-500 resize-y leading-relaxed"
                 />
                 <p className="text-[11px] text-stone-500 mt-1">
                   Esta descripción se muestra a los viajeros en el selector de departamentos, en la ficha de reserva y en los resúmenes.
@@ -935,7 +935,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                     value={newHighlight}
                     onChange={(e) => setNewHighlight(e.target.value)}
                     placeholder="Agregar punto destacado (ej: Cochera opcional, WiFi 300MB)..."
-                    className="flex-1 bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2 text-xs text-white focus:border-rose-500 focus:outline-none"
+                    className="flex-1 bg-stone-950 border border-stone-800 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -1103,7 +1103,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                                   value={img.title || ""}
                                   onChange={(e) => handleUpdatePhoto(idx, "title", e.target.value)}
                                   placeholder="Ej: Living y Comedor Principal"
-                                  className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-white focus:border-rose-500 focus:outline-none"
+                                  className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                                 />
                               </div>
 
@@ -1114,7 +1114,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                                 <select
                                   value={img.category || "general"}
                                   onChange={(e) => handleUpdatePhoto(idx, "category", e.target.value)}
-                                  className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-200 focus:border-rose-500 focus:outline-none cursor-pointer"
+                                  className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-200 focus:outline-none focus:ring-1 focus:ring-rose-500 cursor-pointer"
                                 >
                                   <option value="living">Living y Espacios Sociales</option>
                                   <option value="dormitorios">Dormitorios</option>
@@ -1138,7 +1138,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                                 value={img.description || ""}
                                 onChange={(e) => handleUpdatePhoto(idx, "description", e.target.value)}
                                 placeholder="Ej: Espacio amplio y luminoso con mesa para 4 personas, Smart TV y ventanal al exterior..."
-                                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:border-rose-500 focus:outline-none resize-y leading-relaxed"
+                                className="w-full bg-stone-900 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500 resize-y leading-relaxed"
                               />
                             </div>
                           </div>
@@ -1247,7 +1247,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                           <select
                             value={amenity.category || "Servicios Esenciales"}
                             onChange={(e) => handleUpdateAmenity(idx, "category", e.target.value)}
-                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:border-rose-500 focus:outline-none cursor-pointer"
+                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500 cursor-pointer"
                           >
                             <option value="Servicios Esenciales">Servicios Esenciales</option>
                             <option value="Confort y Habitabilidad">Confort y Habitabilidad</option>
@@ -1264,7 +1264,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                             value={amenity.name || ""}
                             onChange={(e) => handleUpdateAmenity(idx, "name", e.target.value)}
                             placeholder="Ej: WiFi Fibra Óptica 300MB"
-                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-rose-500 focus:outline-none font-medium"
+                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500 font-medium"
                           />
                         </div>
 
@@ -1273,7 +1273,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                           <select
                             value={amenity.icon || "CheckCircle2"}
                             onChange={(e) => handleUpdateAmenity(idx, "icon", e.target.value)}
-                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2 py-1.5 text-xs text-stone-300 focus:border-rose-500 focus:outline-none cursor-pointer font-mono"
+                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2 py-1.5 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500 cursor-pointer font-mono"
                           >
                             <option value="Wifi">Wifi</option>
                             <option value="Tv">Tv</option>
@@ -1300,7 +1300,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                             value={amenity.desc || ""}
                             onChange={(e) => handleUpdateAmenity(idx, "desc", e.target.value)}
                             placeholder="Ej: Alta velocidad en toda la casa"
-                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:border-rose-500 focus:outline-none"
+                            className="w-full bg-stone-900 border border-stone-800 rounded-lg px-2.5 py-1.5 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500"
                           />
                         </div>
                       </div>

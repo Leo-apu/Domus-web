@@ -247,7 +247,7 @@ export default function FaqsAdmin({ apartments = [] }) {
                       value={faq.q || ""}
                       onChange={(e) => handleUpdate(idx, "q", e.target.value)}
                       placeholder="¿Escribí la pregunta aquí?"
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs sm:text-sm text-white font-semibold focus:border-rose-500 focus:outline-none"
+                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs sm:text-sm text-white font-semibold focus:outline-none focus:ring-1 focus:ring-rose-500"
                     />
                   </div>
 
@@ -303,7 +303,7 @@ export default function FaqsAdmin({ apartments = [] }) {
                     value={faq.a || ""}
                     onChange={(e) => handleUpdate(idx, "a", e.target.value)}
                     placeholder="Escribí la respuesta detallada..."
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:border-rose-500 focus:outline-none resize-y leading-relaxed"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500 resize-y leading-relaxed"
                   />
                 </div>
               </div>

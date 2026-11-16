@@ -117,7 +117,7 @@ export default function AdminLogin({ onBackToSite }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="dueño@domus.com"
-                  className="w-full bg-stone-950/80 border border-stone-800 text-white text-sm rounded-xl pl-10 pr-4 py-3 focus:border-rose-500 focus:outline-none focus:ring-1 focus:ring-rose-500 transition-colors"
+                  className="w-full bg-stone-950/80 border border-stone-800 text-white text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-1 focus:ring-rose-500 transition-colors"
                 />
               </div>
             </div>
@@ -149,7 +149,7 @@ export default function AdminLogin({ onBackToSite }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full bg-stone-950/80 border border-stone-800 text-white text-sm rounded-xl pl-10 pr-4 py-3 focus:border-rose-500 focus:outline-none focus:ring-1 focus:ring-rose-500 transition-colors"
+                  className="w-full bg-stone-950/80 border border-stone-800 text-white text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-1 focus:ring-rose-500 transition-colors"
                 />
               </div>
             </div>

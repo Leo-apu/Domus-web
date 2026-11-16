@@ -291,7 +291,7 @@ export default function TestimonialsAdmin({ apartments = [] }) {
                       value={t.name || ""}
                       onChange={(e) => handleUpdate(idx, "name", e.target.value)}
                       placeholder="Ej: Sofía & Carlos"
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-white focus:border-rose-500 focus:outline-none"
+                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500"
                     />
                   </div>
 
@@ -304,7 +304,7 @@ export default function TestimonialsAdmin({ apartments = [] }) {
                       value={t.origin || ""}
                       onChange={(e) => handleUpdate(idx, "origin", e.target.value)}
                       placeholder="Ej: Buenos Aires / Córdoba / Salta"
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:border-rose-500 focus:outline-none"
+                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500"
                     />
                   </div>
 
@@ -317,7 +317,7 @@ export default function TestimonialsAdmin({ apartments = [] }) {
                       value={t.date || ""}
                       onChange={(e) => handleUpdate(idx, "date", e.target.value)}
                       placeholder="Ej: Enero 2026"
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:border-rose-500 focus:outline-none"
+                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500"
                     />
                   </div>
                 </div>
@@ -332,7 +332,7 @@ export default function TestimonialsAdmin({ apartments = [] }) {
                       value={t.title || ""}
                       onChange={(e) => handleUpdate(idx, "title", e.target.value)}
                       placeholder="Ej: ¡Excelente ubicación y súper limpio!"
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-white focus:border-rose-500 focus:outline-none font-semibold"
+                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-rose-500 font-semibold"
                     />
                   </div>
 
@@ -345,7 +345,7 @@ export default function TestimonialsAdmin({ apartments = [] }) {
                       value={t.tag || ""}
                       onChange={(e) => handleUpdate(idx, "tag", e.target.value)}
                       placeholder="Ej: Domus Gorriti (3 Ambientes)"
-                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-amber-300 focus:border-rose-500 focus:outline-none font-medium"
+                      className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-amber-300 focus:outline-none focus:ring-1 focus:ring-rose-500 font-medium"
                     />
                   </div>
                 </div>
@@ -359,7 +359,7 @@ export default function TestimonialsAdmin({ apartments = [] }) {
                     value={t.comment || ""}
                     onChange={(e) => handleUpdate(idx, "comment", e.target.value)}
                     placeholder="Escribí lo que opinó el huésped..."
-                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:border-rose-500 focus:outline-none resize-y leading-relaxed"
+                    className="w-full bg-stone-950 border border-stone-800 rounded-xl px-3 py-2 text-xs text-stone-300 focus:outline-none focus:ring-1 focus:ring-rose-500 resize-y leading-relaxed"
                   />
                 </div>
               </div>
