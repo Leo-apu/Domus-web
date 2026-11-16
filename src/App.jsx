@@ -138,14 +138,13 @@ export default function App() {
     <AuthProvider>
       <div className="min-h-screen bg-stone-50 text-stone-800 flex flex-col font-sans selection:bg-rose-500 selection:text-white pb-16 sm:pb-0">
 
-        <Navbar onOpenBookingModal={handleOpenBookingModal} />
+        <Navbar />
 
         <main className="flex-1">
 
           <Hero
             apartments={apartments}
             onOpenGallery={handleOpenGallery}
-            onOpenBookingModal={handleOpenBookingModal}
             selectedApartment={currentApartment}
             onSelectApartment={setSelectedApartmentId}
           />
@@ -210,7 +209,6 @@ export default function App() {
 
         <FloatingWhatsApp />
         <MobileBookingBar
-          onOpenBookingModal={handleOpenBookingModal}
           selectedApartment={currentApartment}
         />
 

@@ -1,7 +1,6 @@
 import { useState, useRef, useId } from "react";
 import emailjs from "@emailjs/browser";
 import {
-  Mail,
   Phone,
   Clock,
   MapPin,
@@ -9,7 +8,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-  MessageCircle,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { APARTMENT_INFO } from "../data/apartmentData";

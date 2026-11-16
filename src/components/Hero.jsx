@@ -11,7 +11,6 @@ const HERO_SLIDES = APARTMENTS[0].heroSlides;
 export default function Hero({
   apartments = APARTMENTS,
   onOpenGallery,
-  onOpenBookingModal,
   selectedApartment,
   onSelectApartment,
 }) {

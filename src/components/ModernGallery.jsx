@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
 import {
-  Camera,
   Maximize2,
-  Sparkles,
   Eye,
-  CheckCircle2,
   ChevronRight,
-  Building,
 } from "lucide-react";
 import { GALLERY_IMAGES } from "../data/apartmentData";
 import PhotoLightbox from "./PhotoLightbox";
@@ -86,7 +82,7 @@ export default function ModernGallery({
     setIsLightboxOpen(true);
   };
 
-  const collageSlot0 = images[0] || images[0];
+  const collageSlot0 = images[0];
   const collageSlot1 = images[1] || images[0];
   const collageSlot2 = images[2] || images[1] || images[0];
   const collageSlot3 = images[3] || images[2] || images[0];

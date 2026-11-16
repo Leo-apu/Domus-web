@@ -46,7 +46,7 @@ export default function AdminLogin({ onBackToSite }) {
     try {
       await resetPassword(email.trim());
       setResetSent(true);
-    } catch (err) {
+    } catch {
       setErrorMessage("No se pudo enviar el correo de recuperación. Verifica que el correo sea válido.");
     } finally {
       setIsResetting(false);

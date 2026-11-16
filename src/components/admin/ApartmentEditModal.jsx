@@ -16,14 +16,6 @@ import {
   Compass,
   Sparkles,
   Image as ImageIcon,
-  Sliders,
-  CheckCircle2,
-  Wind,
-  Utensils,
-  Coffee,
-  Lock,
-  Car,
-  Bed,
 } from "lucide-react";
 import { uploadToCloudinary } from "../../lib/cloudinary";
 import { generateNearbyPlacesWithGemini, generateAmenitiesWithGemini } from "../../services/geminiService";

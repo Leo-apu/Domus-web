@@ -33,6 +33,7 @@ import {
 import ApartmentEditModal from "./ApartmentEditModal";
 import TestimonialsAdmin from "./TestimonialsAdmin";
 import FaqsAdmin from "./FaqsAdmin";
+import { formatMoney } from "../../utils/formatters";
 
 export default function AdminDashboard({ onBackToSite }) {
   const { user, logout } = useAuth();
@@ -54,7 +55,6 @@ export default function AdminDashboard({ onBackToSite }) {
     facebookUrl: "",
     tiktokUrl: "",
   });
-  const [loadingSettings, setLoadingSettings] = useState(true);
   const [savingSettings, setSavingSettings] = useState(false);
   const [settingsSavedSuccess, setSettingsSavedSuccess] = useState(false);
 
@@ -84,7 +84,6 @@ export default function AdminDashboard({ onBackToSite }) {
       if (data) {
         setSettings((prev) => ({ ...prev, ...data }));
       }
-      setLoadingSettings(false);
     }
     loadSettings();
   }, []);
@@ -109,7 +108,7 @@ export default function AdminDashboard({ onBackToSite }) {
       } else {
         setWebhookStatus("offline");
       }
-    } catch (e) {
+    } catch {
       setWebhookStatus("offline");
     }
   };
@@ -323,7 +322,7 @@ export default function AdminDashboard({ onBackToSite }) {
                         </div>
 
                         <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-lg border border-white/10 text-xs font-bold text-amber-400">
-                          ${(apt.basePrice || 0).toLocaleString("es-AR")} / noche
+                          {formatMoney(apt.basePrice)} / noche
                         </div>
                       </div>
 

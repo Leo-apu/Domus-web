@@ -4,16 +4,11 @@ import {
   Users,
   MessageCircle,
   Clock,
-  Sparkles,
-  ShieldCheck,
   Check,
   BadgePercent,
-  Send,
   Building,
-  AlertCircle,
   Loader2,
   CalendarX,
-  CalendarCheck,
   ArrowRight,
 } from "lucide-react";
 import confetti from "canvas-confetti";
@@ -22,6 +17,8 @@ import {
   checkAvailability,
   submitBookingToGoogleSheets,
 } from "../services/bookingService";
+import { formatMoney, formatDateDisplay, buildWhatsAppUrl } from "../utils/formatters";
+import { calculateStayPricing } from "../utils/pricing";
 
 export default function BookingCalculator({
   apartments = APARTMENTS,
@@ -92,32 +89,13 @@ export default function BookingCalculator({
     return () => clearTimeout(timer);
   }, [checkIn, checkOut, activeApartment.id]);
 
-  const calculateNights = () => {
-    if (!checkIn || !checkOut) return 0;
-    const start = new Date(checkIn);
-    const end = new Date(checkOut);
-    const diffTime = end.getTime() - start.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 0 ? diffDays : 1;
-  };
-
-  const nights = calculateNights();
-
-  const pricePerNight = activeApartment.basePrice || 48000;
-  const hasWeeklyDiscount = nights >= 7;
-  const subtotal = nights * pricePerNight;
-  const discountAmount = hasWeeklyDiscount ? Math.round(subtotal * 0.1) : 0;
-  const totalPrice = subtotal - discountAmount;
-
-  const formatMoney = (val) => {
-    return `$ ${Number(val).toLocaleString("es-AR")}`;
-  };
-
-  const formatDateLocal = (dateStr) => {
-    if (!dateStr) return "";
-    const [year, month, day] = dateStr.split("-");
-    return `${day}/${month}/${year}`;
-  };
+  const {
+    nights,
+    hasWeeklyDiscount,
+    subtotal,
+    discountAmount,
+    totalPrice,
+  } = calculateStayPricing(checkIn, checkOut, activeApartment.basePrice);
 
   const handleWhatsAppBooking = async () => {
     if (availability.status === "occupied") return;
@@ -137,8 +115,8 @@ export default function BookingCalculator({
       name: "Cliente Web (Inició Seña)",
       phone: "Consulta WhatsApp Web",
       email: "whatsapp-directo@domus.com",
-      checkIn: formatDateLocal(checkIn),
-      checkOut: formatDateLocal(checkOut),
+      checkIn: formatDateDisplay(checkIn),
+      checkOut: formatDateDisplay(checkOut),
       guests,
       nights,
       departamento: activeApartment.name,
@@ -153,11 +131,10 @@ export default function BookingCalculator({
       ? ` (con 10% de descuento semanal aplicado)`
       : "";
 
-    const message = `¡Hola Domus Alquileres! 👋\nQuiero señar el departamento: *${activeApartment.name}* en Jujuy:\n\n📅 Fecha de Ingreso: ${formatDateLocal(checkIn)}\n📅 Fecha de Salida: ${formatDateLocal(checkOut)}\n🌙 Total Estadía: ${nights} ${nights === 1 ? "noche" : "noches"} · ${guests} ${guests === 1 ? "persona" : "personas"}\n💰 Total Calculado en la Web: *${formatMoney(totalPrice)} ARS*${discountText}\n\n¿Me confirman disponibilidad y me pasan el Alias / CBU para transferir la seña? ¡Muchas gracias!`;
+    const message = `¡Hola Domus Alquileres! 👋\nQuiero señar el departamento: *${activeApartment.name}* en Jujuy:\n\n📅 Fecha de Ingreso: ${formatDateDisplay(checkIn)}\n📅 Fecha de Salida: ${formatDateDisplay(checkOut)}\n🌙 Total Estadía: ${nights} ${nights === 1 ? "noche" : "noches"} · ${guests} ${guests === 1 ? "persona" : "personas"}\n💰 Total Calculado en la Web: *${formatMoney(totalPrice)}*${discountText}\n\n¿Me confirman disponibilidad y me pasan el Alias / CBU para transferir la seña? ¡Muchas gracias!`;
 
-    const encodedMessage = encodeURIComponent(message);
     const targetPhone = APARTMENT_INFO.whatsappNumber || "543886350824";
-    const url = `https://wa.me/${targetPhone}?text=${encodedMessage}`;
+    const url = buildWhatsAppUrl(targetPhone, message);
     window.open(url, "_blank");
   };
 
@@ -456,11 +433,16 @@ export default function BookingCalculator({
                 <button
                   type="button"
                   onClick={handleWhatsAppBooking}
-                  className="w-full flex items-center justify-center gap-3 bg-linear-to-r from-emerald-600 via-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-emerald-900/25 text-base sm:text-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                  disabled={isSendingLead}
+                  className="w-full flex items-center justify-center gap-3 bg-linear-to-r from-emerald-600 via-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-emerald-900/25 text-base sm:text-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-75 disabled:cursor-wait"
                 >
-                  <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 fill-white" />
+                  {isSendingLead ? (
+                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin text-white" />
+                  ) : (
+                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 fill-white" />
+                  )}
                   <span>
-                    Señar por WhatsApp · {formatMoney(totalPrice)}
+                    {isSendingLead ? "Conectando con WhatsApp..." : `Señar por WhatsApp · ${formatMoney(totalPrice)}`}
                   </span>
                 </button>
               )}

@@ -6,8 +6,6 @@ import {
   CheckCircle2,
   Sparkles,
   ArrowRight,
-  ShieldCheck,
-  Building,
   MapPin,
 } from "lucide-react";
 import { APARTMENTS } from "../data/apartmentData";

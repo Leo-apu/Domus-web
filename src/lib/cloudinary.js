@@ -52,7 +52,7 @@ export async function uploadToCloudinary(file, folder = "domus-alquiler", onProg
             height: res.height,
             format: res.format,
           });
-        } catch (e) {
+        } catch {
           reject(new Error("Error al procesar respuesta del servidor de imágenes."));
         }
       } else {

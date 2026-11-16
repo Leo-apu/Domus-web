@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Phone, CalendarCheck, MapPin, Sparkles } from "lucide-react";
-import { APARTMENT_INFO } from "../data/apartmentData";
+import { Menu, X, CalendarCheck } from "lucide-react";
 
-export default function Navbar({ onOpenBookingModal }) {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

@@ -1,7 +1,7 @@
 import { CalendarCheck, MessageCircle, Star } from 'lucide-react';
 import { APARTMENT_INFO } from '../data/apartmentData';
 
-export default function MobileBookingBar({ onOpenBookingModal, selectedApartment }) {
+export default function MobileBookingBar({ selectedApartment }) {
   const apt = selectedApartment || {
     shortName: "Domus Centro",
     capacity: 4,

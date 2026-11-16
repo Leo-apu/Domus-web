@@ -4,9 +4,7 @@ import {
   Compass,
   ExternalLink,
   Clock,
-  Car,
   Footprints,
-  Building,
 } from "lucide-react";
 import { NEARBY_PLACES, APARTMENT_INFO, APARTMENTS } from "../data/apartmentData";
 

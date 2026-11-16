@@ -1,4 +1,4 @@
-import { MapPin, ShieldCheck, Wifi, Sparkles, Calendar } from "lucide-react";
+import { MapPin, ShieldCheck, Wifi, Calendar } from "lucide-react";
 import { APARTMENTS } from "../data/apartmentData";
 
 export default function ParallaxBanner({

@@ -1,4 +1,4 @@
-import { X, ShieldCheck, Lock, FileText, CheckCircle2, Phone, Mail } from "lucide-react";
+import { X, ShieldCheck, Lock, FileText, CheckCircle2, Phone } from "lucide-react";
 import { APARTMENT_INFO } from "../data/apartmentData";
 
 export default function PrivacyModal({ isOpen, onClose }) {

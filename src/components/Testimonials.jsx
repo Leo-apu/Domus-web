@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Star, CheckCircle2 } from "lucide-react";
-import { TESTIMONIALS, APARTMENT_INFO } from "../data/apartmentData";
+import { TESTIMONIALS } from "../data/apartmentData";
 import { subscribeToTestimonials } from "../services/apartmentService";
 
 export default function Testimonials() {

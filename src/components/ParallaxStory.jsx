@@ -1,4 +1,4 @@
-import { Heart, Sparkles, CheckCircle, ShieldCheck } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { APARTMENTS } from "../data/apartmentData";
 
 export default function ParallaxStory({

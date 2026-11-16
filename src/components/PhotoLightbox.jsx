@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { X, ChevronLeft, ChevronRight, Maximize2, Tag } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Tag } from "lucide-react";
 
 export default function PhotoLightbox({
   isOpen,

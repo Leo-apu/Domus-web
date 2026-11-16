@@ -1,13 +1,11 @@
-import { useState, useEffect, useId, useCallback } from "react";
+import { useState, useEffect, useId } from "react";
 import {
   X,
-  Calendar,
   Users,
   Phone,
   Mail,
   User,
   MessageSquare,
-  Sparkles,
   CheckCircle2,
   AlertCircle,
   Loader2,
@@ -24,6 +22,8 @@ import {
   checkAvailability,
 } from "../services/bookingService";
 import { APARTMENT_INFO, APARTMENTS } from "../data/apartmentData";
+import { calculateNights } from "../utils/pricing";
+import { buildWhatsAppUrl, formatDateDisplay } from "../utils/formatters";
 
 export default function BookingModal({
   apartments = APARTMENTS,
@@ -71,7 +71,6 @@ export default function BookingModal({
   });
 
   const [status, setStatus] = useState("idle");
-  const [responseInfo, setResponseInfo] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   const [availability, setAvailability] = useState({ status: "idle" });
@@ -79,7 +78,6 @@ export default function BookingModal({
     if (!isOpen) {
       const timer = setTimeout(() => {
         setStatus("idle");
-        setResponseInfo(null);
         setErrorMessage("");
         setAvailability({ status: "idle" });
         setFormData({
@@ -154,15 +152,7 @@ export default function BookingModal({
 
   if (!isOpen) return null;
 
-  const calculateNights = () => {
-    if (!formData.checkIn || !formData.checkOut) return 1;
-    const start = new Date(formData.checkIn);
-    const end = new Date(formData.checkOut);
-    const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-    return diff > 0 ? diff : 1;
-  };
-
-  const nights = calculateNights();
+  const nights = calculateNights(formData.checkIn, formData.checkOut);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -180,15 +170,14 @@ export default function BookingModal({
       const payload = {
         ...formData,
         apartmentId: selectedApt.id,
-        checkIn: formData.checkIn && formData.checkIn.includes("-") ? formData.checkIn.split("-").reverse().join("/") : formData.checkIn,
-        checkOut: formData.checkOut && formData.checkOut.includes("-") ? formData.checkOut.split("-").reverse().join("/") : formData.checkOut,
+        checkIn: formatDateDisplay(formData.checkIn),
+        checkOut: formatDateDisplay(formData.checkOut),
         departamento: selectedApt.name,
         nights,
         submittedAt: new Date().toISOString(),
       };
 
-      const result = await submitBookingToGoogleSheets(payload);
-      setResponseInfo(result);
+      await submitBookingToGoogleSheets(payload);
       setStatus("success");
 
       try {
@@ -210,11 +199,10 @@ export default function BookingModal({
   };
 
   const handleDirectWhatsApp = () => {
-    const msg = encodeURIComponent(
-      `¡Hola Domus Alquileres! 👋\nSoy ${formData.name || "un viajero"}. Quería consultar si tienen disponibilidad para el departamento: *${selectedApt.name}*, ingresando el ${formData.checkIn} y saliendo el ${formData.checkOut} (${nights} ${nights === 1 ? "noche" : "noches"} para ${formData.guests} personas). ¿Está disponible?`,
-    );
+    const msg = `¡Hola Domus Alquileres! 👋\nSoy ${formData.name || "un viajero"}. Quería consultar si tienen disponibilidad para el departamento: *${selectedApt.name}*, ingresando el ${formatDateDisplay(formData.checkIn)} y saliendo el ${formatDateDisplay(formData.checkOut)} (${nights} ${nights === 1 ? "noche" : "noches"} para ${formData.guests} personas). ¿Está disponible?`;
     const targetPhone = APARTMENT_INFO.whatsappNumber || "543886350824";
-    window.open(`https://wa.me/${targetPhone}?text=${msg}`, "_blank");
+    const url = buildWhatsAppUrl(targetPhone, msg);
+    window.open(url, "_blank");
   };
 
   return (
