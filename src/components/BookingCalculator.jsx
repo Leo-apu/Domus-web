@@ -91,6 +91,7 @@ export default function BookingCalculator({
 
   const {
     nights,
+    pricePerNight,
     hasWeeklyDiscount,
     subtotal,
     discountAmount,
@@ -365,11 +366,11 @@ export default function BookingCalculator({
                     <span className="text-xs text-stone-500 font-medium">
                       Del{" "}
                       <strong className="text-stone-800">
-                        {formatDateLocal(checkIn)}
+                        {formatDateDisplay(checkIn)}
                       </strong>{" "}
                       al{" "}
                       <strong className="text-stone-800">
-                        {formatDateLocal(checkOut)}
+                        {formatDateDisplay(checkOut)}
                       </strong>
                     </span>
                   </div>

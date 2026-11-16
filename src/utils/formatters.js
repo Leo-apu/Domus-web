@@ -36,6 +36,8 @@ export function formatDateDisplay(dateStr) {
   });
 }
 
+export const formatDateLocal = formatDateDisplay;
+
 export function buildWhatsAppUrl(phoneNumber, message = "") {
   const cleanPhone = String(phoneNumber || "").replace(/[^0-9]/g, "");
   const base = `https://wa.me/${cleanPhone}`;
