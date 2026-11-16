@@ -435,7 +435,7 @@ export default function BookingCalculator({
                   type="button"
                   onClick={handleWhatsAppBooking}
                   disabled={isSendingLead}
-                  className="w-full flex items-center justify-center gap-3 bg-linear-to-r from-emerald-600 via-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-emerald-900/25 text-base sm:text-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-75 disabled:cursor-wait"
+                  className="w-full flex items-center justify-center gap-3 bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-emerald-900/25 text-base sm:text-lg transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-75 disabled:cursor-wait"
                 >
                   {isSendingLead ? (
                     <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin text-white" />

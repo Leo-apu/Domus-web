@@ -567,7 +567,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
               </div>
 
               <div className="pt-1">
-                <label className="block text-[11px] font-mono uppercase text-stone-400 mb-1 flex items-center justify-between">
+                <label className="flex items-center justify-between text-[11px] font-mono uppercase text-stone-400 mb-1">
                   <span>Piso / Nivel & Vista en el Edificio</span>
                   <span className="text-[10px] text-stone-500 font-normal">
                     Visible en la tarjeta de especificaciones (ej: "Piso 4 - Al frente con balcón")
@@ -1128,7 +1128,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
                             </div>
 
                             <div>
-                              <label className="block text-[11px] font-mono uppercase text-stone-400 mb-1 flex items-center justify-between">
+                              <label className="flex items-center justify-between text-[11px] font-mono uppercase text-stone-400 mb-1">
                                 <span>Descripción de la Foto / Ambiente</span>
                                 <span className="text-[10px] text-stone-500 font-normal">
                                   Visible en la galería y lightbox para los visitantes
@@ -1350,7 +1350,7 @@ export default function ApartmentEditModal({ apartment, onSave, onClose }) {
             type="submit"
             form="apartment-form"
             disabled={isSaving || isUploading}
-            className="inline-flex items-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer disabled:opacity-50"
+            className="inline-flex items-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-lg transition-all hover:scale-[1.02] cursor-pointer disabled:opacity-50"
           >
             {isSaving ? (
               <>

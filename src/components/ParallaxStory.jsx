@@ -106,7 +106,7 @@ export default function ParallaxStory({
                 apartmentName: apt.name,
               })
             }
-            className="inline-flex items-center gap-2.5 bg-linear-to-r from-rose-600 via-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold py-4 px-8 rounded-full shadow-2xl transition-all hover:scale-105 active:scale-95 text-sm sm:text-base cursor-pointer"
+            className="inline-flex items-center gap-2.5 bg-linear-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold py-4 px-8 rounded-full shadow-2xl transition-all hover:scale-105 active:scale-95 text-sm sm:text-base cursor-pointer"
           >
             <Sparkles className="w-5 h-5 text-amber-300" />
             <span>Planificar mi Estadía en {apt.shortName}</span>

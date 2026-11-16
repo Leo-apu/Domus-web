@@ -148,7 +148,7 @@ export default function TestimonialsAdmin({ apartments = [] }) {
             type="button"
             onClick={handleSave}
             disabled={saving}
-            className="inline-flex items-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-lg transition-all hover:scale-102 cursor-pointer disabled:opacity-50"
+            className="inline-flex items-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-lg transition-all hover:scale-[1.02] cursor-pointer disabled:opacity-50"
           >
             {saving ? (
               <>

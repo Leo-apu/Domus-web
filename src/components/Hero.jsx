@@ -47,7 +47,7 @@ export default function Hero({
   return (
     <section
       id="inicio"
-      className="relative min-h-[90vh] sm:min-h-screen flex flex-col justify-center items-center bg-stone-950 text-white pt-20 sm:pt-24 lg:pt-24 pb-14 sm:pb-16 overflow-hidden"
+      className="relative min-h-[90vh] sm:min-h-screen flex flex-col justify-center items-center bg-stone-950 text-white pt-20 sm:pt-24 pb-14 sm:pb-16 overflow-hidden"
     >
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -69,7 +69,7 @@ export default function Hero({
                   : "scale-100"
               }`}
             />
-            <div className="absolute inset-0 bg-linear-to-t from-stone-950 via-stone-950/60 to-stone-950/45" />
+            <div className="absolute inset-0 bg-linear-to-t from-stone-950 via-stone-900/60 to-stone-950/45" />
             <div className="absolute inset-0 mesh-gradient-dark opacity-65" />
           </div>
         ))}
@@ -96,7 +96,7 @@ export default function Hero({
                   onClick={() => onSelectApartment?.(apt.id)}
                   className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     isSelected
-                      ? "bg-white text-stone-900 shadow-sm scale-102"
+                      ? "bg-white text-stone-900 shadow-sm scale-[1.02]"
                       : "text-stone-300 hover:text-white hover:bg-white/10"
                   }`}
                 >
@@ -164,7 +164,7 @@ export default function Hero({
           <a
             href="#calculadora"
             onClick={scrollToCalculator}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-linear-to-r from-rose-600 via-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold px-6 py-3 sm:px-7 sm:py-3.5 rounded-full shadow-2xl shadow-rose-950/50 transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm lg:text-base cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-linear-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-bold px-6 py-3 sm:px-7 sm:py-3.5 rounded-full shadow-2xl shadow-rose-950/50 transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm lg:text-base cursor-pointer"
           >
             <CalendarCheck className="w-4 h-4 sm:w-5 sm:h-5 text-amber-200" />
             <span>Consultar Disponibilidad</span>

@@ -130,7 +130,7 @@ export default function LocationSection({
                 href={mapUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-3.5 px-5 rounded-2xl text-sm transition-all shadow-lg shadow-rose-950/40 hover:scale-102 cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 bg-linear-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold py-3.5 px-5 rounded-2xl text-sm transition-all shadow-lg shadow-rose-950/40 hover:scale-[1.02] cursor-pointer"
               >
                 <Navigation className="w-4 h-4 text-white" />
                 <span>Abrir en Google Maps / Cómo llegar</span>
@@ -139,7 +139,7 @@ export default function LocationSection({
             </div>
           </div>
 
-          <div className="lg:col-span-7 bg-stone-850 rounded-3xl overflow-hidden border border-white/15 shadow-2xl flex flex-col min-h-95 lg:min-h-120 reveal-init reveal-right">
+          <div className="lg:col-span-7 bg-stone-850 rounded-3xl overflow-hidden border border-white/15 shadow-2xl flex flex-col min-h-[380px] lg:min-h-[480px] reveal-init reveal-right">
             <div className="bg-stone-950 text-white px-5 py-3.5 flex items-center justify-between border-b border-white/10">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-rose-500 animate-pulse" />
@@ -152,7 +152,7 @@ export default function LocationSection({
               </span>
             </div>
 
-            <div className="relative flex-1 w-full h-full min-h-87.5">
+            <div className="relative flex-1 w-full h-full min-h-[350px]">
               <iframe
                 title={`Ubicación de ${activeApartment.name}`}
                 src={embedUrl}
